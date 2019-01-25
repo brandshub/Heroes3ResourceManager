@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace h3magic
 {
-    class SpriteBlockHeader
+    public class SpriteBlockHeader
     {
         public int Unknown1 { get; private set; }
         public int SpritesCount { get; private set; }

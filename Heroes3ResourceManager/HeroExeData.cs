@@ -26,13 +26,17 @@ namespace h3magic
         public int StartingUnit1;
         public int StartingUnit2;
         public int StartingUnit3;
+
         public int Index { get; private set; }
         public HeroStats Hero { get { if (HeroesManager.Loaded) return HeroesManager.AllHeroes[Index]; return null; } }
         public HeroClass Class { get { return HeroClassManager.AllClasses[ClassIndex]; } }
 
-        public CreatureStats Creature1 {  get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[StartingUnit1]; return null; } }
+        public CreatureStats Creature1 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[StartingUnit1]; return null; } }
         public CreatureStats Creature2 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[StartingUnit2]; return null; } }
         public CreatureStats Creature3 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[StartingUnit3]; return null; } }
+
+        public SecondarySkill Skill1 { get { if (SecondarySkill.Loaded) return SecondarySkill.AllSkills[FirstSkill]; return null; } }
+        public SecondarySkill Skill2 { get { if (SecondarySkill.Loaded && SecondSkill != -1) return SecondarySkill.AllSkills[SecondSkill]; return null; } }
 
         public static void LoadData(byte[] executableBinary)
         {
@@ -58,7 +62,7 @@ namespace h3magic
                     hero.Spell = BitConverter.ToInt32(executableBinary, currentOffset + 32);
                     hero.StartingUnit1 = BitConverter.ToInt32(executableBinary, currentOffset + 36);
                     hero.StartingUnit2 = BitConverter.ToInt32(executableBinary, currentOffset + 40);
-                    hero.StartingUnit3 = BitConverter.ToInt32(executableBinary, currentOffset + 44);                  
+                    hero.StartingUnit3 = BitConverter.ToInt32(executableBinary, currentOffset + 44);
                     Data.Add(hero);
                     currentOffset += BLOCK_SIZE_A;
                 }
@@ -68,7 +72,7 @@ namespace h3magic
 
         public override string ToString()
         {
-            return Hero + ", " + Class;
+            return Hero + ", " + Class + "  " + Skill1 + "[" + FirstSkillLevel + "]" + (SecondSkill != -1 ? (" | " + Skill2 + "[" + SecondSkillLevel + "]") : "");
         }
     }
 }

@@ -7,10 +7,8 @@ using System.Drawing;
 
 namespace h3magic
 {
-    class FATRecord
+    public class FATRecord
     {
-
-
         public string FileName { get; private set; }
         public string Extension { get; private set; }
         public int Offset { get; private set; }
@@ -94,7 +92,7 @@ namespace h3magic
 
 
 
-        public DEFFile GetDEFFile(Stream stream)
+        public DefFile GetDEFFile(Stream stream)
         {
             byte[] bts;
             if (Size != 0)
@@ -102,12 +100,12 @@ namespace h3magic
                 bts = new byte[Size];
                 stream.Position = Offset;
                 stream.Read(bts, 0, Size);
-                return new DEFFile(ZlibWrapper.UnZlib(bts));
+                return new DefFile(ZlibWrapper.UnZlib(bts));
             }
             bts = new byte[RealSize];
             stream.Position = Offset;
             stream.Read(bts, 0, RealSize);
-            return new DEFFile(bts);
+            return new DefFile(bts);
         }
 
         public static string ToggleCase(string val)

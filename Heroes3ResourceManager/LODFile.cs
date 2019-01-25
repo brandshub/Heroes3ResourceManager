@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace h3magic
 {
-    class LodFile
+    public class LodFile
     {
         private const uint HEADER = 0x00444f4c;
         private const int FAT_OFFSET = 0x5c;

@@ -47,6 +47,7 @@
             this.ldBmp = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
+            this.trbDefSprites = new System.Windows.Forms.TrackBar();
             this.listBox4 = new System.Windows.Forms.ListBox();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.h_classTab = new System.Windows.Forms.TabPage();
@@ -167,9 +168,11 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.spellsTab = new System.Windows.Forms.TabPage();
+            this.chbTimerEnabled = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             this.h_classTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
@@ -183,14 +186,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
-            // listBox1
+            // lbFiles
             // 
             this.lbFiles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbFiles.FormattingEnabled = true;
             this.lbFiles.ItemHeight = 18;
             this.lbFiles.Location = new System.Drawing.Point(673, 33);
-            this.lbFiles.Name = "listBox1";
+            this.lbFiles.Name = "lbFiles";
             this.lbFiles.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbFiles.Size = new System.Drawing.Size(133, 220);
             this.lbFiles.TabIndex = 4;
@@ -277,7 +280,7 @@
             // 
             this.m_openFile.Name = "m_openFile";
             this.m_openFile.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.m_openFile.Size = new System.Drawing.Size(180, 22);
+            this.m_openFile.Size = new System.Drawing.Size(158, 22);
             this.m_openFile.Text = "Відкрити";
             this.m_openFile.Click += new System.EventHandler(this.m_openFile_Click);
             // 
@@ -285,7 +288,7 @@
             // 
             this.m_saveFile.Name = "m_saveFile";
             this.m_saveFile.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.m_saveFile.Size = new System.Drawing.Size(180, 22);
+            this.m_saveFile.Size = new System.Drawing.Size(158, 22);
             this.m_saveFile.Text = "Зберегти";
             this.m_saveFile.Click += new System.EventHandler(this.m_saveFile_Click);
             // 
@@ -293,14 +296,14 @@
             // 
             this.m_saveFileAs.Name = "m_saveFileAs";
             this.m_saveFileAs.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.m_saveFileAs.Size = new System.Drawing.Size(180, 22);
+            this.m_saveFileAs.Size = new System.Drawing.Size(158, 22);
             this.m_saveFileAs.Text = "Зберегти як";
             this.m_saveFileAs.Click += new System.EventHandler(this.m_saveFileAs_Click);
             // 
             // m_exit
             // 
             this.m_exit.Name = "m_exit";
-            this.m_exit.Size = new System.Drawing.Size(180, 22);
+            this.m_exit.Size = new System.Drawing.Size(158, 22);
             this.m_exit.Text = "Вихід";
             this.m_exit.Click += new System.EventHandler(this.m_exit_Click);
             // 
@@ -352,6 +355,8 @@
             // 
             // mainTab
             // 
+            this.mainTab.Controls.Add(this.chbTimerEnabled);
+            this.mainTab.Controls.Add(this.trbDefSprites);
             this.mainTab.Controls.Add(this.listBox4);
             this.mainTab.Controls.Add(this.pictureBox7);
             this.mainTab.Controls.Add(this.rtbMain);
@@ -368,6 +373,15 @@
             this.mainTab.TabIndex = 0;
             this.mainTab.Text = "Головна";
             this.mainTab.UseVisualStyleBackColor = true;
+            // 
+            // trbDefSprites
+            // 
+            this.trbDefSprites.Location = new System.Drawing.Point(7, 423);
+            this.trbDefSprites.Name = "trbDefSprites";
+            this.trbDefSprites.Size = new System.Drawing.Size(405, 45);
+            this.trbDefSprites.TabIndex = 20;
+            this.trbDefSprites.ValueChanged += new System.EventHandler(this.trbDefSprites_ValueChanged);
+            this.trbDefSprites.VisibleChanged += new System.EventHandler(this.trbDefSprites_ValueChanged);
             // 
             // listBox4
             // 
@@ -1579,6 +1593,16 @@
             this.spellsTab.Text = "Закляття";
             this.spellsTab.UseVisualStyleBackColor = true;
             // 
+            // chbTimerEnabled
+            // 
+            this.chbTimerEnabled.AutoSize = true;
+            this.chbTimerEnabled.Location = new System.Drawing.Point(418, 428);
+            this.chbTimerEnabled.Name = "chbTimerEnabled";
+            this.chbTimerEnabled.Size = new System.Drawing.Size(15, 14);
+            this.chbTimerEnabled.TabIndex = 21;
+            this.chbTimerEnabled.UseVisualStyleBackColor = true;
+            this.chbTimerEnabled.CheckedChanged += new System.EventHandler(this.chbTimerEnabled_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1595,6 +1619,8 @@
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
+            this.mainTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             this.h_classTab.ResumeLayout(false);
             this.h_classTab.PerformLayout();
@@ -1753,6 +1779,8 @@
         private System.Windows.Forms.TabPage spellsTab;
         private System.Windows.Forms.ListBox listBox4;
         private System.Windows.Forms.PictureBox pictureBox7;
+        private System.Windows.Forms.TrackBar trbDefSprites;
+        private System.Windows.Forms.CheckBox chbTimerEnabled;
     }
 }
 

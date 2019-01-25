@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace h3magic
 {
-    class DEFFile
+    public class DefFile
     {
         private const int PALETTE_OFFSET = 0x10;
         private const int BLOCK_HEADER_OFFSET = 0x310;
@@ -25,7 +25,7 @@ namespace h3magic
         private byte[] bytes;
 
 
-        public DEFFile(byte[] block)
+        public DefFile(byte[] block)
         {
             ID = BitConverter.ToInt32(block, 0);
             Width = BitConverter.ToInt32(block, 4);
@@ -82,7 +82,10 @@ namespace h3magic
         public unsafe Bitmap GetSprite(int blockIndex, int spriteIndex)
         {
             SpriteBlockHeader sbh = headers[blockIndex];
-            SpriteHeader sh = sbh.spriteHeaders[spriteIndex];
+
+            spriteIndex = spriteIndex % sbh.spriteHeaders.Count;
+
+            var sh = sbh.spriteHeaders[spriteIndex];
             int offset = sbh.Offsets[spriteIndex];
 
             Bitmap bmp = new Bitmap(sh.FullWidth, sh.FullHeight, PixelFormat.Format24bppRgb);

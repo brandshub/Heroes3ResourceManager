@@ -22,7 +22,7 @@ namespace h3magic
 
         private LodFile lodFile;
         private Bitmap bmp;
-        private DEFFile def;
+        private DefFile def;
 
         private Dictionary<string, Bitmap> icons = new Dictionary<string, Bitmap>();
 
@@ -33,13 +33,15 @@ namespace h3magic
         static extern uint ExtractIconEx(string szFileName, int nIconIndex,
            IntPtr[] phiconLarge, IntPtr[] phiconSmall, uint nIcons);
 
+        private Timer timer = new Timer();
         public MainForm()
         {
             InitializeComponent();
             CheckForIllegalCrossThreadCalls = false;
             cb_Filter.SelectedIndex = 0;
             form = new Preview(this);
-
+            timer.Interval = 1000;
+            timer.Tick += Timer_Tick;
             /*  List<int> ptl = new List<int>();
               ptl.Add(0);
               ptl[0]++;*/
@@ -76,8 +78,15 @@ namespace h3magic
 
         }
 
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            currentFrame++;
+            if (currentFrame > trbDefSprites.Maximum)
+                currentFrame = 0;
 
-
+            trbDefSprites.Value = currentFrame;
+            
+        }
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -141,6 +150,14 @@ namespace h3magic
             int index = lbFiles.IndexFromPoint(last);
             if (index >= 0 && index < lbFiles.Items.Count && lastindex != index)
             {
+                listBox4.Visible = false;
+                string temp = lbFiles.Items[index].ToString();
+                if (selectedFile != temp)
+                    currentFrame = 0;
+
+                selectedFile = temp;
+
+
                 FATRecord rec = lodFile[lbFiles.Items[index].ToString()];
                 if (rec.Extension == "PCX")
                 {
@@ -171,7 +188,14 @@ namespace h3magic
                 }
                 else if (rec.Extension == "DEF")
                 {
-                    bmp = rec.GetDEFFile(lodFile.stream).GetSprite(0, 0);
+                    listBox4.Visible = true;                   
+                    
+                    var def = rec.GetDEFFile(lodFile.stream);
+
+                    trbDefSprites.Maximum = def.headers[0].SpritesCount - 1;
+                    trbDefSprites.Value = 0;
+
+                    bmp = def.GetSprite(0, trbDefSprites.Value);
                     pictureBox7.Visible = true;
                     rtbMain.Visible = false;
                     if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)
@@ -181,8 +205,26 @@ namespace h3magic
                     pictureBox7.Image = bmp;
                 }
             }
+            else if (index > -1)
+            {
+                var rec = lodFile[lbFiles.Items[index].ToString()];
+                if (rec.Extension == "DEF")
+                {
+                    var def = rec.GetDEFFile(lodFile.stream);
+
+                    bmp = def.GetSprite(0, trbDefSprites.Value);
+                    if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)
+                        pictureBox7.SizeMode = PictureBoxSizeMode.Zoom;
+                    else
+                        pictureBox7.SizeMode = PictureBoxSizeMode.CenterImage;
+                    pictureBox7.Image = bmp;
+                }             
+            }
             lastindex = index;
         }
+
+        private string selectedFile = "";
+        private int currentFrame = 0;
 
         int lastindex = -100;
 
@@ -305,6 +347,8 @@ namespace h3magic
                             // if(!tabControl1.TabPages.Contains(h_classTab))
                         }
 
+                        SecondarySkill.LoadInfo(lodFile);
+
                         HeroExeData.LoadData(ExeFile.Executable.Data);
                     }
                 }
@@ -424,7 +468,7 @@ namespace h3magic
         {
             if (CreatureManager.Loaded)
             {
-                  LoadCreatureInfo(CreatureManager.Get(cb_castles.SelectedIndex,cb_creatures.SelectedIndex));
+                LoadCreatureInfo(CreatureManager.Get(cb_castles.SelectedIndex, cb_creatures.SelectedIndex));
             }
         }
 
@@ -672,5 +716,15 @@ namespace h3magic
             }
         }
 
+
+        private void trbDefSprites_ValueChanged(object sender, EventArgs e)
+        {
+            PreviewShow();
+        }
+
+        private void chbTimerEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            timer.Enabled = chbTimerEnabled.Checked;
+        }
     }
 }

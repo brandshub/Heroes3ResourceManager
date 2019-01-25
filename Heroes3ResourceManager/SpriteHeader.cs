@@ -5,7 +5,7 @@ using System.Text;
 
 namespace h3magic
 {
-    class SpriteHeader
+    public class SpriteHeader
     {
         public int Unknown1 { get; private set; }
         public int Type { get; private set; }
