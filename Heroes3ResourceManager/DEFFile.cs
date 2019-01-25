@@ -79,6 +79,17 @@ namespace h3magic
             }
         }
 
+        public Bitmap GetSprite(int frame)
+        {
+            int blockIndex = 0;
+            while (frame > headers[blockIndex].spriteHeaders.Count)
+            {
+                frame -= headers[blockIndex].spriteHeaders.Count;
+                blockIndex++;                
+            }
+            return GetSprite(blockIndex, frame);
+        }
+
         public unsafe Bitmap GetSprite(int blockIndex, int spriteIndex)
         {
             SpriteBlockHeader sbh = headers[blockIndex];
@@ -90,17 +101,18 @@ namespace h3magic
 
             Bitmap bmp = new Bitmap(sh.FullWidth, sh.FullHeight, PixelFormat.Format24bppRgb);
             Color c = Color.FromArgb(palette[0, 0], palette[0, 1], palette[0, 2]);
-            Graphics.FromImage(bmp).FillRectangle(new SolidBrush(c), 0, 0, sh.FullWidth, sh.FullHeight);
-            BitmapData imageData = bmp.LockBits(new Rectangle(0, 0, sh.FullWidth, sh.FullHeight), ImageLockMode.ReadOnly, bmp.PixelFormat);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                g.FillRectangle(new SolidBrush(c), 0, 0, sh.FullWidth, sh.FullHeight);
+            }
+            BitmapData imageData = bmp.LockBits(new Rectangle(0, 0, sh.FullWidth, sh.FullHeight), ImageLockMode.ReadWrite, bmp.PixelFormat);
 
 
             offset += 32;
 
             if (sh.Type == 1)
             {
-
                 LoadSpriteType1(sh, imageData, offset);
-
             }
             else if (sh.Type == 0)
             {
@@ -108,7 +120,14 @@ namespace h3magic
             }
             else if (sh.Type == 3)
             {
-                //   LoadSpriteType3(sh, imageData, offset);
+                try
+                {
+                    LoadSpriteType3(sh, imageData, offset);
+                }
+                catch (Exception ex)
+                {
+
+                }
             }
             bmp.UnlockBits(imageData);
 
@@ -207,7 +226,7 @@ namespace h3magic
 
             int[] ffsets = new int[len];
             for (int i = 0; i < len; i++)
-                ffsets[i] = BitConverter.ToInt16(bytes, offset + i * 2);
+                ffsets[i] = BitConverter.ToInt16(bytes, offset + i * 2 * (sh.SpriteWidth / 32));
 
             byte* ptr = (byte*)data.Scan0.ToPointer();
             byte* currentRow;
@@ -216,6 +235,7 @@ namespace h3magic
 
             for (int i = 0; i < len; i++)
             {
+
                 int pos = ffsets[i] + offset;
                 currentRow = ptr + (sh.TopMargin + i) * data.Stride + sh.LeftMargin * 3;
 
@@ -223,10 +243,14 @@ namespace h3magic
                 if (i < len - 1)
                     bound = offset + ffsets[i + 1];
                 else
-                    bound = Math.Min(offset + ffsets[i] + sh.SpriteWidth, bytes.Length);
+                    bound = Math.Min(offset + ffsets[i] - sh.SpriteWidth, bytes.Length);
+
+                //std::min<ui32>(value, SpriteWidth - TotalRowLength) - std::max(0, -LeftMargin);
+
 
                 while (pos < bound)
                 {
+
                     blength = (bytes[pos] & 0x1f) + 1;
                     type = (byte)(bytes[pos] >> 5);
                     pos++;

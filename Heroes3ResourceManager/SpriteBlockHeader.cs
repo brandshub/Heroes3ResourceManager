@@ -8,9 +8,10 @@ namespace h3magic
 {
     public class SpriteBlockHeader
     {
-        public int Unknown1 { get; private set; }
+        public int Index { get; private set; }
         public int SpritesCount { get; private set; }
-        public long Unknown2 { get; private set; }
+        public int Unknown2 { get; private set; }
+        public int Unknown3 { get; private set; }
         public string[] Names { get; private set; }
         public int[] Offsets { get; private set; }
         public int HeaderLength { get { return 16 + 17 * SpritesCount; } }
@@ -19,9 +20,10 @@ namespace h3magic
 
         public SpriteBlockHeader(byte[] bytes, int offset)
         {
-            Unknown1 = BitConverter.ToInt32(bytes, offset);
+            Index = BitConverter.ToInt32(bytes, offset);
             SpritesCount = BitConverter.ToInt32(bytes, offset + 4);
-            Unknown2 = BitConverter.ToInt64(bytes, offset + 8);
+            Unknown2 = BitConverter.ToInt32(bytes, offset + 8);
+            Unknown3 = BitConverter.ToInt32(bytes, offset + 12);
 
             int off = offset + 16;
             Names = new string[SpritesCount];

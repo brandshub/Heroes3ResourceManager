@@ -40,7 +40,7 @@ namespace h3magic
             CheckForIllegalCrossThreadCalls = false;
             cb_Filter.SelectedIndex = 0;
             form = new Preview(this);
-            timer.Interval = 1000;
+            timer.Interval = 150;
             timer.Tick += Timer_Tick;
             /*  List<int> ptl = new List<int>();
               ptl.Add(0);
@@ -85,7 +85,7 @@ namespace h3magic
                 currentFrame = 0;
 
             trbDefSprites.Value = currentFrame;
-            
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -188,14 +188,14 @@ namespace h3magic
                 }
                 else if (rec.Extension == "DEF")
                 {
-                    listBox4.Visible = true;                   
-                    
+                    listBox4.Visible = true;
+
                     var def = rec.GetDEFFile(lodFile.stream);
 
-                    trbDefSprites.Maximum = def.headers[0].SpritesCount - 1;
+                    trbDefSprites.Maximum = def.headers.Sum(s => s.SpritesCount) - 1;
                     trbDefSprites.Value = 0;
 
-                    bmp = def.GetSprite(0, trbDefSprites.Value);
+                    bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
                     pictureBox7.Visible = true;
                     rtbMain.Visible = false;
                     if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)
@@ -212,13 +212,13 @@ namespace h3magic
                 {
                     var def = rec.GetDEFFile(lodFile.stream);
 
-                    bmp = def.GetSprite(0, trbDefSprites.Value);
+                    bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
                     if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)
                         pictureBox7.SizeMode = PictureBoxSizeMode.Zoom;
                     else
                         pictureBox7.SizeMode = PictureBoxSizeMode.CenterImage;
                     pictureBox7.Image = bmp;
-                }             
+                }
             }
             lastindex = index;
         }
@@ -704,7 +704,7 @@ namespace h3magic
             {
                 pictureBox7.Visible = true;
                 rtbMain.Visible = false;
-                bmp = def.GetByName(listBox4.SelectedItem.ToString());
+                Bitmap bmp = def.GetByName(listBox4.SelectedItem.ToString());
                 if (bmp != null)
                 {
                     if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)

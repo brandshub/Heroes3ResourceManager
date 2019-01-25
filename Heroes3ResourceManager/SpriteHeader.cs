@@ -7,7 +7,7 @@ namespace h3magic
 {
     public class SpriteHeader
     {
-        public int Unknown1 { get; private set; }
+        public int ContentSize { get; private set; }
         public int Type { get; private set; }
         public int FullWidth { get; private set; }
         public int FullHeight { get; private set; }
@@ -21,7 +21,7 @@ namespace h3magic
         public SpriteHeader(byte[] block, int offset)
         {
             this.offset = offset;
-            Unknown1 = BitConverter.ToInt32(block, offset);
+            ContentSize = BitConverter.ToInt32(block, offset);
             Type = BitConverter.ToInt32(block, offset + 4);
             FullWidth = BitConverter.ToInt32(block, offset + 8);
             FullHeight = BitConverter.ToInt32(block, offset + 12);
