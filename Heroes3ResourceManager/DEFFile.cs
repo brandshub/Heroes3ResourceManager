@@ -85,7 +85,7 @@ namespace h3magic
             while (frame > headers[blockIndex].spriteHeaders.Count)
             {
                 frame -= headers[blockIndex].spriteHeaders.Count;
-                blockIndex++;                
+                blockIndex++;
             }
             return GetSprite(blockIndex, frame);
         }
@@ -110,24 +110,21 @@ namespace h3magic
 
             offset += 32;
 
-            if (sh.Type == 1)
-            {
-                LoadSpriteType1(sh, imageData, offset);
-            }
-            else if (sh.Type == 0)
+            if (sh.Type == 0)
             {
                 LoadSpriteType0(sh, imageData, offset);
             }
+            else if (sh.Type == 1)
+            {
+                LoadSpriteType1(sh, imageData, offset);
+            }
+            else if (sh.Type == 2)
+            {
+                LoadSpriteType2(sh, imageData, offset);
+            }
             else if (sh.Type == 3)
             {
-                try
-                {
-                    LoadSpriteType3(sh, imageData, offset);
-                }
-                catch (Exception ex)
-                {
-
-                }
+                LoadSpriteType3(sh, imageData, offset);
             }
             bmp.UnlockBits(imageData);
 
@@ -136,11 +133,10 @@ namespace h3magic
 
         private unsafe void LoadSpriteType0(SpriteHeader sh, BitmapData data, int offset)
         {
-            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+            var watch = Stopwatch.StartNew();
 
             byte* currentRow = (byte*)data.Scan0.ToPointer();
 
-            int blength;
             int padding = (4 - ((sh.FullWidth * 3) % 4)) % 4;
             int pos = offset;
             for (int i = 0; i < sh.SpriteHeight; i++)
@@ -156,19 +152,29 @@ namespace h3magic
                     currentRow++;
                 }
                 currentRow += 3 * padding;
-
             }
-            double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
-            Debug.WriteLine("t1: " + result);
+            double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
+            Debug.WriteLine("t0: " + result);
         }
 
 
 
         private unsafe void LoadSpriteType1(SpriteHeader sh, BitmapData data, int offset)
         {
-            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+            var watch = Stopwatch.StartNew();
             int len = sh.SpriteHeight;
+            int tm = sh.TopMargin;
+            int lm = sh.LeftMargin;
+            int sw = sh.SpriteWidth;
 
+            if (sh.SpriteHeight > sh.FullHeight)
+            {
+                len = sh.FullHeight;
+                tm = 0;
+                lm = 0;
+                sw = 0;
+                offset -= 16;
+            }
             int[] ffsets = new int[len];
             for (int i = 0; i < len; i++)
                 ffsets[i] = BitConverter.ToInt32(bytes, offset + i * 4);
@@ -181,13 +187,13 @@ namespace h3magic
             for (int i = 0; i < len; i++)
             {
                 int pos = ffsets[i] + offset;
-                currentRow = ptr + (sh.TopMargin + i) * data.Stride + sh.LeftMargin * 3;
+                currentRow = ptr + (tm + i) * data.Stride + lm * 3;
 
                 int bound;
                 if (i < len - 1)
                     bound = offset + ffsets[i + 1];
                 else
-                    bound = Math.Min(offset + ffsets[i] + sh.SpriteWidth, bytes.Length);
+                    bound = Math.Min(offset + ffsets[i] + sw, bytes.Length);
 
                 while (pos < bound)
                 {
@@ -215,18 +221,19 @@ namespace h3magic
 
 
             }
-            double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
-            Debug.WriteLine("t2: " + result);
+            double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
+            Debug.WriteLine("t1: " + result);
         }
 
-        private unsafe void LoadSpriteType3(SpriteHeader sh, BitmapData data, int offset)
+        private unsafe void LoadSpriteType2(SpriteHeader sh, BitmapData data, int offset)
         {
-            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+            var watch = Stopwatch.StartNew();
             int len = sh.SpriteHeight;
 
             int[] ffsets = new int[len];
             for (int i = 0; i < len; i++)
-                ffsets[i] = BitConverter.ToInt16(bytes, offset + i * 2 * (sh.SpriteWidth / 32));
+                ffsets[i] = BitConverter.ToUInt16(bytes, offset + i * 2 * ((sh.SpriteWidth + sh.LeftMargin) / 32));
+                //ffsets[i] = BitConverter.ToUInt16(bytes, offset + i * 2 * (sh.SpriteWidth / 32));
 
             byte* ptr = (byte*)data.Scan0.ToPointer();
             byte* currentRow;
@@ -245,40 +252,15 @@ namespace h3magic
                 else
                     bound = Math.Min(offset + ffsets[i] - sh.SpriteWidth, bytes.Length);
 
-                //std::min<ui32>(value, SpriteWidth - TotalRowLength) - std::max(0, -LeftMargin);
-
-
-                while (pos < bound)
+                do
                 {
 
                     blength = (bytes[pos] & 0x1f) + 1;
                     type = (byte)(bytes[pos] >> 5);
                     pos++;
-                    if (type == 0x1)
+                    if (type == 0)
                     {
-                        for (int j = 0; j < blength; j++)
-                        {
-
-                            *currentRow = palette[1, 2];
-                            currentRow++;
-                            *currentRow = palette[1, 1];
-                            currentRow++;
-                            *currentRow = palette[1, 0];
-                            currentRow++;
-                        }
-                    }
-                    else if (type == 4)
-                    {
-                        for (int j = 0; j < blength; j++)
-                        {
-                            *currentRow = palette[2, 2];
-                            currentRow++;
-                            *currentRow = palette[2, 1];
-                            currentRow++;
-                            *currentRow = palette[2, 0];
-                            currentRow++;
-
-                        }
+                        currentRow += 3 * blength;
                     }
                     else if (type == 7)
                     {
@@ -294,16 +276,129 @@ namespace h3magic
                             pos++;
                         }
                     }
-                    else if (type == 0)
+                    else
+                    {
+                        int pIndex = 0;
+                        if (type == 1)
+                            pIndex = 1;
+                        else if (type == 4)
+                            pIndex = 2;
+                        else if (type == 5)
+                            pIndex = 5;
+                        else if (type == 2)
+                        {
+                            pIndex = 2;
+                        }
+                        else if (type == 3)
+                        {
+                            pIndex = 2;
+                        }
+                        else
+                        {
+                            pIndex = 2;
+                        }
+
+                        for (int j = 0; j < blength; j++)
+                        {
+                            *currentRow = palette[pIndex, 2];
+                            currentRow++;
+                            *currentRow = palette[pIndex, 1];
+                            currentRow++;
+                            *currentRow = palette[pIndex, 0];
+                            currentRow++;
+                        }
+                    }
+
+                }
+                while (pos < bound);
+
+
+            }
+            double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
+            Debug.WriteLine("t2: " + result);
+        }
+
+        private unsafe void LoadSpriteType3(SpriteHeader sh, BitmapData data, int offset)
+        {
+            var watch = Stopwatch.StartNew();
+            int len = sh.SpriteHeight;
+
+            int[] ffsets = new int[len];
+            for (int i = 0; i < len; i++)
+                ffsets[i] = BitConverter.ToUInt16(bytes, offset + i * 2 * (sh.SpriteWidth / 32));
+
+            byte* ptr = (byte*)data.Scan0.ToPointer();
+            byte* currentRow;
+            byte type;
+            int blength;
+
+            for (int i = 0; i < len; i++)
+            {
+
+                int pos = ffsets[i] + offset;
+                currentRow = ptr + (sh.TopMargin + i) * data.Stride + sh.LeftMargin * 3;
+
+                int bound;
+                if (i < len - 1)
+                    bound = offset + ffsets[i + 1];
+                else
+                    bound = Math.Min(offset + ffsets[i] - sh.SpriteWidth, bytes.Length);
+
+                while (pos < bound)
+                {
+
+                    blength = (bytes[pos] & 0x1f) + 1;
+                    type = (byte)(bytes[pos] >> 5);
+                    pos++;
+                    if (type == 0)
                     {
                         currentRow += 3 * blength;
                     }
+                    else if (type == 7)
+                    {
+                        for (int j = 0; j < blength; j++)
+                        {
+                            byte color = bytes[pos];
+                            *currentRow = palette[color, 2];
+                            currentRow++;
+                            *currentRow = palette[color, 1];
+                            currentRow++;
+                            *currentRow = palette[color, 0];
+                            currentRow++;
+                            pos++;
+                        }
+                    }
+                    else
+                    {
+                        int pIndex = 0;
+                        if (type == 1)
+                            pIndex = 1;
+                        else if (type == 4)
+                            pIndex = 2;
+                        else if (type == 5)
+                            pIndex = 5;
+                        else
+                        {
+                            pIndex = 1000;
+                        }
+
+                        for (int j = 0; j < blength; j++)
+                        {
+                            *currentRow = palette[pIndex, 2];
+                            currentRow++;
+                            *currentRow = palette[pIndex, 1];
+                            currentRow++;
+                            *currentRow = palette[pIndex, 0];
+                            currentRow++;
+                        }
+                    }
+
                 }
 
 
             }
             double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
-            Debug.WriteLine("t1: " + result);
+            Debug.WriteLine("t3: " + result);
         }
 
     }

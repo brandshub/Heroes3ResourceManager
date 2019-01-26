@@ -16,7 +16,7 @@ namespace h3magic
         public int RealSize { get; private set; }
 
         public int Unknown1 { get; private set; }
-        public int Unknown2 { get; private set; }
+        public int SpriteType { get; private set; }
 
         private byte[] fname;
         private byte[] newVal;
@@ -34,7 +34,7 @@ namespace h3magic
             Unknown1 = BitConverter.ToInt32(record, 12);
             Offset = BitConverter.ToInt32(record, 16);
             RealSize = BitConverter.ToInt32(record, 20);
-            Unknown2 = BitConverter.ToInt32(record, 24);
+            SpriteType = BitConverter.ToInt32(record, 24);
             Size = BitConverter.ToInt32(record, 28);
         }
 
@@ -59,7 +59,7 @@ namespace h3magic
                 {
                     array = newVal;
                 }
-                PCXFile file = new PCXFile(array);
+                var file = new PCXFile(array);
                 try
                 {
                     return file.GetBitmap();
@@ -69,7 +69,7 @@ namespace h3magic
                     return null;
                 }
             }
-            else return null;
+            return null;
         }
 
         public byte[] GetRawData(Stream stream)
@@ -142,7 +142,7 @@ namespace h3magic
                 Bitmap bmp = GetBitmap(stream);
                 if (bmp != null)
                 {
-                    bmp.Save(FileName.Substring(0, FileName.Length - 4) + ".bmp");
+                    bmp.Save(Path.Combine(Path.GetDirectoryName((stream as FileStream).Name), FileName.Substring(0, FileName.Length - 4) + ".bmp"));
                     bmp.Dispose();
                 }
             }
@@ -165,7 +165,7 @@ namespace h3magic
                 *(ip + 3) = Unknown1;
                 *(ip + 4) = Offset;
                 *(ip + 5) = RealSize;
-                *(ip + 6) = Unknown2;
+                *(ip + 6) = SpriteType;
                 *(ip + 7) = Size;
             }
             return buffer;

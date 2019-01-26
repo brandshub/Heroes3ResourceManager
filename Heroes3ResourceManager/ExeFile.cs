@@ -8,23 +8,15 @@ namespace h3magic
 {
     public class ExeFile
     {
-        public static ExeFile Executable
-        {
-            get;
-            private set;
-        }
-
         public string Name { get; set; }
         public string Path { get; set; }
         public byte[] Data { get; private set; }
-        public static void LoadData(string path)
+
+        public ExeFile(string executablePath)
         {
-            Executable = new ExeFile
-            {
-                Name = System.IO.Path.GetFileName(path),
-                Path = path,
-                Data = File.ReadAllBytes(path)
-            };
+            Name = System.IO.Path.GetFileName(executablePath);
+            Path = executablePath;
+            Data = File.ReadAllBytes(executablePath);
         }
     }
 }

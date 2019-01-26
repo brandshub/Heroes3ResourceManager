@@ -47,6 +47,7 @@
             this.ldBmp = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.mainTab = new System.Windows.Forms.TabPage();
+            this.chbTimerEnabled = new System.Windows.Forms.CheckBox();
             this.trbDefSprites = new System.Windows.Forms.TrackBar();
             this.listBox4 = new System.Windows.Forms.ListBox();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
@@ -124,8 +125,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.lbHeroes = new System.Windows.Forms.ListBox();
+            this.pbHeroMain = new System.Windows.Forms.PictureBox();
             this.creaturesTab = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox23 = new System.Windows.Forms.TextBox();
@@ -168,7 +169,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.spellsTab = new System.Windows.Forms.TabPage();
-            this.chbTimerEnabled = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
@@ -180,7 +180,7 @@
             this.heroesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbHeroMain)).BeginInit();
             this.creaturesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -373,6 +373,16 @@
             this.mainTab.TabIndex = 0;
             this.mainTab.Text = "Головна";
             this.mainTab.UseVisualStyleBackColor = true;
+            // 
+            // chbTimerEnabled
+            // 
+            this.chbTimerEnabled.AutoSize = true;
+            this.chbTimerEnabled.Location = new System.Drawing.Point(418, 428);
+            this.chbTimerEnabled.Name = "chbTimerEnabled";
+            this.chbTimerEnabled.Size = new System.Drawing.Size(15, 14);
+            this.chbTimerEnabled.TabIndex = 21;
+            this.chbTimerEnabled.UseVisualStyleBackColor = true;
+            this.chbTimerEnabled.CheckedChanged += new System.EventHandler(this.chbTimerEnabled_CheckedChanged);
             // 
             // trbDefSprites
             // 
@@ -970,8 +980,8 @@
             this.heroesTab.Controls.Add(this.label14);
             this.heroesTab.Controls.Add(this.textBox24);
             this.heroesTab.Controls.Add(this.pictureBox4);
-            this.heroesTab.Controls.Add(this.pictureBox3);
             this.heroesTab.Controls.Add(this.lbHeroes);
+            this.heroesTab.Controls.Add(this.pbHeroMain);
             this.heroesTab.Location = new System.Drawing.Point(4, 25);
             this.heroesTab.Name = "heroesTab";
             this.heroesTab.Padding = new System.Windows.Forms.Padding(3);
@@ -1010,18 +1020,18 @@
             // 
             // textBox31
             // 
-            this.textBox31.Location = new System.Drawing.Point(330, 120);
+            this.textBox31.Location = new System.Drawing.Point(460, 74);
             this.textBox31.Multiline = true;
             this.textBox31.Name = "textBox31";
-            this.textBox31.Size = new System.Drawing.Size(504, 71);
+            this.textBox31.Size = new System.Drawing.Size(374, 123);
             this.textBox31.TabIndex = 16;
             // 
             // textBox32
             // 
-            this.textBox32.Location = new System.Drawing.Point(330, 230);
+            this.textBox32.Location = new System.Drawing.Point(460, 216);
             this.textBox32.Multiline = true;
             this.textBox32.Name = "textBox32";
-            this.textBox32.Size = new System.Drawing.Size(504, 78);
+            this.textBox32.Size = new System.Drawing.Size(374, 66);
             this.textBox32.TabIndex = 15;
             // 
             // textBox28
@@ -1063,7 +1073,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(327, 212);
+            this.label18.Location = new System.Drawing.Point(457, 200);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(77, 13);
             this.label18.TabIndex = 8;
@@ -1099,7 +1109,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(327, 102);
+            this.label14.Location = new System.Drawing.Point(457, 58);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(55, 13);
             this.label14.TabIndex = 4;
@@ -1108,7 +1118,7 @@
             // textBox24
             // 
             this.textBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox24.Location = new System.Drawing.Point(330, 51);
+            this.textBox24.Location = new System.Drawing.Point(461, 15);
             this.textBox24.Name = "textBox24";
             this.textBox24.Size = new System.Drawing.Size(268, 29);
             this.textBox24.TabIndex = 3;
@@ -1117,7 +1127,7 @@
             // pictureBox4
             // 
             this.pictureBox4.ContextMenuStrip = this.contextMenuStrip1;
-            this.pictureBox4.Location = new System.Drawing.Point(202, 176);
+            this.pictureBox4.Location = new System.Drawing.Point(165, 415);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(64, 37);
             this.pictureBox4.TabIndex = 2;
@@ -1145,15 +1155,6 @@
             this.зберегтиToolStripMenuItem.Text = "Зберегти";
             this.зберегтиToolStripMenuItem.Click += new System.EventHandler(this.зберегтиToolStripMenuItem_Click);
             // 
-            // pictureBox3
-            // 
-            this.pictureBox3.ContextMenuStrip = this.contextMenuStrip1;
-            this.pictureBox3.Location = new System.Drawing.Point(202, 51);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(64, 64);
-            this.pictureBox3.TabIndex = 1;
-            this.pictureBox3.TabStop = false;
-            // 
             // lbHeroes
             // 
             this.lbHeroes.FormattingEnabled = true;
@@ -1162,6 +1163,16 @@
             this.lbHeroes.Size = new System.Drawing.Size(130, 446);
             this.lbHeroes.TabIndex = 0;
             this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
+            // 
+            // pbHeroMain
+            // 
+            this.pbHeroMain.Location = new System.Drawing.Point(142, 15);
+            this.pbHeroMain.Name = "pbHeroMain";
+            this.pbHeroMain.Size = new System.Drawing.Size(302, 277);
+            this.pbHeroMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbHeroMain.TabIndex = 20;
+            this.pbHeroMain.TabStop = false;
+            this.pbHeroMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pbHeroMain_Paint);
             // 
             // creaturesTab
             // 
@@ -1593,16 +1604,6 @@
             this.spellsTab.Text = "Закляття";
             this.spellsTab.UseVisualStyleBackColor = true;
             // 
-            // chbTimerEnabled
-            // 
-            this.chbTimerEnabled.AutoSize = true;
-            this.chbTimerEnabled.Location = new System.Drawing.Point(418, 428);
-            this.chbTimerEnabled.Name = "chbTimerEnabled";
-            this.chbTimerEnabled.Size = new System.Drawing.Size(15, 14);
-            this.chbTimerEnabled.TabIndex = 21;
-            this.chbTimerEnabled.UseVisualStyleBackColor = true;
-            this.chbTimerEnabled.CheckedChanged += new System.EventHandler(this.chbTimerEnabled_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1630,7 +1631,7 @@
             this.heroesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbHeroMain)).EndInit();
             this.creaturesTab.ResumeLayout(false);
             this.creaturesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -1759,7 +1760,6 @@
         private System.Windows.Forms.TextBox textBox74;
         private System.Windows.Forms.TabPage heroesTab;
         private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.ListBox lbHeroes;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
@@ -1781,6 +1781,7 @@
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.TrackBar trbDefSprites;
         private System.Windows.Forms.CheckBox chbTimerEnabled;
+        private System.Windows.Forms.PictureBox pbHeroMain;
     }
 }
 

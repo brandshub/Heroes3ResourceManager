@@ -11,17 +11,18 @@ namespace h3magic
     {
         private const uint HEADER = 0x00444f4c;
         private const int FAT_OFFSET = 0x5c;
-        private int _fileCount;
-        private string _name;
+
         public Stream stream;
 
-        public int FileCount { get { return _fileCount; } }
+        public int FileCount { get; private set; }
         public List<FATRecord> FilesTable { get; private set; }
-        public string Name { get { return _name; } }
+        public string Name { get; private set; }
+        public string Path { get; private set; }
 
         public LodFile(FileStream fs)
         {
-            _name = fs.Name;
+            Path = fs.Name;
+            Name = System.IO.Path.GetFileName(Path).ToLower();
 
             byte[] temp = new byte[4];
             fs.Read(temp, 0, 4);
@@ -34,8 +35,8 @@ namespace h3magic
             fs.Position = 8;
             fs.Read(temp, 0, 4);
             stream = fs;
-            _fileCount = BitConverter.ToInt32(temp, 0);
-            FilesTable = new List<FATRecord>(_fileCount);
+            FileCount = BitConverter.ToInt32(temp, 0);
+            FilesTable = new List<FATRecord>(FileCount);
         }
 
         public void LoadFAT(int count)
@@ -68,7 +69,7 @@ namespace h3magic
 
         public void LoadFAT()
         {
-            LoadFAT(_fileCount);
+            LoadFAT(FileCount);
         }
 
         public string[] GetNames()
@@ -83,7 +84,7 @@ namespace h3magic
             while (prev <= next)
             {
                 now = (next + prev) >> 1;
-                int res = string.Compare(local, FilesTable[now].FileName);
+                int res = string.Compare(local, FilesTable[now].FileName, true);
                 if (res > 0)
                     prev = now + 1;
                 else if (res < 0)
@@ -156,7 +157,12 @@ namespace h3magic
 
         public void SaveToDisk()
         {
-            SaveToDisk(_name + "new");
+            SaveToDisk(Path + "new");
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

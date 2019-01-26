@@ -20,7 +20,9 @@ namespace h3magic
         private OpenFileDialog ofd = new OpenFileDialog() { Filter = "Hero Files (*.LOD;*.EXE)|*.LOD;*.EXE" };
         private SaveFileDialog sfd = new SaveFileDialog() { Filter = "Hero Files (*.LOD)|*.LOD" };
 
-        private LodFile lodFile;
+
+        private LodFile lodFile, h3spriteLod, h3bitmapLod;
+
         private Bitmap bmp;
         private DefFile def;
 
@@ -299,65 +301,78 @@ namespace h3magic
                     lodFile.stream.Close();
 
 
-                var fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
                 if (Path.GetExtension(ofd.FileName) == ".exe")
                 {
                     var sw = Stopwatch.StartNew();
-                    ExeFile.LoadData(ofd.FileName);
-                    fs.Close();
 
-                    string h3BitmapLod = Path.Combine(Path.Combine(Path.GetDirectoryName(ofd.FileName), "Data"), "h3bitmap.lod");
-                    if (File.Exists(h3BitmapLod))
+                    Heroes3Master.LoadData(ofd.FileName);
+
+
+
+
+
+
+                    lodFile = Heroes3Master.Master.H3Bitmap;
+                    h3bitmapLod = lodFile;
+                    h3spriteLod = Heroes3Master.Master.H3Sprite;
+
+
+
+                    lbFiles.Items.AddRange(lodFile.GetNames());
+
+                    lbHeroes.Items.Clear();
+                    HeroesManager.LoadInfo(lodFile);
+                    lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
+
+                    listBox3.Items.Clear();
+                    HeroClassManager.LoadInfo(lodFile);
+                    listBox3.Items.AddRange(HeroClassManager.AllClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
+
+
+                    CreatureManager.LoadInfo(lodFile);
+                    cb_castles.Items.Clear();
+                    cb_castles.Items.AddRange(CreatureManager.Castles);
+
+                    if (lodFile["HCTRAITS.TXT"] == null)
                     {
-                        var lodStream = new FileStream(h3BitmapLod, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                        lodFile = new LodFile(lodStream);
-
-                        lodFile.LoadFAT();
-                        lbFiles.Items.AddRange(lodFile.GetNames());
-
-                        lbHeroes.Items.Clear();
-                        HeroesManager.LoadInfo(lodFile);
-
-                        listBox3.Items.Clear();
-                        HeroClassManager.LoadInfo(lodFile);
-                        listBox3.Items.AddRange(HeroClassManager.AllClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
-
-
-                        CreatureManager.LoadInfo(lodFile);
-                        cb_castles.Items.Clear();
-                        cb_castles.Items.AddRange(CreatureManager.Castles);
-
-                        if (lodFile["HCTRAITS.TXT"] == null)
+                        for (int i = 1; i < tabControl1.TabCount; i++)
                         {
-                            for (int i = 1; i < tabControl1.TabCount; i++)
-                            {
-                                tabControl1.TabPages.RemoveAt(i);
-                                i--;
-                            }
+                            tabControl1.TabPages.RemoveAt(i);
+                            i--;
                         }
-                        else
-                        {
-                            if (!tabControl1.TabPages.Contains(h_classTab))
-                                tabControl1.TabPages.Add(h_classTab);
-                            if (!tabControl1.TabPages.Contains(heroesTab))
-                                tabControl1.TabPages.Add(heroesTab);
-                            if (!tabControl1.TabPages.Contains(creaturesTab))
-                                tabControl1.TabPages.Add(creaturesTab);
-
-                            // if(!tabControl1.TabPages.Contains(h_classTab))
-                        }
-
-                        SecondarySkill.LoadInfo(lodFile);
-
-                        HeroExeData.LoadData(ExeFile.Executable.Data);
                     }
+                    else
+                    {
+                        if (!tabControl1.TabPages.Contains(h_classTab))
+                            tabControl1.TabPages.Add(h_classTab);
+                        if (!tabControl1.TabPages.Contains(heroesTab))
+                            tabControl1.TabPages.Add(heroesTab);
+                        if (!tabControl1.TabPages.Contains(creaturesTab))
+                            tabControl1.TabPages.Add(creaturesTab);
+
+                        // if(!tabControl1.TabPages.Contains(h_classTab))
+                    }
+
+                    SecondarySkill.LoadInfo(lodFile);
+
+                    HeroExeData.LoadData(Heroes3Master.Master.Executable.Data);
+
                 }
                 else
                 {
+
+                    var fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     lodFile = new LodFile(fs);
                     lbFiles.Items.Clear();
                     lodFile.LoadFAT();
                     lbFiles.Items.AddRange(lodFile.GetNames());
+
+                    if (fs.Name.ToLower().Contains("h3bitmap"))
+                        h3bitmapLod = lodFile;
+                    else if (fs.Name.ToLower().Contains("h3sprite"))
+                        h3spriteLod = lodFile;
+
                     if (lodFile["HCTRAITS.TXT"] == null)
                     {
                         for (int i = 1; i < tabControl1.TabCount; i++)
@@ -560,13 +575,16 @@ namespace h3magic
 
         }
 
+
         private void lbHeroes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            HeroStats hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
-            pictureBox3.Image = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex]].GetBitmap(lodFile.stream);
+            var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
             // label19.Text = pictureBox3.Width + " * " + pictureBox3.Height;
             pictureBox4.Image = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(lodFile.stream);
+
+            pbHeroMain.Invalidate();
             // label20.Text = pictureBox4.Width + " * " + pictureBox4.Height;
+
             textBox24.Text = hs.Name;
             textBox31.Text = hs.Biography;
             textBox32.Text = hs.Speciality;
@@ -611,7 +629,7 @@ namespace h3magic
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     HeroStats hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
-                    if (contextMenuStrip1.SourceControl == pictureBox3)
+                    /*if (contextMenuStrip1.SourceControl == pictureBox3)
                     {
                         hs.Large = (Bitmap)Bitmap.FromFile(ofd.FileName);
                         pictureBox3.Image = hs.Large;
@@ -620,7 +638,7 @@ namespace h3magic
                     {
                         hs.Small = (Bitmap)Bitmap.FromFile(ofd.FileName);
                         pictureBox4.Image = hs.Small;
-                    }
+                    }*/
 
                 }
                 ofd.Filter = filter;
@@ -635,10 +653,10 @@ namespace h3magic
                 sfd.Filter = "Images (*.bmp,*.jpg,*jpeg,*gif)|*.bmp;*.jpeg;*.jpg;*gif";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    if (contextMenuStrip1.SourceControl == pictureBox3)
+                   /* if (contextMenuStrip1.SourceControl == pictureBox3)
                         pictureBox3.Image.Save(sfd.FileName);
                     else
-                        pictureBox4.Image.Save(sfd.FileName);
+                        pictureBox4.Image.Save(sfd.FileName);*/
                 }
                 sfd.Filter = filter;
             }
@@ -716,6 +734,30 @@ namespace h3magic
             }
         }
 
+        private void pbHeroMain_Paint(object sender, PaintEventArgs e)
+        {
+            if (lbHeroes.SelectedIndex > -1)
+            {
+                var f = lodFile.GetRecord("HeroScr4.pcx").GetBitmap(lodFile.stream);
+                if (f != null)
+                    e.Graphics.DrawImage(f, Point.Empty);
+
+                var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
+                var portrait = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex]].GetBitmap(lodFile.stream);
+                e.Graphics.DrawImage(portrait, new Point(18, 18));
+
+                var z = Speciality.Get(Heroes3Master.Master?.H3Sprite, lbHeroes.SelectedIndex);
+                e.Graphics.DrawImage(z, new Point(19, 181));
+
+                var heroData = HeroExeData.Data[lbHeroes.SelectedIndex];
+
+                e.Graphics.DrawImage(heroData.Skill1.GetImage(Heroes3Master.Master?.H3Sprite, heroData.FirstSkillLevel), new Point(19, 229));
+                if(heroData.Skill2 != null)
+                    e.Graphics.DrawImage(heroData.Skill2.GetImage(Heroes3Master.Master?.H3Sprite, heroData.SecondSkillLevel), new Point(162, 229));
+
+                //229
+            }
+        }
 
         private void trbDefSprites_ValueChanged(object sender, EventArgs e)
         {
