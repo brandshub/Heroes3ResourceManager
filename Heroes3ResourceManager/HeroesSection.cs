@@ -8,16 +8,26 @@ namespace h3magic
 {
     public class HeroesSection
     {
-        private static readonly byte[] firstHero = { 0x0, 0x0, 0x0, 0x0, 0x7, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0 };
+        //private static readonly byte[] firstHero = { 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 1, 0, 0, 0 };
+        //private static readonly byte[] heroSpecs = { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0 };
+        private static readonly byte[] firstHero = { 7, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 1, 0, 0, 0 };
+        private static readonly byte[] heroSpecs = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0 };
+
+
 
         public static long FindOffset2(Stream stream)
         {
             return FindPosition2(stream, firstHero);
         }
 
+        public static long FindOffsetX(byte[] data)
+        {
+            return FindPosition3(data, heroSpecs) - 4;
+        }
+
         public static long FindOffset2(byte[] bytes)
         {
-            return FindPosition2(bytes, firstHero);
+            return FindPosition2(bytes, firstHero) - 4;
         }
 
         public static long FindPosition2(Stream stream, byte[] byteSequence)
@@ -53,7 +63,7 @@ namespace h3magic
         public static long FindPosition2(byte[] bytes, byte[] byteSequence)
         {
             if (byteSequence.Length > bytes.Length)
-                return -1;            
+                return -1;
 
             byte b0 = byteSequence[0];
             int limit = bytes.Length - byteSequence.Length;
@@ -79,18 +89,16 @@ namespace h3magic
         }
 
 
-        public static unsafe long FindPosition3(Stream stream)
+        public static unsafe long FindPosition3(byte[] bytes, byte[] search)
         {
-            if (firstHero.Length > stream.Length)
+            if (search.Length > bytes.Length)
                 return -1;
-            stream.Position = 0;
-            var bytes = new byte[stream.Length];
-            stream.Read(bytes, 0, bytes.Length);
 
-            int limit = firstHero.Length >> 2;
-            int ub = bytes.Length - firstHero.Length;
 
-            fixed (byte* fh = firstHero)
+            int limit = search.Length >> 2;
+            int ub = bytes.Length - search.Length;
+
+            fixed (byte* fh = search)
             fixed (byte* bts = bytes)
             {
                 int* fb = (int*)fh;
@@ -105,7 +113,7 @@ namespace h3magic
                         {
                             int source = *(ip + j);
                             int dest = *(fb + j);
-                            if(source != dest)
+                            if (source != dest)
                             {
                                 found = false;
                                 break;
@@ -117,11 +125,10 @@ namespace h3magic
                 }
 
             }
-           
             return -1;
         }
 
-      
+
     }
 }
 

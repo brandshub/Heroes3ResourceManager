@@ -104,7 +104,7 @@
             this.textBox33 = new System.Windows.Forms.TextBox();
             this.listBox3 = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
+            this.pbSkillTree = new System.Windows.Forms.PictureBox();
             this.heroesTab = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox29 = new System.Windows.Forms.TextBox();
@@ -176,7 +176,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             this.h_classTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).BeginInit();
             this.heroesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -239,9 +239,9 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(16, 530);
+            this.progressBar1.Location = new System.Drawing.Point(16, 575);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(880, 23);
+            this.progressBar1.Size = new System.Drawing.Size(908, 23);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar1.TabIndex = 8;
             // 
@@ -261,7 +261,7 @@
             this.файлToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(940, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(939, 24);
             this.menuStrip1.TabIndex = 15;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -345,10 +345,10 @@
             this.tabControl1.Controls.Add(this.heroesTab);
             this.tabControl1.Controls.Add(this.creaturesTab);
             this.tabControl1.Controls.Add(this.spellsTab);
-            this.tabControl1.Location = new System.Drawing.Point(12, 27);
+            this.tabControl1.Location = new System.Drawing.Point(12, 28);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(916, 497);
+            this.tabControl1.Size = new System.Drawing.Size(916, 541);
             this.tabControl1.TabIndex = 18;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
@@ -467,11 +467,11 @@
             this.h_classTab.Controls.Add(this.textBox33);
             this.h_classTab.Controls.Add(this.listBox3);
             this.h_classTab.Controls.Add(this.button3);
-            this.h_classTab.Controls.Add(this.pictureBox5);
+            this.h_classTab.Controls.Add(this.pbSkillTree);
             this.h_classTab.Location = new System.Drawing.Point(4, 25);
             this.h_classTab.Name = "h_classTab";
             this.h_classTab.Padding = new System.Windows.Forms.Padding(3);
-            this.h_classTab.Size = new System.Drawing.Size(908, 468);
+            this.h_classTab.Size = new System.Drawing.Size(908, 512);
             this.h_classTab.TabIndex = 3;
             this.h_classTab.Text = "Класи ";
             this.h_classTab.UseVisualStyleBackColor = true;
@@ -953,14 +953,14 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // pictureBox5
+            // pbSkillTree
             // 
-            this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
-            this.pictureBox5.Location = new System.Drawing.Point(446, 153);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(431, 309);
-            this.pictureBox5.TabIndex = 32;
-            this.pictureBox5.TabStop = false;
+            this.pbSkillTree.InitialImage = null;
+            this.pbSkillTree.Location = new System.Drawing.Point(446, 153);
+            this.pbSkillTree.Name = "pbSkillTree";
+            this.pbSkillTree.Size = new System.Drawing.Size(431, 309);
+            this.pbSkillTree.TabIndex = 32;
+            this.pbSkillTree.TabStop = false;
             // 
             // heroesTab
             // 
@@ -985,7 +985,7 @@
             this.heroesTab.Location = new System.Drawing.Point(4, 25);
             this.heroesTab.Name = "heroesTab";
             this.heroesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.heroesTab.Size = new System.Drawing.Size(908, 468);
+            this.heroesTab.Size = new System.Drawing.Size(908, 512);
             this.heroesTab.TabIndex = 4;
             this.heroesTab.Text = "Герої";
             this.heroesTab.UseVisualStyleBackColor = true;
@@ -1118,7 +1118,7 @@
             // textBox24
             // 
             this.textBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox24.Location = new System.Drawing.Point(461, 15);
+            this.textBox24.Location = new System.Drawing.Point(580, 9);
             this.textBox24.Name = "textBox24";
             this.textBox24.Size = new System.Drawing.Size(268, 29);
             this.textBox24.TabIndex = 3;
@@ -1127,7 +1127,7 @@
             // pictureBox4
             // 
             this.pictureBox4.ContextMenuStrip = this.contextMenuStrip1;
-            this.pictureBox4.Location = new System.Drawing.Point(165, 415);
+            this.pictureBox4.Location = new System.Drawing.Point(593, 457);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(64, 37);
             this.pictureBox4.TabIndex = 2;
@@ -1158,18 +1158,18 @@
             // lbHeroes
             // 
             this.lbHeroes.FormattingEnabled = true;
-            this.lbHeroes.Location = new System.Drawing.Point(6, 6);
+            this.lbHeroes.Location = new System.Drawing.Point(6, 9);
             this.lbHeroes.Name = "lbHeroes";
-            this.lbHeroes.Size = new System.Drawing.Size(130, 446);
+            this.lbHeroes.Size = new System.Drawing.Size(130, 485);
             this.lbHeroes.TabIndex = 0;
             this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
             // 
             // pbHeroMain
             // 
-            this.pbHeroMain.Location = new System.Drawing.Point(142, 15);
+            this.pbHeroMain.Location = new System.Drawing.Point(142, 9);
             this.pbHeroMain.Name = "pbHeroMain";
-            this.pbHeroMain.Size = new System.Drawing.Size(302, 277);
-            this.pbHeroMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pbHeroMain.Size = new System.Drawing.Size(432, 485);
+            this.pbHeroMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbHeroMain.TabIndex = 20;
             this.pbHeroMain.TabStop = false;
             this.pbHeroMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pbHeroMain_Paint);
@@ -1219,7 +1219,7 @@
             this.creaturesTab.Location = new System.Drawing.Point(4, 25);
             this.creaturesTab.Name = "creaturesTab";
             this.creaturesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.creaturesTab.Size = new System.Drawing.Size(908, 468);
+            this.creaturesTab.Size = new System.Drawing.Size(908, 512);
             this.creaturesTab.TabIndex = 1;
             this.creaturesTab.Text = "Створіння";
             this.creaturesTab.UseVisualStyleBackColor = true;
@@ -1599,7 +1599,7 @@
             // 
             this.spellsTab.Location = new System.Drawing.Point(4, 25);
             this.spellsTab.Name = "spellsTab";
-            this.spellsTab.Size = new System.Drawing.Size(908, 468);
+            this.spellsTab.Size = new System.Drawing.Size(908, 512);
             this.spellsTab.TabIndex = 5;
             this.spellsTab.Text = "Закляття";
             this.spellsTab.UseVisualStyleBackColor = true;
@@ -1608,7 +1608,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(940, 565);
+            this.ClientSize = new System.Drawing.Size(939, 612);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.menuStrip1);
@@ -1626,7 +1626,7 @@
             this.h_classTab.ResumeLayout(false);
             this.h_classTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).EndInit();
             this.heroesTab.ResumeLayout(false);
             this.heroesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
@@ -1709,7 +1709,7 @@
         private System.Windows.Forms.ListBox listBox3;
         private System.Windows.Forms.TextBox textBox34;
         private System.Windows.Forms.TextBox textBox33;
-        private System.Windows.Forms.PictureBox pictureBox5;
+        private System.Windows.Forms.PictureBox pbSkillTree;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label24;

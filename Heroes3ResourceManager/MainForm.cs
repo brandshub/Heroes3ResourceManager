@@ -309,10 +309,11 @@ namespace h3magic
                     Heroes3Master.LoadData(ofd.FileName);
 
 
+                    var sw1 = Stopwatch.StartNew();
 
+                    var offset = HeroesSection.FindOffsetX(Heroes3Master.Master.Executable.Data);
 
-
-
+                    long ms = sw1.ElapsedMilliseconds;
                     lodFile = Heroes3Master.Master.H3Bitmap;
                     h3bitmapLod = lodFile;
                     h3spriteLod = Heroes3Master.Master.H3Sprite;
@@ -524,6 +525,18 @@ namespace h3magic
                     cb_castles.Items.AddRange(CreatureManager.Castles);
 
                 }
+                else if (tabControl1.SelectedIndex == 1)
+                {
+                    if (!HeroClassManager.Loaded)
+                    {
+                        listBox3.Items.Clear();
+                        HeroClassManager.LoadInfo(lodFile);
+                        listBox3.Items.AddRange(HeroClassManager.AllClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
+                    }
+                    pbSkillTree.Image = SecondarySkill.GetSkillTree(Heroes3Master.Master.H3Sprite);
+
+
+                }
                 else if (tabControl1.SelectedIndex == 2)
                 {
                     if (!HeroesManager.Loaded)
@@ -533,16 +546,7 @@ namespace h3magic
                         lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
                     }
                 }
-                else if (tabControl1.SelectedIndex == 1)
-                {
-                    if (!HeroClassManager.Loaded)
-                    {
-                        listBox3.Items.Clear();
-                        HeroClassManager.LoadInfo(lodFile);
-                        listBox3.Items.AddRange(HeroClassManager.AllClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
 
-                    }
-                }
             }
         }
 
@@ -653,10 +657,10 @@ namespace h3magic
                 sfd.Filter = "Images (*.bmp,*.jpg,*jpeg,*gif)|*.bmp;*.jpeg;*.jpg;*gif";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                   /* if (contextMenuStrip1.SourceControl == pictureBox3)
-                        pictureBox3.Image.Save(sfd.FileName);
-                    else
-                        pictureBox4.Image.Save(sfd.FileName);*/
+                    /* if (contextMenuStrip1.SourceControl == pictureBox3)
+                         pictureBox3.Image.Save(sfd.FileName);
+                     else
+                         pictureBox4.Image.Save(sfd.FileName);*/
                 }
                 sfd.Filter = filter;
             }
@@ -736,26 +740,44 @@ namespace h3magic
 
         private void pbHeroMain_Paint(object sender, PaintEventArgs e)
         {
-            if (lbHeroes.SelectedIndex > -1)
+            if (lbHeroes.SelectedIndex > -1 && Heroes3Master.Master != null)
             {
+                var master = Heroes3Master.Master;
+
+                var canvas = new Bitmap(288, 331);
+                var g = Graphics.FromImage(canvas);
+
                 var f = lodFile.GetRecord("HeroScr4.pcx").GetBitmap(lodFile.stream);
                 if (f != null)
-                    e.Graphics.DrawImage(f, Point.Empty);
+                    g.DrawImage(f, new Point(-14, -15));
+
+                g.DrawImage(f, 5, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
+                g.DrawImage(f, 5 + 62, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
+                g.DrawImage(f, 5 + 62 + 62, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
+                g.DrawImage(f, 192, 261, new RectangleF(196, 19, 93, 65), GraphicsUnit.Pixel);
+                g.DrawImage(f, 0, 327, new RectangleF(14, 85, 288, 4), GraphicsUnit.Pixel);
+
 
                 var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
                 var portrait = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex]].GetBitmap(lodFile.stream);
-                e.Graphics.DrawImage(portrait, new Point(18, 18));
+                g.DrawImage(portrait, new Point(4, 3));
 
-                var z = Speciality.Get(Heroes3Master.Master?.H3Sprite, lbHeroes.SelectedIndex);
-                e.Graphics.DrawImage(z, new Point(19, 181));
+                var z = Speciality.Get(master.H3Sprite, lbHeroes.SelectedIndex);
+                g.DrawImage(z, new Point(4, 166));
 
                 var heroData = HeroExeData.Data[lbHeroes.SelectedIndex];
 
-                e.Graphics.DrawImage(heroData.Skill1.GetImage(Heroes3Master.Master?.H3Sprite, heroData.FirstSkillLevel), new Point(19, 229));
-                if(heroData.Skill2 != null)
-                    e.Graphics.DrawImage(heroData.Skill2.GetImage(Heroes3Master.Master?.H3Sprite, heroData.SecondSkillLevel), new Point(162, 229));
+                g.DrawImage(heroData.Skill1.GetImage(master.H3Sprite, heroData.FirstSkillLevel), new Point(5, 213));
+                if (heroData.Skill2 != null)
+                    g.DrawImage(heroData.Skill2.GetImage(master.H3Sprite, heroData.SecondSkillLevel), new Point(148, 213));
 
-                //229
+                g.DrawImage(CreatureManager.GetImage(master.H3Sprite, heroData.StartingUnit1), new Point(5, 262));
+                g.DrawImage(CreatureManager.GetImage(master.H3Sprite, heroData.StartingUnit2), new Point(68, 262));
+                g.DrawImage(CreatureManager.GetImage(master.H3Sprite, heroData.StartingUnit3), new Point(129, 262));
+                g.Dispose();
+
+                pbHeroMain.Image = canvas;
+                //e.Graphics.DrawImage(canvas, new Rectangle(0, 0, pbHeroMain.Width, pbHeroMain.Height));
             }
         }
 

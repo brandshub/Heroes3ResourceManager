@@ -46,5 +46,22 @@ namespace h3magic
         {
             return Name;
         }
+
+        private static Bitmap skillTree = null;
+        public static Bitmap GetSkillTree(LodFile h3sprite)
+        {
+            if (skillTree != null)
+                return skillTree;
+
+            var bmp = new Bitmap((44 + 60) * 4, 44 * 7);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                for (int i = 0; i < 4; i++)
+                    for (int j = 0; j < 7; j++)
+                        g.DrawImage(GetImage(h3sprite, i * 7 + j, 1), i * 104, 44 * j);
+            }
+            skillTree = bmp;
+            return skillTree;
+        }
     }
 }

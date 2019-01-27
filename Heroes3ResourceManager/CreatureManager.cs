@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -9,6 +10,8 @@ namespace h3magic
     {
         public static readonly string FAT_NAME = "CRTRAITS.TXT";
         public static readonly string[] Castles = { "Замок", "Долина", "Башня", "Инферно", "Некрополис", "Подземелье", "Твердиня", "Болото", "Разное" };
+
+        private const string H_IMAGES = "TwCrPort.def";
 
         public static List<CreatureStats> AllCreatures = new List<CreatureStats>();
 
@@ -57,6 +60,13 @@ namespace h3magic
         public static CreatureStats Get(int castleIndex, int relativeCreatureIndex)
         {
             return AllCreatures.FirstOrDefault(c => c.CastleIndex == castleIndex && c.CreatureCastleRelativeIndex == relativeCreatureIndex);
+        }
+
+        public static Bitmap GetImage(LodFile h3sprite, int index)
+        {
+            var rec = h3sprite.GetRecord(H_IMAGES);
+            var def = rec?.GetDEFFile(h3sprite.stream);
+            return def?.GetByAbsoluteNumber(index + 2);
         }
 
         public static void Save(LodFile lodfile)

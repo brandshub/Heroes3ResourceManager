@@ -7,9 +7,11 @@ namespace h3magic
 {
     public class HeroExeData
     {
+        public const int BLOCK_SIZE_A = 92;
         public static List<HeroExeData> Data { get; private set; }
 
-        public const int BLOCK_SIZE_A = 92;
+        public bool HasChanged { get; set; }
+        
         public int Gender;
         public int Race;
         public int ClassIndex;
@@ -28,6 +30,7 @@ namespace h3magic
         public int StartingUnit3;
 
         public int Index { get; private set; }
+
         public HeroStats Hero { get { if (HeroesManager.Loaded) return HeroesManager.AllHeroes[Index]; return null; } }
         public HeroClass Class { get { return HeroClassManager.AllClasses[ClassIndex]; } }
 
@@ -67,7 +70,6 @@ namespace h3magic
                     currentOffset += BLOCK_SIZE_A;
                 }
             }
-
         }
 
         public override string ToString()
