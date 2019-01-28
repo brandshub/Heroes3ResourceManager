@@ -21,7 +21,7 @@ namespace h3magic
         }
 
 
-        public static void LoadData(string executablePath)
+        public static Heroes3Master LoadData(string executablePath)
         {
             Master = new Heroes3Master();
             Master.Executable = new ExeFile(executablePath);
@@ -33,12 +33,21 @@ namespace h3magic
 
             foreach (var file in Directory.GetFiles(dataDirectory, "*.lod"))
             {
-                var fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                var lod = new LodFile(fs);
-                lod.LoadFAT();
-                Master.ResourceFiles.Add(lod);
-
+                FileStream fs = null;
+                try
+                {
+                    fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    var lod = new LodFile(fs);
+                    lod.LoadFAT();
+                    Master.ResourceFiles.Add(lod);
+                }
+                catch
+                {
+                    fs.Close();
+                }
             }
+
+            return Master;
         }
     }
 }

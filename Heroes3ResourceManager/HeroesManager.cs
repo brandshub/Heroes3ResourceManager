@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Drawing;
 
 namespace h3magic
 {
@@ -22,31 +23,31 @@ namespace h3magic
         public static string[] HeroesOrder;
         public static bool Loaded { get; private set; }
 
-        public static void LoadInfo(LodFile lodFile)
+        public static void LoadInfo(LodFile h3bitmap)
         {
             if (!Loaded)
             {
-                int index = lodFile.IndexOf("HPL000EL.pcx");
-                int bound = lodFile.FilesTable.FindLastIndex(index + types.Length * 22, fat => fat.FileName.Contains("HPL"));
+                int index = h3bitmap.IndexOf("HPL000EL.pcx");
+                int bound = h3bitmap.FilesTable.FindLastIndex(index + types.Length * 22, fat => fat.FileName.Contains("HPL"));
                 Dictionary<string, List<string>> heroes = new Dictionary<string, List<string>>(types.Length);
                 List<string> list;
                 for (int i = index; i < bound; i++)
                 {
-                    string end = lodFile[i].FileName.Substring(6, 2);
+                    string end = h3bitmap[i].FileName.Substring(6, 2);
                     if (!heroes.TryGetValue(end, out list))
                     {
-                        heroes.Add(end, new List<string> { lodFile[i].FileName });
+                        heroes.Add(end, new List<string> { h3bitmap[i].FileName });
                     }
                     else
-                        list.Add(lodFile[i].FileName);
+                        list.Add(h3bitmap[i].FileName);
                 }
                 List<string> stringList = new List<string>(types.Length * 16);
                 for (int i = 0; i < types.Length; i++)
                     stringList.AddRange(heroes[types[i]]);
                 HeroesOrder = stringList.ToArray();
-                bio_rows = Encoding.Default.GetString(lodFile.GetRawData(H_BIOGRAPHIES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                spec_rows = Encoding.Default.GetString(lodFile.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                hero_rows = Encoding.Default.GetString(lodFile.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                bio_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_BIOGRAPHIES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                spec_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                hero_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                 AllHeroes = new List<HeroStats>(HeroesOrder.Length);
                 for (int i = 0; i < HeroesOrder.Length; i++)
                 {
@@ -71,6 +72,29 @@ namespace h3magic
                 }
             }
             Loaded = true;
+        }
+
+
+        private static Bitmap backg = null;
+        public static Bitmap GetBackground(LodFile h3bitmap)
+        {
+            if (backg != null)
+                return backg;
+            backg = new Bitmap(288, 331);
+            using (var g = Graphics.FromImage(backg))
+            {
+
+                var f = h3bitmap.GetRecord("HeroScr4.pcx").GetBitmap(h3bitmap.stream);
+                if (f != null)
+                    g.DrawImage(f, new Point(-14, -15));
+
+                g.DrawImage(f, 5, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
+                g.DrawImage(f, 5 + 62, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
+                g.DrawImage(f, 5 + 62 + 62, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
+                g.DrawImage(f, 192, 261, new RectangleF(196, 19, 93, 65), GraphicsUnit.Pixel);
+                g.DrawImage(f, 0, 327, new RectangleF(14, 85, 288, 4), GraphicsUnit.Pixel);
+            }
+            return backg;
         }
 
         public static void Save(LodFile lodfile)

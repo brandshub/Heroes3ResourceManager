@@ -92,6 +92,7 @@ namespace h3magic
 
         public unsafe Bitmap GetSprite(int blockIndex, int spriteIndex)
         {
+            var sw = Stopwatch.StartNew();
             SpriteBlockHeader sbh = headers[blockIndex];
 
             spriteIndex = spriteIndex % sbh.spriteHeaders.Count;
@@ -107,7 +108,7 @@ namespace h3magic
             }
             BitmapData imageData = bmp.LockBits(new Rectangle(0, 0, sh.FullWidth, sh.FullHeight), ImageLockMode.ReadWrite, bmp.PixelFormat);
 
-
+            double r1 = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
             offset += 32;
 
             if (sh.Type == 0)
@@ -127,7 +128,8 @@ namespace h3magic
                 LoadSpriteType3(sh, imageData, offset);
             }
             bmp.UnlockBits(imageData);
-
+            double result = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+            //Debug.WriteLine("sprite load: " + result);
             return bmp;
         }
 
@@ -154,7 +156,7 @@ namespace h3magic
                 currentRow += 3 * padding;
             }
             double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
-            Debug.WriteLine("t0: " + result);
+            //Debug.WriteLine("t0: " + result);
         }
 
 
@@ -222,7 +224,7 @@ namespace h3magic
 
             }
             double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
-            Debug.WriteLine("t1: " + result);
+           // Debug.WriteLine("t1: " + result);
         }
 
         private unsafe void LoadSpriteType2(SpriteHeader sh, BitmapData data, int offset)
@@ -233,7 +235,7 @@ namespace h3magic
             int[] ffsets = new int[len];
             for (int i = 0; i < len; i++)
                 ffsets[i] = BitConverter.ToUInt16(bytes, offset + i * 2 * ((sh.SpriteWidth + sh.LeftMargin) / 32));
-                //ffsets[i] = BitConverter.ToUInt16(bytes, offset + i * 2 * (sh.SpriteWidth / 32));
+            //ffsets[i] = BitConverter.ToUInt16(bytes, offset + i * 2 * (sh.SpriteWidth / 32));
 
             byte* ptr = (byte*)data.Scan0.ToPointer();
             byte* currentRow;
@@ -315,7 +317,7 @@ namespace h3magic
 
             }
             double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
-            Debug.WriteLine("t2: " + result);
+            //Debug.WriteLine("t2: " + result);
         }
 
         private unsafe void LoadSpriteType3(SpriteHeader sh, BitmapData data, int offset)
@@ -398,7 +400,7 @@ namespace h3magic
 
             }
             double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
-            Debug.WriteLine("t3: " + result);
+            //Debug.WriteLine("t3: " + result);
         }
 
     }

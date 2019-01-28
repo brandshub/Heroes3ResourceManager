@@ -5,12 +5,13 @@ using System.Text;
 
 namespace h3magic
 {
-    static class HeroClassManager
+    public static class HeroClassManager
     {
-        private const string HC_FILE = "HCTRAITS.TXT";
+        private const string TXT_FNAME = "HCTRAITS.TXT";
 
         public static bool Loaded = false;
         private static string[] rows;
+
         public static List<HeroClass> AllClasses;
 
 
@@ -18,7 +19,7 @@ namespace h3magic
         {
             if (!Loaded)
             {
-                FATRecord rec = lodfile[HC_FILE];
+                FatRecord rec = lodfile[TXT_FNAME];
                 string text = Encoding.Default.GetString(rec.GetRawData(lodfile.stream));
                 rows = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                 AllClasses = new List<HeroClass>(rows.Length);
@@ -26,18 +27,17 @@ namespace h3magic
                     AllClasses.Add(new HeroClass(rows[i + 2]));
                 Loaded = true;
             }
-
         }
 
 
         public static void Save(LodFile lodfile)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine(rows[0]);
             sb.AppendLine(rows[1]);
             for (int i = 0; i < AllClasses.Count; i++)
                 sb.AppendLine(AllClasses[i].GetRow());
-            lodfile[HC_FILE].ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));
+            lodfile[TXT_FNAME].ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));
 
         }
     }

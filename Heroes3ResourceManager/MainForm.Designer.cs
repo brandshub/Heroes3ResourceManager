@@ -102,7 +102,7 @@
             this.label21 = new System.Windows.Forms.Label();
             this.textBox34 = new System.Windows.Forms.TextBox();
             this.textBox33 = new System.Windows.Forms.TextBox();
-            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.lbHeroClasses = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.pbSkillTree = new System.Windows.Forms.PictureBox();
             this.heroesTab = new System.Windows.Forms.TabPage();
@@ -169,6 +169,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.spellsTab = new System.Windows.Forms.TabPage();
+            this.label19 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
@@ -369,7 +370,7 @@
             this.mainTab.Location = new System.Drawing.Point(4, 25);
             this.mainTab.Name = "mainTab";
             this.mainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mainTab.Size = new System.Drawing.Size(908, 468);
+            this.mainTab.Size = new System.Drawing.Size(908, 512);
             this.mainTab.TabIndex = 0;
             this.mainTab.Text = "Головна";
             this.mainTab.UseVisualStyleBackColor = true;
@@ -465,7 +466,7 @@
             this.h_classTab.Controls.Add(this.label21);
             this.h_classTab.Controls.Add(this.textBox34);
             this.h_classTab.Controls.Add(this.textBox33);
-            this.h_classTab.Controls.Add(this.listBox3);
+            this.h_classTab.Controls.Add(this.lbHeroClasses);
             this.h_classTab.Controls.Add(this.button3);
             this.h_classTab.Controls.Add(this.pbSkillTree);
             this.h_classTab.Location = new System.Drawing.Point(4, 25);
@@ -936,12 +937,12 @@
             // 
             // listBox3
             // 
-            this.listBox3.FormattingEnabled = true;
-            this.listBox3.Location = new System.Drawing.Point(19, 16);
-            this.listBox3.Name = "listBox3";
-            this.listBox3.Size = new System.Drawing.Size(163, 433);
-            this.listBox3.TabIndex = 1;
-            this.listBox3.SelectedIndexChanged += new System.EventHandler(this.listBox3_SelectedIndexChanged);
+            this.lbHeroClasses.FormattingEnabled = true;
+            this.lbHeroClasses.Location = new System.Drawing.Point(19, 16);
+            this.lbHeroClasses.Name = "listBox3";
+            this.lbHeroClasses.Size = new System.Drawing.Size(163, 433);
+            this.lbHeroClasses.TabIndex = 1;
+            this.lbHeroClasses.SelectedIndexChanged += new System.EventHandler(this.listBox3_SelectedIndexChanged);
             // 
             // button3
             // 
@@ -964,6 +965,7 @@
             // 
             // heroesTab
             // 
+            this.heroesTab.Controls.Add(this.label19);
             this.heroesTab.Controls.Add(this.button2);
             this.heroesTab.Controls.Add(this.textBox29);
             this.heroesTab.Controls.Add(this.textBox30);
@@ -992,7 +994,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(709, 429);
+            this.button2.Location = new System.Drawing.Point(598, 383);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(125, 23);
             this.button2.TabIndex = 19;
@@ -1003,7 +1005,7 @@
             // textBox29
             // 
             this.textBox29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox29.Location = new System.Drawing.Point(748, 360);
+            this.textBox29.Location = new System.Drawing.Point(637, 314);
             this.textBox29.Name = "textBox29";
             this.textBox29.Size = new System.Drawing.Size(40, 20);
             this.textBox29.TabIndex = 18;
@@ -1012,7 +1014,7 @@
             // textBox30
             // 
             this.textBox30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox30.Location = new System.Drawing.Point(794, 360);
+            this.textBox30.Location = new System.Drawing.Point(683, 314);
             this.textBox30.Name = "textBox30";
             this.textBox30.Size = new System.Drawing.Size(40, 20);
             this.textBox30.TabIndex = 17;
@@ -1020,24 +1022,24 @@
             // 
             // textBox31
             // 
-            this.textBox31.Location = new System.Drawing.Point(460, 74);
+            this.textBox31.Location = new System.Drawing.Point(580, 74);
             this.textBox31.Multiline = true;
             this.textBox31.Name = "textBox31";
-            this.textBox31.Size = new System.Drawing.Size(374, 123);
+            this.textBox31.Size = new System.Drawing.Size(310, 123);
             this.textBox31.TabIndex = 16;
             // 
             // textBox32
             // 
-            this.textBox32.Location = new System.Drawing.Point(460, 216);
+            this.textBox32.Location = new System.Drawing.Point(580, 216);
             this.textBox32.Multiline = true;
             this.textBox32.Name = "textBox32";
-            this.textBox32.Size = new System.Drawing.Size(374, 66);
+            this.textBox32.Size = new System.Drawing.Size(310, 66);
             this.textBox32.TabIndex = 15;
             // 
             // textBox28
             // 
             this.textBox28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox28.Location = new System.Drawing.Point(794, 386);
+            this.textBox28.Location = new System.Drawing.Point(683, 340);
             this.textBox28.Name = "textBox28";
             this.textBox28.Size = new System.Drawing.Size(40, 20);
             this.textBox28.TabIndex = 14;
@@ -1046,7 +1048,7 @@
             // textBox27
             // 
             this.textBox27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox27.Location = new System.Drawing.Point(748, 386);
+            this.textBox27.Location = new System.Drawing.Point(637, 340);
             this.textBox27.Name = "textBox27";
             this.textBox27.Size = new System.Drawing.Size(40, 20);
             this.textBox27.TabIndex = 13;
@@ -1055,7 +1057,7 @@
             // textBox26
             // 
             this.textBox26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox26.Location = new System.Drawing.Point(794, 334);
+            this.textBox26.Location = new System.Drawing.Point(683, 288);
             this.textBox26.Name = "textBox26";
             this.textBox26.Size = new System.Drawing.Size(40, 20);
             this.textBox26.TabIndex = 12;
@@ -1064,7 +1066,7 @@
             // textBox25
             // 
             this.textBox25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox25.Location = new System.Drawing.Point(748, 334);
+            this.textBox25.Location = new System.Drawing.Point(637, 288);
             this.textBox25.Name = "textBox25";
             this.textBox25.Size = new System.Drawing.Size(40, 20);
             this.textBox25.TabIndex = 11;
@@ -1073,7 +1075,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(457, 200);
+            this.label18.Location = new System.Drawing.Point(577, 200);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(77, 13);
             this.label18.TabIndex = 8;
@@ -1082,7 +1084,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(693, 389);
+            this.label17.Location = new System.Drawing.Point(582, 343);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(36, 13);
             this.label17.TabIndex = 7;
@@ -1091,7 +1093,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(693, 337);
+            this.label16.Location = new System.Drawing.Point(582, 291);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(36, 13);
             this.label16.TabIndex = 6;
@@ -1100,7 +1102,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(693, 363);
+            this.label15.Location = new System.Drawing.Point(582, 317);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(36, 13);
             this.label15.TabIndex = 5;
@@ -1109,7 +1111,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(457, 58);
+            this.label14.Location = new System.Drawing.Point(577, 58);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(55, 13);
             this.label14.TabIndex = 4;
@@ -1172,7 +1174,6 @@
             this.pbHeroMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbHeroMain.TabIndex = 20;
             this.pbHeroMain.TabStop = false;
-            this.pbHeroMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pbHeroMain_Paint);
             // 
             // creaturesTab
             // 
@@ -1604,6 +1605,15 @@
             this.spellsTab.Text = "Закляття";
             this.spellsTab.UseVisualStyleBackColor = true;
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(849, 291);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(41, 13);
+            this.label19.TabIndex = 21;
+            this.label19.Text = "label19";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1706,7 +1716,7 @@
         private System.Windows.Forms.ToolStripMenuItem зберегтиToolStripMenuItem;
         private System.Windows.Forms.TabPage h_classTab;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.ListBox listBox3;
+        private System.Windows.Forms.ListBox lbHeroClasses;
         private System.Windows.Forms.TextBox textBox34;
         private System.Windows.Forms.TextBox textBox33;
         private System.Windows.Forms.PictureBox pbSkillTree;
@@ -1782,6 +1792,7 @@
         private System.Windows.Forms.TrackBar trbDefSprites;
         private System.Windows.Forms.CheckBox chbTimerEnabled;
         private System.Windows.Forms.PictureBox pbHeroMain;
+        private System.Windows.Forms.Label label19;
     }
 }
 

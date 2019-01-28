@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -64,14 +65,22 @@ namespace h3magic
 
         public static Bitmap GetImage(LodFile h3sprite, int index)
         {
+            var sw = Stopwatch.StartNew();
             var rec = h3sprite.GetRecord(H_IMAGES);
+            double s1 = sw.ElapsedTicks * 1000.0 / (double)Stopwatch.Frequency;
+            sw.Restart();
             var def = rec?.GetDEFFile(h3sprite.stream);
-            return def?.GetByAbsoluteNumber(index + 2);
+            double s2 = sw.ElapsedTicks * 1000.0 / (double)Stopwatch.Frequency;
+            sw.Restart();
+            var bmp = def?.GetByAbsoluteNumber(index + 2);
+            double s3 = sw.ElapsedTicks * 1000.0 / (double)Stopwatch.Frequency;
+            //Debug.WriteLine("gimage: " + s1 + " " + s2 + " " + s3);
+            return bmp;
         }
 
         public static void Save(LodFile lodfile)
         {
-            FATRecord rec = lodfile.GetRecord(FAT_NAME);
+            FatRecord rec = lodfile.GetRecord(FAT_NAME);
             if (rec != null)
             {
                 string val = GetAllStats();
@@ -83,7 +92,7 @@ namespace h3magic
         {
             if (rows != null)
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.AppendLine(rows[0]);
                 sb.AppendLine(rows[1]);
                 for (int i = 0; i < 8; i++)

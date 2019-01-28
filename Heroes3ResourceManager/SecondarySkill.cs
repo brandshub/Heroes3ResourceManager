@@ -8,8 +8,8 @@ namespace h3magic
 {
     public class SecondarySkill
     {
-        private const string H_HEROES = "SSTRAITS.TXT";
-        private const string DEF_IMAGES = "Secskill.def";
+        private const string TXT_FNAME = "SSTRAITS.TXT";
+        private const string IMG_FNAME = "Secskill.def";
 
         public static bool Loaded { get; private set; }
 
@@ -20,7 +20,7 @@ namespace h3magic
 
         public static void LoadInfo(LodFile lodFile)
         {
-            var rec = lodFile[H_HEROES];
+            var rec = lodFile[TXT_FNAME];
             string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
             var rows = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 2; i < rows.Length; i++)
@@ -38,7 +38,7 @@ namespace h3magic
 
         public Bitmap GetImage(LodFile lodFile, int level)
         {
-            var def = lodFile?.GetRecord(DEF_IMAGES)?.GetDEFFile(lodFile.stream);
+            var def = lodFile?.GetRecord(IMG_FNAME)?.GetDEFFile(lodFile.stream);
             return def.GetByAbsoluteNumber(Index * 3 + level + 2);
         }
 
@@ -53,12 +53,13 @@ namespace h3magic
             if (skillTree != null)
                 return skillTree;
 
+            var def = h3sprite?.GetRecord(IMG_FNAME)?.GetDEFFile(h3sprite.stream);
             var bmp = new Bitmap((44 + 60) * 4, 44 * 7);
             using (var g = Graphics.FromImage(bmp))
             {
                 for (int i = 0; i < 4; i++)
                     for (int j = 0; j < 7; j++)
-                        g.DrawImage(GetImage(h3sprite, i * 7 + j, 1), i * 104, 44 * j);
+                        g.DrawImage(def.GetByAbsoluteNumber(3 + (i * 7 + j) * 3), i * 104, 44 * j);
             }
             skillTree = bmp;
             return skillTree;

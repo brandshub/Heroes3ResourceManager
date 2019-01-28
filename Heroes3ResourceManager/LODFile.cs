@@ -15,7 +15,7 @@ namespace h3magic
         public Stream stream;
 
         public int FileCount { get; private set; }
-        public List<FATRecord> FilesTable { get; private set; }
+        public List<FatRecord> FilesTable { get; private set; }
         public string Name { get; private set; }
         public string Path { get; private set; }
 
@@ -36,7 +36,7 @@ namespace h3magic
             fs.Read(temp, 0, 4);
             stream = fs;
             FileCount = BitConverter.ToInt32(temp, 0);
-            FilesTable = new List<FATRecord>(FileCount);
+            FilesTable = new List<FatRecord>(FileCount);
         }
 
         public void LoadFAT(int count)
@@ -46,11 +46,11 @@ namespace h3magic
             for (int i = 0; i < count; i++)
             {
                 stream.Read(record, 0, 32);
-                FilesTable.Add(new FATRecord(record));
+                FilesTable.Add(new FatRecord(record));
             }
         }
 
-        public FATRecord this[string name]
+        public FatRecord this[string name]
         {
             get
             {
@@ -58,7 +58,7 @@ namespace h3magic
             }
         }
 
-        public FATRecord this[int index]
+        public FatRecord this[int index]
         {
             get
             {
@@ -95,7 +95,7 @@ namespace h3magic
             return ~now;
         }
 
-        public FATRecord GetRecord(string fileName)
+        public FatRecord GetRecord(string fileName)
         {
             int index = IndexOf(fileName);
             return index >= 0 ? FilesTable[index] : null;
@@ -115,12 +115,12 @@ namespace h3magic
         }
 
 
-        public List<FATRecord> Filter(string extension)
+        public List<FatRecord> Filter(string extension)
         {
             if (extension[0] == '.')
                 extension = extension.Substring(1);
             if (extension == "*") return FilesTable.ToList();
-            string local = FATRecord.ToggleCase(extension);
+            string local = FatRecord.ToggleCase(extension);
             return FilesTable.Where(fat => fat.Extension == local).ToList();
         }
 

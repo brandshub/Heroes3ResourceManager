@@ -12,35 +12,36 @@ namespace h3magic
 
         public bool HasChanged { get; set; }
         
-        public int Gender;
+        public int GenderInt;
         public int Race;
         public int ClassIndex;
 
-        public int FirstSkill;
+        public int FirstSkillIndex;
         public int FirstSkillLevel;
 
-        public int SecondSkill;
+        public int SecondSkillIndex;
         public int SecondSkillLevel;
 
         public int SpellBook;
-        public int Spell;
+        public int SpellIndex;
 
-        public int StartingUnit1;
-        public int StartingUnit2;
-        public int StartingUnit3;
+        public int Unit1Index;
+        public int Unit2Index;
+        public int Unit3Index;
 
         public int Index { get; private set; }
 
         public HeroStats Hero { get { if (HeroesManager.Loaded) return HeroesManager.AllHeroes[Index]; return null; } }
         public HeroClass Class { get { return HeroClassManager.AllClasses[ClassIndex]; } }
 
-        public CreatureStats Creature1 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[StartingUnit1]; return null; } }
-        public CreatureStats Creature2 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[StartingUnit2]; return null; } }
-        public CreatureStats Creature3 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[StartingUnit3]; return null; } }
+        public CreatureStats Creature1 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[Unit1Index]; return null; } }
+        public CreatureStats Creature2 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[Unit2Index]; return null; } }
+        public CreatureStats Creature3 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[Unit3Index]; return null; } }
 
-        public SecondarySkill Skill1 { get { if (SecondarySkill.Loaded) return SecondarySkill.AllSkills[FirstSkill]; return null; } }
-        public SecondarySkill Skill2 { get { if (SecondarySkill.Loaded && SecondSkill != -1) return SecondarySkill.AllSkills[SecondSkill]; return null; } }
+        public SecondarySkill Skill1 { get { if (SecondarySkill.Loaded) return SecondarySkill.AllSkills[FirstSkillIndex]; return null; } }
+        public SecondarySkill Skill2 { get { if (SecondarySkill.Loaded && SecondSkillIndex != -1) return SecondarySkill.AllSkills[SecondSkillIndex]; return null; } }
 
+        public SpellStat Spell { get { return SpellStat.GetSpellByIndex(SpellIndex); } }
         public static void LoadData(byte[] executableBinary)
         {
             if (Data == null)
@@ -54,18 +55,18 @@ namespace h3magic
 
                     var hero = new HeroExeData();
                     hero.Index = i;
-                    hero.Gender = BitConverter.ToInt32(executableBinary, currentOffset);
+                    hero.GenderInt = BitConverter.ToInt32(executableBinary, currentOffset);
                     hero.Race = BitConverter.ToInt32(executableBinary, currentOffset + 4);
                     hero.ClassIndex = BitConverter.ToInt32(executableBinary, currentOffset + 8);
-                    hero.FirstSkill = BitConverter.ToInt32(executableBinary, currentOffset + 12);
+                    hero.FirstSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 12);
                     hero.FirstSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 16);
-                    hero.SecondSkill = BitConverter.ToInt32(executableBinary, currentOffset + 20);
+                    hero.SecondSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 20);
                     hero.SecondSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 24);
                     hero.SpellBook = BitConverter.ToInt32(executableBinary, currentOffset + 28);
-                    hero.Spell = BitConverter.ToInt32(executableBinary, currentOffset + 32);
-                    hero.StartingUnit1 = BitConverter.ToInt32(executableBinary, currentOffset + 36);
-                    hero.StartingUnit2 = BitConverter.ToInt32(executableBinary, currentOffset + 40);
-                    hero.StartingUnit3 = BitConverter.ToInt32(executableBinary, currentOffset + 44);
+                    hero.SpellIndex = BitConverter.ToInt32(executableBinary, currentOffset + 32);
+                    hero.Unit1Index = BitConverter.ToInt32(executableBinary, currentOffset + 36);
+                    hero.Unit2Index = BitConverter.ToInt32(executableBinary, currentOffset + 40);
+                    hero.Unit3Index = BitConverter.ToInt32(executableBinary, currentOffset + 44);
                     Data.Add(hero);
                     currentOffset += BLOCK_SIZE_A;
                 }
@@ -74,7 +75,7 @@ namespace h3magic
 
         public override string ToString()
         {
-            return Hero + ", " + Class + "  " + Skill1 + "[" + FirstSkillLevel + "]" + (SecondSkill != -1 ? (" | " + Skill2 + "[" + SecondSkillLevel + "]") : "");
+            return Hero + ", " + Class + "  " + Skill1 + "[" + FirstSkillLevel + "]" + (SecondSkillIndex != -1 ? (" | " + Skill2 + "[" + SecondSkillLevel + "]") : "");
         }
     }
 }

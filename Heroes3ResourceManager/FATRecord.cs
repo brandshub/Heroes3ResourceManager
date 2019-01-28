@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace h3magic
 {
-    public class FATRecord
+    public class FatRecord
     {
         public string FileName { get; private set; }
         public string Extension { get; private set; }
@@ -21,7 +22,8 @@ namespace h3magic
         private byte[] fname;
         private byte[] newVal;
 
-        public FATRecord(byte[] record)
+
+        public FatRecord(byte[] record)
         {
             if (record.Length != 32)
                 throw new ArgumentException("not a record");
@@ -94,18 +96,43 @@ namespace h3magic
 
         public DefFile GetDEFFile(Stream stream)
         {
-            byte[] bts;
-            if (Size != 0)
+             
+            /*
+             if (Size != 0)
+             {
+                 bts = new byte[Size];
+                 stream.Position = Offset;
+                 stream.Read(bts, 0, Size);
+                 var sw = Stopwatch.StartNew();
+                 var bts2 = ZlibWrapper.UnZlib(bts);
+                 double ms1 = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+                 sw.Restart();
+                 var def = new DefFile(bts2);
+                 double ms2 = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
+                 return def;
+             }
+             bts = new byte[RealSize];
+             stream.Position = Offset;
+             stream.Read(bts, 0, RealSize);
+             return new DefFile(bts);*/
+
+            if (newVal == null)
             {
-                bts = new byte[Size];
                 stream.Position = Offset;
-                stream.Read(bts, 0, Size);
-                return new DefFile(ZlibWrapper.UnZlib(bts));
+                if (Size != 0)
+                {
+                    var bts = new byte[Size];
+                    stream.Read(bts, 0, Size);
+                    newVal = ZlibWrapper.UnZlib(bts);
+                }
+                else
+                {
+                    newVal = new byte[RealSize];
+                    stream.Read(newVal, 0, RealSize);
+                }
             }
-            bts = new byte[RealSize];
-            stream.Position = Offset;
-            stream.Read(bts, 0, RealSize);
-            return new DefFile(bts);
+            return new DefFile(newVal);
+
         }
 
         public static string ToggleCase(string val)
