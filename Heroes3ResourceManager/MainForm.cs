@@ -130,7 +130,7 @@ namespace h3magic
                 }
                 else if (rec.Extension == "DEF")
                 {
-                    def = rec.GetDEFFile(lodFile.stream);
+                    def = rec.GetDefFile(lodFile);
                     bmp = def.GetSprite(0, 0);
                     listBox4.Items.Clear();
                     for (int i = 0; i < def.BlockCount; i++)
@@ -218,7 +218,7 @@ namespace h3magic
                 {
                     listBox4.Visible = true;
 
-                    var def = rec.GetDEFFile(lodFile.stream);
+                    var def = rec.GetDefFile(lodFile.stream);
 
                     trbDefSprites.Maximum = def.headers.Sum(s => s.SpritesCount) - 1;
                     trbDefSprites.Value = 0;
@@ -238,7 +238,7 @@ namespace h3magic
                 var rec = lodFile[lbFiles.Items[index].ToString()];
                 if (rec.Extension == "DEF")
                 {
-                    var def = rec.GetDEFFile(lodFile.stream);
+                    var def = rec.GetDefFile(lodFile.stream);
 
                     bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
                     if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)

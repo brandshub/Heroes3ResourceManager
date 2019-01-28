@@ -69,7 +69,7 @@ namespace h3magic
         public Bitmap GetImage(LodFile h3sprite)
         {
             var rec = h3sprite.GetRecord(IMG_FNAME);
-            var def = rec?.GetDEFFile(h3sprite.stream);
+            var def = rec?.GetDefFile(h3sprite.stream);
             return def?.GetByAbsoluteNumber(Index);
         }
 

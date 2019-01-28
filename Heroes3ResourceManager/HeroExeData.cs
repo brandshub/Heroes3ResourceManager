@@ -52,21 +52,22 @@ namespace h3magic
                 int bound = HeroesManager.Loaded ? HeroesManager.AllHeroes.Count : 60;
                 for (int i = 0; i < bound; i++)
                 {
-
-                    var hero = new HeroExeData();
-                    hero.Index = i;
-                    hero.GenderInt = BitConverter.ToInt32(executableBinary, currentOffset);
-                    hero.Race = BitConverter.ToInt32(executableBinary, currentOffset + 4);
-                    hero.ClassIndex = BitConverter.ToInt32(executableBinary, currentOffset + 8);
-                    hero.FirstSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 12);
-                    hero.FirstSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 16);
-                    hero.SecondSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 20);
-                    hero.SecondSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 24);
-                    hero.SpellBook = BitConverter.ToInt32(executableBinary, currentOffset + 28);
-                    hero.SpellIndex = BitConverter.ToInt32(executableBinary, currentOffset + 32);
-                    hero.Unit1Index = BitConverter.ToInt32(executableBinary, currentOffset + 36);
-                    hero.Unit2Index = BitConverter.ToInt32(executableBinary, currentOffset + 40);
-                    hero.Unit3Index = BitConverter.ToInt32(executableBinary, currentOffset + 44);
+                    var hero = new HeroExeData
+                    {
+                        Index = i,
+                        GenderInt = BitConverter.ToInt32(executableBinary, currentOffset),
+                        Race = BitConverter.ToInt32(executableBinary, currentOffset + 4),
+                        ClassIndex = BitConverter.ToInt32(executableBinary, currentOffset + 8),
+                        FirstSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 12),
+                        FirstSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 16),
+                        SecondSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 20),
+                        SecondSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 24),
+                        SpellBook = BitConverter.ToInt32(executableBinary, currentOffset + 28),
+                        SpellIndex = BitConverter.ToInt32(executableBinary, currentOffset + 32),
+                        Unit1Index = BitConverter.ToInt32(executableBinary, currentOffset + 36),
+                        Unit2Index = BitConverter.ToInt32(executableBinary, currentOffset + 40),
+                        Unit3Index = BitConverter.ToInt32(executableBinary, currentOffset + 44)
+                    };
                     Data.Add(hero);
                     currentOffset += BLOCK_SIZE_A;
                 }

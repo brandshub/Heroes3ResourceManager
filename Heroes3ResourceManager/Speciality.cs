@@ -20,8 +20,8 @@ namespace h3magic
         public static Bitmap GetImage(LodFile h3sprite, int index)
         {
             var rec = h3sprite.GetRecord(IMG_FNAME);
-            var def = rec?.GetDEFFile(h3sprite.stream);
-            return def?.GetByAbsoluteNumber(index);            
+            var def = rec?.GetDefFile(h3sprite.stream);
+            return def?.GetByAbsoluteNumber(index);
         }
 
         private static Bitmap allSpecs = null;
@@ -31,12 +31,16 @@ namespace h3magic
             if (allSpecs != null)
                 return allSpecs;
 
-            var bmp = new Bitmap(16*44, 44 * 9);
+            var bmp = new Bitmap(16 * 44, 44 * 9);
+            var def = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite.stream);
             using (var g = Graphics.FromImage(bmp))
             {
                 for (int i = 0; i < 9; i++)
                     for (int j = 0; j < 16; j++)
-                        g.DrawImage(GetImage(h3sprite,i*16+j), j * 44, 44 * i);
+                    {
+
+                        g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 44, 44 * i);
+                    }
             }
             allSpecs = bmp;
             return allSpecs;

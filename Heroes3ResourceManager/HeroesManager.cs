@@ -30,11 +30,10 @@ namespace h3magic
                 int index = h3bitmap.IndexOf("HPL000EL.pcx");
                 int bound = h3bitmap.FilesTable.FindLastIndex(index + types.Length * 22, fat => fat.FileName.Contains("HPL"));
                 Dictionary<string, List<string>> heroes = new Dictionary<string, List<string>>(types.Length);
-                List<string> list;
                 for (int i = index; i < bound; i++)
                 {
                     string end = h3bitmap[i].FileName.Substring(6, 2);
-                    if (!heroes.TryGetValue(end, out list))
+                    if (!heroes.TryGetValue(end, out List<string> list))
                     {
                         heroes.Add(end, new List<string> { h3bitmap[i].FileName });
                     }

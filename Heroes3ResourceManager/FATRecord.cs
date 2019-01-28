@@ -93,29 +93,8 @@ namespace h3magic
         }
 
 
-
-        public DefFile GetDEFFile(Stream stream)
+        public DefFile GetDefFile(Stream stream)
         {
-             
-            /*
-             if (Size != 0)
-             {
-                 bts = new byte[Size];
-                 stream.Position = Offset;
-                 stream.Read(bts, 0, Size);
-                 var sw = Stopwatch.StartNew();
-                 var bts2 = ZlibWrapper.UnZlib(bts);
-                 double ms1 = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                 sw.Restart();
-                 var def = new DefFile(bts2);
-                 double ms2 = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-                 return def;
-             }
-             bts = new byte[RealSize];
-             stream.Position = Offset;
-             stream.Read(bts, 0, RealSize);
-             return new DefFile(bts);*/
-
             if (newVal == null)
             {
                 stream.Position = Offset;
@@ -132,7 +111,12 @@ namespace h3magic
                 }
             }
             return new DefFile(newVal);
+        }
 
+
+        public DefFile GetDefFile(LodFile lodFile)
+        {
+            return GetDefFile(lodFile.stream);
         }
 
         public static string ToggleCase(string val)

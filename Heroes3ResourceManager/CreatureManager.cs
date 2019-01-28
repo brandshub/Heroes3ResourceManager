@@ -64,17 +64,10 @@ namespace h3magic
         }
 
         public static Bitmap GetImage(LodFile h3sprite, int index)
-        {
-            var sw = Stopwatch.StartNew();
-            var rec = h3sprite.GetRecord(H_IMAGES);
-            double s1 = sw.ElapsedTicks * 1000.0 / (double)Stopwatch.Frequency;
-            sw.Restart();
-            var def = rec?.GetDEFFile(h3sprite.stream);
-            double s2 = sw.ElapsedTicks * 1000.0 / (double)Stopwatch.Frequency;
-            sw.Restart();
-            var bmp = def?.GetByAbsoluteNumber(index + 2);
-            double s3 = sw.ElapsedTicks * 1000.0 / (double)Stopwatch.Frequency;
-            //Debug.WriteLine("gimage: " + s1 + " " + s2 + " " + s3);
+        {            
+            var rec = h3sprite.GetRecord(H_IMAGES);              
+            var def = rec?.GetDefFile(h3sprite);            
+            var bmp = def?.GetByAbsoluteNumber(index + 2);            
             return bmp;
         }
 
