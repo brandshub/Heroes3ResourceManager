@@ -36,6 +36,9 @@ namespace h3magic
            IntPtr[] phiconLarge, IntPtr[] phiconSmall, uint nIcons);
 
         private Timer timer = new Timer();
+
+        private HeroPropertyForm heroPropertyForm = new HeroPropertyForm();
+
         public MainForm()
         {
             InitializeComponent();
@@ -43,7 +46,7 @@ namespace h3magic
             CheckForIllegalCrossThreadCalls = false;
 
             cb_Filter.SelectedIndex = 0;
-            form = new Preview(this);
+            
             timer.Interval = 150;
             timer.Tick += Timer_Tick;
 
@@ -52,13 +55,40 @@ namespace h3magic
             icons.Add("PCX", Properties.Resources.PCX);
             icons.Add("ANY", Properties.Resources.ANY);
 
+            hpcHeroProfile.PropertyClicked += HpcHeroProfile_PropertyDoubleClicked;
+            heroPropertyForm.ItemSelected += HeroPropertyForm_ItemSelected;
 
-         //   LoadMaster(@"d:\Games\h3\Heroes3.exe");
+           //LoadMaster(@"d:\Games\h3\Heroes3.exe");
         }
 
+        private void HeroPropertyForm_ItemSelected(int selIndex)
+        {
+            if (heroPropertyForm.PropertyType == "Creature")
+            {
+                int realIndex = CreatureManager.AllCreatures[selIndex].CreatureIndex;
+                var hero = hpcHeroProfile.Hero;
+                hero.HasChanged = true;
+                switch (heroPropertyForm.CurrentIndex)
+                {
+                    case 0: hero.Unit1Index = realIndex; break;
+                    case 1: hero.Unit2Index = realIndex; break;
+                    case 2: hero.Unit3Index = realIndex; break;
+                }
+                hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
+            }
+        }
+
+        private void HpcHeroProfile_PropertyDoubleClicked(string type,int relativeIndex, int currentValue)
+        {
+            heroPropertyForm.PropertyType = type;
+            heroPropertyForm.CurrentIndex = relativeIndex;
+            heroPropertyForm.SelectedValue = currentValue;
+            heroPropertyForm.ShowDialog();
+        }
 
         public void LoadMaster(string executablPath)
         {
+            var sw = Stopwatch.StartNew();
             var master = Heroes3Master.LoadData(executablPath);
 
             lodFile = master.H3Bitmap;
@@ -103,6 +133,8 @@ namespace h3magic
             SecondarySkill.LoadInfo(lodFile);
 
             HeroExeData.LoadData(master.Executable.Data);
+            sw.Stop();
+            Text = sw.ElapsedMilliseconds+" ms";
         }
 
 
@@ -167,7 +199,7 @@ namespace h3magic
 
 
         Point last = Point.Empty;
-        Preview form;
+
         private void listBox1_MouseHover(object sender, EventArgs e)
         {
             PreviewShow();
@@ -560,64 +592,14 @@ namespace h3magic
         private void lbHeroes_SelectedIndexChanged(object sender, EventArgs e)
         {
             var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
-            // label19.Text = pictureBox3.Width + " * " + pictureBox3.Height;
+            
             pictureBox4.Image = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(lodFile.stream);
 
             if (lbHeroes.SelectedIndex > -1 && Heroes3Master.Master != null)
             {
-                var master = Heroes3Master.Master;
-
-                var bckgImage = HeroesManager.GetBackground(lodFile);
-                var canvas = new Bitmap(bckgImage);
-                var g = Graphics.FromImage(canvas);
-
-                g.DrawImage(bckgImage, Point.Empty);
-                /* var canvas = new Bitmap(288, 331);
-                 var g = Graphics.FromImage(canvas);
-
-                 var f = lodFile.GetRecord("HeroScr4.pcx").GetBitmap(lodFile.stream);
-                 if (f != null)
-                     g.DrawImage(f, new Point(-14, -15));
-
-                 g.DrawImage(f, 5, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
-                 g.DrawImage(f, 5 + 62, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
-                 g.DrawImage(f, 5 + 62 + 62, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
-                 g.DrawImage(f, 192, 261, new RectangleF(196, 19, 93, 65), GraphicsUnit.Pixel);
-                 g.DrawImage(f, 0, 327, new RectangleF(14, 85, 288, 4), GraphicsUnit.Pixel);
-
-             */
-
-                var portrait = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex]].GetBitmap(lodFile.stream);
-                g.DrawImage(portrait, new Point(4, 3));
-                var z = Speciality.GetImage(master.H3Sprite, lbHeroes.SelectedIndex);
-                g.DrawImage(z, new Point(4, 166));
-                var heroData = HeroExeData.Data[lbHeroes.SelectedIndex];
-                g.DrawImage(heroData.Skill1.GetImage(master.H3Sprite, heroData.FirstSkillLevel), new Point(5, 213));
-
-                if (heroData.Skill2 != null)
-                {
-                    g.DrawImage(heroData.Skill2.GetImage(master.H3Sprite, heroData.SecondSkillLevel), new Point(148, 213));
-
-                }
-
-                var img1 = CreatureManager.GetImage(master.H3Sprite, heroData.Unit1Index);
-                g.DrawImage(img1, new Point(5, 262));
-                var img2 = CreatureManager.GetImage(master.H3Sprite, heroData.Unit2Index);
-                g.DrawImage(img2, new Point(68, 262));
-                var img3 = CreatureManager.GetImage(master.H3Sprite, heroData.Unit3Index);
-                g.DrawImage(img3, new Point(129, 262));
-
-                if (heroData.Spell != null)
-                    g.DrawImage(heroData.Spell.GetImage(master.H3Sprite), 192, 262);
-                g.Dispose();
-
-
+                hpcHeroProfile.LoadHero(lbHeroes.SelectedIndex, Heroes3Master.Master); 
                 Text = lbHeroes.SelectedIndex.ToString();
-
-                pbHeroMain.Image = canvas;
-                pbHeroMain.Invalidate();
-            }
-            // label20.Text = pictureBox4.Width + " * " + pictureBox4.Height;
+            }            
 
             textBox24.Text = hs.Name;
             textBox31.Text = hs.Biography;
@@ -647,6 +629,9 @@ namespace h3magic
                 hs.HighStack3 = int.Parse(textBox30.Text);
                 HeroesManager.AllHeroes[lbHeroes.SelectedIndex] = hs;
             }
+
+            HeroExeData.SaveData();
+
         }
 
         private void pictureBox3_DoubleClick(object sender, EventArgs e)

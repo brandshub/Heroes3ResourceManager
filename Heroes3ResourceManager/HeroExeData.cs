@@ -11,7 +11,7 @@ namespace h3magic
         public static List<HeroExeData> Data { get; private set; }
 
         public bool HasChanged { get; set; }
-        
+
         public int GenderInt;
         public int Race;
         public int ClassIndex;
@@ -42,14 +42,15 @@ namespace h3magic
         public SecondarySkill Skill2 { get { if (SecondarySkill.Loaded && SecondSkillIndex != -1) return SecondarySkill.AllSkills[SecondSkillIndex]; return null; } }
 
         public SpellStat Spell { get { return SpellStat.GetSpellByIndex(SpellIndex); } }
+
         public static void LoadData(byte[] executableBinary)
         {
             if (Data == null)
             {
                 Data = new List<HeroExeData>();
-                int startOffset = (int)HeroesSection.FindOffset2(executableBinary);
+                int startOffset = (int)HeroesSection.FindOffset1(executableBinary);
                 int currentOffset = startOffset;
-                int bound = HeroesManager.Loaded ? HeroesManager.AllHeroes.Count : 60;
+                int bound = HeroesManager.AllHeroes.Count;
                 for (int i = 0; i < bound; i++)
                 {
                     var hero = new HeroExeData
@@ -74,6 +75,36 @@ namespace h3magic
             }
         }
 
+        public unsafe static void SaveData()
+        {
+            long offset = HeroesSection.HeroOffset1;
+            var exe = Heroes3Master.Master.Executable;
+            string file = exe.Path + "new";
+            for (int i = 0; i < Data.Count; i++)
+            {
+                var current = Data[i];
+                if (current.HasChanged)
+                {
+                    fixed(byte* ptr = exe.Data)
+                    {
+                        int* iptr = (int*)(ptr + offset + i * BLOCK_SIZE_A);
+                        *iptr++ = current.GenderInt;
+                        *iptr++ = current.Race;
+                        *iptr++ = current.ClassIndex;
+                        *iptr++ = current.FirstSkillIndex;
+                        *iptr++ = current.FirstSkillLevel;
+                        *iptr++ = current.SecondSkillIndex;
+                        *iptr++ = current.SecondSkillLevel;                        
+                        *iptr++ = current.SpellBook;
+                        *iptr++ = current.SpellIndex;
+                        *iptr++ = current.Unit1Index;
+                        *iptr++ = current.Unit2Index;
+                        *iptr++ = current.Unit3Index;
+                    }
+                }
+            }
+            System.IO.File.WriteAllBytes(file, exe.Data);
+        }
         public override string ToString()
         {
             return Hero + ", " + Class + "  " + Skill1 + "[" + FirstSkillLevel + "]" + (SecondSkillIndex != -1 ? (" | " + Skill2 + "[" + SecondSkillLevel + "]") : "");

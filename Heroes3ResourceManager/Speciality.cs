@@ -38,7 +38,6 @@ namespace h3magic
                 for (int i = 0; i < 9; i++)
                     for (int j = 0; j < 16; j++)
                     {
-
                         g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 44, 44 * i);
                     }
             }

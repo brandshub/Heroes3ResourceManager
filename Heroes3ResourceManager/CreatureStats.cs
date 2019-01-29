@@ -50,32 +50,33 @@ namespace h3magic
             string[] stats = row.Split('\t');
             Name = stats[0];
             Plural1 = stats[1];
-            Plural2 = stats[2];
-            PriceLumber = int.Parse(stats[3]);
-            PriceMercury = int.Parse(stats[4]);
-            PriceOre = int.Parse(stats[5]);
-            PriceSulphur = int.Parse(stats[6]);
-            PriceCrystals = int.Parse(stats[7]);
-            PriceGems = int.Parse(stats[8]);
-            PriceGold = int.Parse(stats[9]);
+            int off = stats.Length == 25 ? -1 : 0;
+            Plural2 = stats[2 + off];
+            PriceLumber = int.Parse(stats[3 + off]);
+            PriceMercury = int.Parse(stats[4 + off]);
+            PriceOre = int.Parse(stats[5 + off]);
+            PriceSulphur = int.Parse(stats[6 + off]);
+            PriceCrystals = int.Parse(stats[7 + off]);
+            PriceGems = int.Parse(stats[8 + off]);
+            PriceGold = int.Parse(stats[9 + off]);
 
-            FightValue = int.Parse(stats[10]);
-            AIValue = int.Parse(stats[11]);
+            FightValue = int.Parse(stats[10 + off]);
+            AIValue = int.Parse(stats[11 + off]);
 
-            Growth = int.Parse(stats[12]);
-            hordeGrowth = stats[13];
-            HP = int.Parse(stats[14]);
-            Speed = int.Parse(stats[15]);
-            Attack = int.Parse(stats[16]);
-            Defence = int.Parse(stats[17]);
-            LoDamage = int.Parse(stats[18]);
-            HiDamage = int.Parse(stats[19]);
-            Arrows = int.Parse(stats[20]);
-            Spells = int.Parse(stats[21]);
-            low = stats[22];
-            high = stats[23];
-            Description = stats[24];
-            attributes = stats[25];
+            Growth = int.Parse(stats[12 + off]);
+            hordeGrowth = stats[13 + off];
+            HP = int.Parse(stats[14 + off]);
+            Speed = int.Parse(stats[15 + off]);
+            Attack = int.Parse(stats[16 + off]);
+            Defence = int.Parse(stats[17 + off]);
+            LoDamage = int.Parse(stats[18 + off]);
+            HiDamage = int.Parse(stats[19 + off]);
+            Arrows = int.Parse(stats[20 + off]);
+            Spells = int.Parse(stats[21 + off]);
+            low = stats[22 + off];
+            high = stats[23 + off];
+            Description = stats[24 + off];
+            attributes = stats[25 + off];
         }
 
         public string GetRow()

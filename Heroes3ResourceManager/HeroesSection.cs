@@ -14,21 +14,20 @@ namespace h3magic
         private static readonly byte[] heroSpecs = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0 };
 
 
+        public static long HeroOffset1 { get; private set; }
+        public static long HeroOffset2 { get; private set; }
 
-        public static long FindOffset2(Stream stream)
+        public static long FindOffset1(byte[] data)
         {
-            return FindPosition2(stream, firstHero);
+            HeroOffset1 = FindPosition3(data, firstHero) - 4;
+            return HeroOffset1;
         }
 
         public static long FindOffsetX(byte[] data)
         {
-            return FindPosition3(data, heroSpecs) - 4;
-        }
-
-        public static long FindOffset2(byte[] bytes)
-        {
-            return FindPosition2(bytes, firstHero) - 4;
-        }
+            HeroOffset2 = FindPosition3(data, heroSpecs) - 4;
+            return HeroOffset2;
+        }       
 
         public static long FindPosition2(Stream stream, byte[] byteSequence)
         {

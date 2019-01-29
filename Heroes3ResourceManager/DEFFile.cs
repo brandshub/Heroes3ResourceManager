@@ -217,8 +217,33 @@ namespace h3magic
                     }
                     else
                     {
-                        currentRow += 3 * blength;
+                        for (int j = 0; j < blength; j++)
+                        {
+                            *currentRow = palette[type, 2];
+                            currentRow++;
+                            *currentRow = palette[type, 1];
+                            currentRow++;
+                            *currentRow = palette[type, 0];
+                            currentRow++;
+                        }
+
                     }
+                    /* else if(type== 6)
+                     {
+                         for (int j = 0; j < blength; j++)
+                         {                            
+                             *currentRow = palette[6, 2];
+                             currentRow++;
+                             *currentRow = palette[6, 1];
+                             currentRow++;
+                             *currentRow = palette[6, 0];
+                             currentRow++;                       
+                         }
+                     }
+                     else
+                     {
+                         currentRow += 3 * blength;
+                     }*/
                 }
 
 

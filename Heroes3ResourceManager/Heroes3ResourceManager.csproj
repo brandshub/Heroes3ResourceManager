@@ -75,6 +75,18 @@
     <Compile Include="HeroesManager.cs" />
     <Compile Include="HeroesSection.cs" />
     <Compile Include="HeroExeData.cs" />
+    <Compile Include="HeroProfileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HeroProfileControl.Designer.cs">
+      <DependentUpon>HeroProfileControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HeroPropertyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HeroPropertyForm.Designer.cs">
+      <DependentUpon>HeroPropertyForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="HeroStats.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -84,20 +96,16 @@
     </Compile>
     <Compile Include="LodFile.cs" />
     <Compile Include="PCXFile.cs" />
-    <Compile Include="Preview.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Preview.Designer.cs">
-      <DependentUpon>Preview.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="HeroProfileControl.resx">
+      <DependentUpon>HeroProfileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HeroPropertyForm.resx">
+      <DependentUpon>HeroPropertyForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Preview.resx">
-      <DependentUpon>Preview.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

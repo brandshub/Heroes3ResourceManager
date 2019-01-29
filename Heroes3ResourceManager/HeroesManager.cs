@@ -10,7 +10,7 @@ namespace h3magic
 {
     static class HeroesManager
     {
-        private const string H_BIOGRAPHIES = "HeroBios.txt";
+        private const string TXT_BIOGRAPHIES_FNAME = "HeroBios.txt";
         private const string H_SPECS = "HeroSpec.txt";
         private const string H_HEROES = "HOTRAITS.TXT";
 
@@ -25,57 +25,56 @@ namespace h3magic
 
         public static void LoadInfo(LodFile h3bitmap)
         {
-            if (!Loaded)
+
+            int index = h3bitmap.IndexOf("HPL000EL.pcx");
+            int bound = h3bitmap.FilesTable.FindLastIndex(index + types.Length * 22, fat => fat.FileName.Contains("HPL"));
+            Dictionary<string, List<string>> heroes = new Dictionary<string, List<string>>(types.Length);
+            for (int i = index; i < bound; i++)
             {
-                int index = h3bitmap.IndexOf("HPL000EL.pcx");
-                int bound = h3bitmap.FilesTable.FindLastIndex(index + types.Length * 22, fat => fat.FileName.Contains("HPL"));
-                Dictionary<string, List<string>> heroes = new Dictionary<string, List<string>>(types.Length);
-                for (int i = index; i < bound; i++)
+                string end = h3bitmap[i].FileName.Substring(6, 2);
+                if (!heroes.TryGetValue(end, out List<string> list))
                 {
-                    string end = h3bitmap[i].FileName.Substring(6, 2);
-                    if (!heroes.TryGetValue(end, out List<string> list))
-                    {
-                        heroes.Add(end, new List<string> { h3bitmap[i].FileName });
-                    }
-                    else
-                        list.Add(h3bitmap[i].FileName);
+                    heroes.Add(end, new List<string> { h3bitmap[i].FileName });
                 }
-                List<string> stringList = new List<string>(types.Length * 16);
-                for (int i = 0; i < types.Length; i++)
-                    stringList.AddRange(heroes[types[i]]);
-                HeroesOrder = stringList.ToArray();
-                bio_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_BIOGRAPHIES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                spec_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                hero_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                AllHeroes = new List<HeroStats>(HeroesOrder.Length);
-                for (int i = 0; i < HeroesOrder.Length; i++)
-                {
-                    string[] traits = hero_rows[2 + i].Split('\t');
-                    AllHeroes.Add(new HeroStats()
-                    {
-                        Biography = bio_rows[i],
-                        Speciality = spec_rows[2 + i],
-                        CastleIndex = types[i / 16],
-                        Name = traits[0],
-                        ImageIndex = i,
-                        LowStack1 = int.Parse(traits[1]),
-                        HighStack1 = int.Parse(traits[2]),
-                        LowStack2 = int.Parse(traits[4]),
-                        HighStack2 = int.Parse(traits[5]),
-                        LowStack3 = int.Parse(traits[7]),
-                        HighStack3 = int.Parse(traits[8])
-
-                    });
-
-
-                }
+                else
+                    list.Add(h3bitmap[i].FileName);
             }
-            Loaded = true;
+            List<string> stringList = new List<string>(types.Length * 16);
+            for (int i = 0; i < types.Length; i++)
+                stringList.AddRange(heroes[types[i]]);
+            HeroesOrder = stringList.ToArray();
+            bio_rows = Encoding.Default.GetString(h3bitmap.GetRawData(TXT_BIOGRAPHIES_FNAME)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            spec_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            hero_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            AllHeroes = new List<HeroStats>(HeroesOrder.Length);
+            for (int i = 0; i < HeroesOrder.Length; i++)
+            {
+                string[] traits = hero_rows[2 + i].Split('\t');
+                AllHeroes.Add(new HeroStats()
+                {
+                    Biography = bio_rows[i],
+                    Speciality = spec_rows[2 + i],
+                    CastleIndex = types[i / 16],
+                    Name = traits[0],
+                    ImageIndex = i,
+                    LowStack1 = int.Parse(traits[1]),
+                    HighStack1 = int.Parse(traits[2]),
+                    LowStack2 = int.Parse(traits[4]),
+                    HighStack2 = int.Parse(traits[5]),
+                    LowStack3 = int.Parse(traits[7]),
+                    HighStack3 = int.Parse(traits[8])
+
+                });
+
+
+            }
+
+
         }
 
 
         private static Bitmap backg = null;
-        public static Bitmap GetBackground(LodFile h3bitmap)
+        public static Bitmap GetBackground(LodFile h3bitmap, LodFile h3sprite)
         {
             if (backg != null)
                 return backg;
@@ -92,6 +91,17 @@ namespace h3magic
                 g.DrawImage(f, 5 + 62 + 62, 261, new RectangleF(18, 18, 62, 68), GraphicsUnit.Pixel);
                 g.DrawImage(f, 192, 261, new RectangleF(196, 19, 93, 65), GraphicsUnit.Pixel);
                 g.DrawImage(f, 0, 327, new RectangleF(14, 85, 288, 4), GraphicsUnit.Pixel);
+
+                var ps = h3sprite?.GetRecord("PSKIL42.def").GetDefFile(h3sprite.stream);
+                if (ps != null)
+                {
+                    g.DrawImage(ps.GetSprite(0), new Point(18, 97));
+                    g.DrawImage(ps.GetSprite(1), new Point(88, 97));
+                    g.DrawImage(ps.GetSprite(2), new Point(158, 97));
+                    g.DrawImage(ps.GetSprite(5), new Point(228, 97));
+
+                    g.DrawImage(ps.GetSprite(3), new Point(167, 167));
+                }
             }
             return backg;
         }
@@ -145,7 +155,7 @@ namespace h3magic
                 if (i + 2 < hero_rows.Length)
                     traits.AppendLine(hero_rows[2 + i]);
             }
-            lodfile[H_BIOGRAPHIES].ApplyChanges(Encoding.Default.GetBytes(bios.ToString()));
+            lodfile[TXT_BIOGRAPHIES_FNAME].ApplyChanges(Encoding.Default.GetBytes(bios.ToString()));
             lodfile[H_SPECS].ApplyChanges(Encoding.Default.GetBytes(spec.ToString()));
             lodfile[H_HEROES].ApplyChanges(Encoding.Default.GetBytes(traits.ToString()));
 

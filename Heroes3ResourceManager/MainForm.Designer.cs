@@ -97,15 +97,16 @@
             this.textBox35 = new System.Windows.Forms.TextBox();
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.textBox34 = new System.Windows.Forms.TextBox();
             this.textBox33 = new System.Windows.Forms.TextBox();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.lbHeroClasses = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.pbSkillTree = new System.Windows.Forms.PictureBox();
             this.heroesTab = new System.Windows.Forms.TabPage();
+            this.label19 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox29 = new System.Windows.Forms.TextBox();
             this.textBox30 = new System.Windows.Forms.TextBox();
@@ -126,7 +127,7 @@
             this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbHeroes = new System.Windows.Forms.ListBox();
-            this.pbHeroMain = new System.Windows.Forms.PictureBox();
+            this.hpcHeroProfile = new h3magic.HeroProfileControl();
             this.creaturesTab = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox23 = new System.Windows.Forms.TextBox();
@@ -169,7 +170,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.spellsTab = new System.Windows.Forms.TabPage();
-            this.label19 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
@@ -181,7 +181,6 @@
             this.heroesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbHeroMain)).BeginInit();
             this.creaturesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -408,7 +407,7 @@
             this.pictureBox7.Location = new System.Drawing.Point(7, 6);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(640, 401);
-            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox7.TabIndex = 18;
             this.pictureBox7.TabStop = false;
             this.pictureBox7.Visible = false;
@@ -461,11 +460,11 @@
             this.h_classTab.Controls.Add(this.textBox35);
             this.h_classTab.Controls.Add(this.label24);
             this.h_classTab.Controls.Add(this.label23);
-            this.h_classTab.Controls.Add(this.pictureBox6);
             this.h_classTab.Controls.Add(this.label22);
             this.h_classTab.Controls.Add(this.label21);
             this.h_classTab.Controls.Add(this.textBox34);
             this.h_classTab.Controls.Add(this.textBox33);
+            this.h_classTab.Controls.Add(this.pictureBox6);
             this.h_classTab.Controls.Add(this.lbHeroClasses);
             this.h_classTab.Controls.Add(this.button3);
             this.h_classTab.Controls.Add(this.pbSkillTree);
@@ -887,15 +886,6 @@
             this.label23.TabIndex = 44;
             this.label23.Text = "2-9";
             // 
-            // pictureBox6
-            // 
-            this.pictureBox6.Image = global::h3magic.Properties.Resources.ttt;
-            this.pictureBox6.Location = new System.Drawing.Point(203, 217);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(48, 180);
-            this.pictureBox6.TabIndex = 35;
-            this.pictureBox6.TabStop = false;
-            // 
             // label22
             // 
             this.label22.AutoSize = true;
@@ -935,11 +925,20 @@
             this.textBox33.TabIndex = 2;
             this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // listBox3
+            // pictureBox6
+            // 
+            this.pictureBox6.Image = global::h3magic.Properties.Resources.ttt;
+            this.pictureBox6.Location = new System.Drawing.Point(203, 217);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(48, 180);
+            this.pictureBox6.TabIndex = 35;
+            this.pictureBox6.TabStop = false;
+            // 
+            // lbHeroClasses
             // 
             this.lbHeroClasses.FormattingEnabled = true;
             this.lbHeroClasses.Location = new System.Drawing.Point(19, 16);
-            this.lbHeroClasses.Name = "listBox3";
+            this.lbHeroClasses.Name = "lbHeroClasses";
             this.lbHeroClasses.Size = new System.Drawing.Size(163, 433);
             this.lbHeroClasses.TabIndex = 1;
             this.lbHeroClasses.SelectedIndexChanged += new System.EventHandler(this.listBox3_SelectedIndexChanged);
@@ -983,7 +982,7 @@
             this.heroesTab.Controls.Add(this.textBox24);
             this.heroesTab.Controls.Add(this.pictureBox4);
             this.heroesTab.Controls.Add(this.lbHeroes);
-            this.heroesTab.Controls.Add(this.pbHeroMain);
+            this.heroesTab.Controls.Add(this.hpcHeroProfile);
             this.heroesTab.Location = new System.Drawing.Point(4, 25);
             this.heroesTab.Name = "heroesTab";
             this.heroesTab.Padding = new System.Windows.Forms.Padding(3);
@@ -991,6 +990,15 @@
             this.heroesTab.TabIndex = 4;
             this.heroesTab.Text = "Герої";
             this.heroesTab.UseVisualStyleBackColor = true;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(849, 291);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(41, 13);
+            this.label19.TabIndex = 21;
+            this.label19.Text = "label19";
             // 
             // button2
             // 
@@ -1166,14 +1174,14 @@
             this.lbHeroes.TabIndex = 0;
             this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
             // 
-            // pbHeroMain
+            // hpcHeroProfile
             // 
-            this.pbHeroMain.Location = new System.Drawing.Point(142, 9);
-            this.pbHeroMain.Name = "pbHeroMain";
-            this.pbHeroMain.Size = new System.Drawing.Size(432, 485);
-            this.pbHeroMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbHeroMain.TabIndex = 20;
-            this.pbHeroMain.TabStop = false;
+            this.hpcHeroProfile.HeroIndex = 0;
+            this.hpcHeroProfile.Image = null;
+            this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
+            this.hpcHeroProfile.Name = "hpcHeroProfile";
+            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
+            this.hpcHeroProfile.TabIndex = 22;
             // 
             // creaturesTab
             // 
@@ -1605,15 +1613,6 @@
             this.spellsTab.Text = "Закляття";
             this.spellsTab.UseVisualStyleBackColor = true;
             // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(849, 291);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(41, 13);
-            this.label19.TabIndex = 21;
-            this.label19.Text = "label19";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1641,7 +1640,6 @@
             this.heroesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbHeroMain)).EndInit();
             this.creaturesTab.ResumeLayout(false);
             this.creaturesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -1791,8 +1789,8 @@
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.TrackBar trbDefSprites;
         private System.Windows.Forms.CheckBox chbTimerEnabled;
-        private System.Windows.Forms.PictureBox pbHeroMain;
         private System.Windows.Forms.Label label19;
+        private HeroProfileControl hpcHeroProfile;
     }
 }
 
