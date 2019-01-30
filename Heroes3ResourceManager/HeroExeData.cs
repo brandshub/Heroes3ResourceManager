@@ -79,13 +79,15 @@ namespace h3magic
         {
             long offset = HeroesSection.HeroOffset1;
             var exe = Heroes3Master.Master.Executable;
-            string file = exe.Path + "new";
+            string file = exe.Path;
+            System.IO.File.WriteAllBytes(exe.Path + ".bak", exe.Data);
+
             for (int i = 0; i < Data.Count; i++)
             {
                 var current = Data[i];
                 if (current.HasChanged)
                 {
-                    fixed(byte* ptr = exe.Data)
+                    fixed (byte* ptr = exe.Data)
                     {
                         int* iptr = (int*)(ptr + offset + i * BLOCK_SIZE_A);
                         *iptr++ = current.GenderInt;
@@ -94,7 +96,7 @@ namespace h3magic
                         *iptr++ = current.FirstSkillIndex;
                         *iptr++ = current.FirstSkillLevel;
                         *iptr++ = current.SecondSkillIndex;
-                        *iptr++ = current.SecondSkillLevel;                        
+                        *iptr++ = current.SecondSkillLevel;
                         *iptr++ = current.SpellBook;
                         *iptr++ = current.SpellIndex;
                         *iptr++ = current.Unit1Index;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -48,6 +49,8 @@ namespace h3magic
         }
 
         private static Bitmap skillTree = null;
+        private static Bitmap skillTree2 = null;
+
         public static Bitmap GetSkillTree(LodFile h3sprite)
         {
             if (skillTree != null)
@@ -63,6 +66,29 @@ namespace h3magic
             }
             skillTree = bmp;
             return skillTree;
+        }
+
+
+        public static Bitmap GetSkillTree2(LodFile h3sprite)
+        {
+            if (skillTree2 != null)
+                return skillTree2;
+
+            var def = h3sprite?.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite.stream);
+            var sw = Stopwatch.StartNew();
+            var bmp = new Bitmap((44 + 1) * 12, (44 + 1) * 7);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                for (int i = 0; i < 7; i++)
+                    for (int j = 0; j < 12; j++)
+                    {
+                        var img = def.GetByAbsoluteNumber(3 + i * 12 + j);
+                        g.DrawImage(img, j * (44 + 1), i * (44 + 1));
+                    }
+            }
+            skillTree2 = bmp;
+            float ms = sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency;
+            return skillTree2;
         }
     }
 }

@@ -1176,6 +1176,9 @@
             // 
             // hpcHeroProfile
             // 
+            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hpcHeroProfile.Hero = null;
             this.hpcHeroProfile.HeroIndex = 0;
             this.hpcHeroProfile.Image = null;
             this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
@@ -1621,6 +1624,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "MainForm";

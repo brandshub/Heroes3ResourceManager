@@ -123,7 +123,7 @@ namespace h3magic
             return bmp;
         }
 
-        public static Bitmap GetImage2(LodFile h3sprite, int creatureIndex)
+        public static Bitmap GetImageByCreatureInnerIndex(LodFile h3sprite, int creatureIndex)
         {
             if (creatureDef == null)
                 creatureDef = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite);

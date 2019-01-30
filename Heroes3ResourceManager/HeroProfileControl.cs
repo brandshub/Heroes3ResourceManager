@@ -58,13 +58,11 @@ namespace h3magic
                 var heroData = HeroExeData.Data[heroIndex];
                 Hero = heroData;
 
-                g.DrawImage(heroData.Skill1.GetImage(master.H3Sprite, heroData.FirstSkillLevel), new Point(5, 213));
+                if (heroData.Skill1 != null)
+                    g.DrawImage(heroData.Skill1.GetImage(master.H3Sprite, heroData.FirstSkillLevel), new Point(5, 213));
 
                 if (heroData.Skill2 != null)
-                {
                     g.DrawImage(heroData.Skill2.GetImage(master.H3Sprite, heroData.SecondSkillLevel), new Point(148, 213));
-
-                }
 
                 var img1 = CreatureManager.GetImage(master.H3Sprite, heroData.Unit1Index);
                 g.DrawImage(img1, new Point(5, 262));
@@ -78,7 +76,6 @@ namespace h3magic
                 g.Dispose();
                 PictureBox.Image = canvas;
                 CalculateRatio();
-
             }
         }
 
@@ -135,7 +132,7 @@ namespace h3magic
             areas[7] = new RectangleF(129, 262, 58, 64);
 
             areas[8] = new RectangleF(192, 262, 58, 64);
-           
+
 
         }
 
@@ -166,43 +163,94 @@ namespace h3magic
         {
             if (lastRectIndex >= 0 && PropertyClicked != null)
             {
-                string type = "";
-                int index = 0;
-                int currentValue = 0;
+                if (e.Button == MouseButtons.Left)
+                {
+                    string type = "";
+                    int index = 0;
+                    int currentValue = 0;
 
-                if (lastRectIndex == 0)
-                {
-                    type = "Portrait";
-                }
-                else if (lastRectIndex == 1)
-                {
-                    type = "Name";
+                    if (lastRectIndex == 0)
+                    {
+                        type = "Portrait";
+                    }
+                    else if (lastRectIndex == 1)
+                    {
+                        type = "Name";
+                    }
+                    else if (lastRectIndex == 2)
+                    {
+                        type = "Spec";
+                        currentValue = Hero.Index;
+                    }
+                    else if (lastRectIndex <= 4)
+                    {
+                        type = "SecondarySkill";
+                        index = lastRectIndex - 3;
+                        currentValue = (index == 0 ? (3 * Hero.FirstSkillIndex + Hero.FirstSkillLevel) : (3 * Hero.SecondSkillIndex + Hero.SecondSkillLevel)) - 1;
+                    }
+                    else if (lastRectIndex <= 7)
+                    {
+                        type = "Creature";
+                        index = lastRectIndex - 5;
+                        currentValue = index == 0 ? Hero.Unit1Index : (index == 1 ? Hero.Unit2Index : Hero.Unit3Index);
+                    }
+                    else if (lastRectIndex == 8)
+                    {
+                        type = "Spell";
+                        currentValue = Hero.SpellIndex;
+                    }
 
+                    PropertyClicked(type, index, currentValue);
                 }
-                else if (lastRectIndex == 2)
+                else if (e.Button == MouseButtons.Right)
                 {
-                    type = "Spec";
-                    currentValue = Hero.Index;
-                }
-                else if (lastRectIndex <= 4)
-                {
-                    type = "SecondarySkill";
-                    index = lastRectIndex - 3;
-                    currentValue = index == 0 ? Hero.FirstSkillIndex : Hero.SecondSkillIndex;
-                }
-                else if (lastRectIndex <= 7)
-                {
-                    type = "Creature";
-                    index = lastRectIndex - 5;
-                    currentValue = index == 0 ? Hero.Unit1Index : (index == 1 ? Hero.Unit2Index : Hero.Unit3Index);
-                }
-                else if (lastRectIndex == 8)
-                {
-                    type = "Spell";
-                    currentValue = Hero.SpellIndex;
-                }
+                    if (lastRectIndex == 0)
+                    {
 
-                PropertyClicked(type, index, currentValue);
+                    }
+                    else if (lastRectIndex == 1)
+                    {
+
+                    }
+                    else if (lastRectIndex == 2)
+                    {
+
+                    }
+                    else if (lastRectIndex <= 4)
+                    {
+                        if (lastRectIndex == 3)
+                        {                            
+                            if (Hero.SecondSkillIndex != -1)
+                            {
+                                Hero.FirstSkillIndex = Hero.SecondSkillIndex;
+                                Hero.FirstSkillLevel = Hero.SecondSkillLevel;
+                                Hero.SecondSkillLevel = -1;
+                            }
+                            else
+                            {
+                                Hero.FirstSkillIndex = -1;
+                            }
+                        }
+                        else
+                        {
+                            Hero.SecondSkillIndex = -1;
+                        }
+                        LoadHero(Hero.Index, Heroes3Master.Master);
+
+                    }
+                    else if (lastRectIndex <= 7)
+                    {
+                        /*  type = "Creature";
+                          index = lastRectIndex - 5;
+                          currentValue = index == 0 ? Hero.Unit1Index : (index == 1 ? Hero.Unit2Index : Hero.Unit3Index);*/
+                    }
+                    else if (lastRectIndex == 8)
+                    {
+                        Hero.SpellBook = 0;
+                        Hero.SpellIndex = -1;
+                        LoadHero(Hero.Index, Heroes3Master.Master);
+                    }
+                }
             }
         }
     }

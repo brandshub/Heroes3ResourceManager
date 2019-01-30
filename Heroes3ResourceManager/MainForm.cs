@@ -17,7 +17,7 @@ namespace h3magic
     public partial class MainForm : Form
     {
 
-        private OpenFileDialog ofd = new OpenFileDialog() { Filter = "Hero Files (*.LOD;*.EXE)|*.LOD;*.EXE" };
+        private OpenFileDialog ofd = new OpenFileDialog() { Filter = "Hero Files (*.LOD;*.EXE;*.PAC)|*.LOD;*.EXE;*.PAC" };
         private SaveFileDialog sfd = new SaveFileDialog() { Filter = "Hero Files (*.LOD)|*.LOD" };
 
 
@@ -57,16 +57,18 @@ namespace h3magic
 
             hpcHeroProfile.PropertyClicked += HpcHeroProfile_PropertyDoubleClicked;
             heroPropertyForm.ItemSelected += HeroPropertyForm_ItemSelected;
-
+            heroPropertyForm.Owner = this;
            //LoadMaster(@"d:\Games\h3\Heroes3.exe");
         }
 
         private void HeroPropertyForm_ItemSelected(int selIndex)
         {
-            if (heroPropertyForm.PropertyType == "Creature")
+            string type = heroPropertyForm.PropertyType;
+            var hero = hpcHeroProfile.Hero;
+
+            if (type == "Creature")
             {
-                int realIndex = CreatureManager.AllCreatures[selIndex].CreatureIndex;
-                var hero = hpcHeroProfile.Hero;
+                int realIndex = CreatureManager.AllCreatures[selIndex].CreatureIndex;               
                 hero.HasChanged = true;
                 switch (heroPropertyForm.CurrentIndex)
                 {
@@ -76,6 +78,34 @@ namespace h3magic
                 }
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
             }
+            else if(type == "SecondarySkill")
+            {
+                int skill = selIndex / 3;
+                int level = 1 + selIndex % 3;
+                
+                hero.HasChanged = true;
+                if (heroPropertyForm.CurrentIndex == 0)
+                {
+                    hero.FirstSkillIndex = skill;
+                    hero.FirstSkillLevel = level;
+                }
+                else
+                {
+                    hero.SecondSkillIndex = skill;
+                    hero.SecondSkillLevel = level;
+                }
+                hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
+
+            }
+            else if(type == "Spell")
+            {
+                hero.HasChanged = true;
+                hero.SpellBook = 1;
+                hero.SpellIndex = selIndex;
+                hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
+            }
+            
+
         }
 
         private void HpcHeroProfile_PropertyDoubleClicked(string type,int relativeIndex, int currentValue)
@@ -83,7 +113,8 @@ namespace h3magic
             heroPropertyForm.PropertyType = type;
             heroPropertyForm.CurrentIndex = relativeIndex;
             heroPropertyForm.SelectedValue = currentValue;
-            heroPropertyForm.ShowDialog();
+            
+            heroPropertyForm.ShowDialog(this);
         }
 
         public void LoadMaster(string executablPath)

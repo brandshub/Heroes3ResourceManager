@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -71,6 +72,30 @@ namespace h3magic
             var rec = h3sprite.GetRecord(IMG_FNAME);
             var def = rec?.GetDefFile(h3sprite.stream);
             return def?.GetByAbsoluteNumber(Index);
+        }
+
+        private static Bitmap allSpells = null;
+
+        public static Bitmap GetAllSpells(LodFile h3sprite)
+        {
+            if (allSpells != null)
+                return allSpells;
+
+            var def = h3sprite?.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite.stream);
+            var sw = Stopwatch.StartNew();
+            var bmp = new Bitmap((58 + 1) * 10, (64 + 1) * 7);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                for (int i = 0; i < 7; i++)
+                    for (int j = 0; j < 10; j++)
+                    {
+                        var img = def.GetByAbsoluteNumber(i * 10 + j);
+                        g.DrawImage(img, j * (58 + 1), i * (64 + 1));
+                    }
+            }
+            allSpells = bmp;
+            float ms = sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency;
+            return allSpells;
         }
 
         public override string ToString()
