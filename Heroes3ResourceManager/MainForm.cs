@@ -45,8 +45,6 @@ namespace h3magic
 
             CheckForIllegalCrossThreadCalls = false;
 
-            cb_Filter.SelectedIndex = 0;
-            
             timer.Interval = 150;
             timer.Tick += Timer_Tick;
 
@@ -58,7 +56,7 @@ namespace h3magic
             hpcHeroProfile.PropertyClicked += HpcHeroProfile_PropertyDoubleClicked;
             heroPropertyForm.ItemSelected += HeroPropertyForm_ItemSelected;
             heroPropertyForm.Owner = this;
-           //LoadMaster(@"d:\Games\h3\Heroes3.exe");
+            //LoadMaster(@"d:\Games\h3\Heroes3.exe");
         }
 
         private void HeroPropertyForm_ItemSelected(int selIndex)
@@ -68,7 +66,7 @@ namespace h3magic
 
             if (type == "Creature")
             {
-                int realIndex = CreatureManager.AllCreatures[selIndex].CreatureIndex;               
+                int realIndex = CreatureManager.AllCreatures[selIndex].CreatureIndex;
                 hero.HasChanged = true;
                 switch (heroPropertyForm.CurrentIndex)
                 {
@@ -78,11 +76,11 @@ namespace h3magic
                 }
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
             }
-            else if(type == "SecondarySkill")
+            else if (type == "SecondarySkill")
             {
                 int skill = selIndex / 3;
                 int level = 1 + selIndex % 3;
-                
+
                 hero.HasChanged = true;
                 if (heroPropertyForm.CurrentIndex == 0)
                 {
@@ -97,23 +95,23 @@ namespace h3magic
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
 
             }
-            else if(type == "Spell")
+            else if (type == "Spell")
             {
                 hero.HasChanged = true;
                 hero.SpellBook = 1;
                 hero.SpellIndex = selIndex;
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
             }
-            
+
 
         }
 
-        private void HpcHeroProfile_PropertyDoubleClicked(string type,int relativeIndex, int currentValue)
+        private void HpcHeroProfile_PropertyDoubleClicked(string type, int relativeIndex, int currentValue)
         {
             heroPropertyForm.PropertyType = type;
             heroPropertyForm.CurrentIndex = relativeIndex;
             heroPropertyForm.SelectedValue = currentValue;
-            
+
             heroPropertyForm.ShowDialog(this);
         }
 
@@ -145,27 +143,29 @@ namespace h3magic
 
             if (lodFile["HCTRAITS.TXT"] == null)
             {
-                for (int i = 1; i < tabControl1.TabCount; i++)
+                for (int i = 1; i < tabsMain.TabCount; i++)
                 {
-                    tabControl1.TabPages.RemoveAt(i);
+                    tabsMain.TabPages.RemoveAt(i);
                     i--;
                 }
             }
             else
             {
-                if (!tabControl1.TabPages.Contains(h_classTab))
-                    tabControl1.TabPages.Add(h_classTab);
-                if (!tabControl1.TabPages.Contains(heroesTab))
-                    tabControl1.TabPages.Add(heroesTab);
-                if (!tabControl1.TabPages.Contains(creaturesTab))
-                    tabControl1.TabPages.Add(creaturesTab);
+                if (!tabsMain.TabPages.Contains(h_classTab))
+                    tabsMain.TabPages.Add(h_classTab);
+                if (!tabsMain.TabPages.Contains(heroesTab))
+                    tabsMain.TabPages.Add(heroesTab);
+                if (!tabsMain.TabPages.Contains(creaturesTab))
+                    tabsMain.TabPages.Add(creaturesTab);
             }
 
             SecondarySkill.LoadInfo(lodFile);
 
             HeroExeData.LoadData(master.Executable.Data);
             sw.Stop();
-            Text = sw.ElapsedMilliseconds+" ms";
+            Text = sw.ElapsedMilliseconds + " ms";
+
+            tabsMain.Visible = true;
         }
 
 
@@ -195,9 +195,9 @@ namespace h3magic
                 {
                     def = rec.GetDefFile(lodFile);
                     bmp = def.GetSprite(0, 0);
-                    listBox4.Items.Clear();
+                    lbDecomposed.Items.Clear();
                     for (int i = 0; i < def.BlockCount; i++)
-                        listBox4.Items.AddRange(def.headers[i].Names);
+                        lbDecomposed.Items.AddRange(def.headers[i].Names);
                 }
             }
         }
@@ -229,7 +229,7 @@ namespace h3magic
         }
 
 
-        Point last = Point.Empty;
+        private Point last = new Point(-1, -1);
 
         private void listBox1_MouseHover(object sender, EventArgs e)
         {
@@ -238,80 +238,86 @@ namespace h3magic
 
         private void PreviewShow()
         {
-            int index = lbFiles.IndexFromPoint(last);
-            if (index >= 0 && index < lbFiles.Items.Count && lastindex != index)
+            var sw = Stopwatch.StartNew();
+            if (last.X >= 0 && last.Y >= 0)
             {
-                listBox4.Visible = false;
-                string temp = lbFiles.Items[index].ToString();
-                if (selectedFile != temp)
-                    currentFrame = 0;
-
-                selectedFile = temp;
-
-
-                FatRecord rec = lodFile[lbFiles.Items[index].ToString()];
-                if (rec.Extension == "PCX")
+                int index = lbFiles.IndexFromPoint(last);
+                if (index >= 0 && index < lbFiles.Items.Count && lastindex != index)
                 {
-                    bmp = rec.GetBitmap(lodFile.stream);
-                    if (bmp != null)
+                    lbDecomposed.Visible = false;
+                    string temp = lbFiles.Items[index].ToString();
+                    if (selectedFile != temp)
+                        currentFrame = 0;
+
+                    selectedFile = temp;
+
+
+                    FatRecord rec = lodFile[lbFiles.Items[index].ToString()];
+                    if (rec.Extension == "PCX")
                     {
-                        //form.Show(bmp);
-                        pictureBox7.Visible = true;
+                        bmp = rec.GetBitmap(lodFile.stream);
+                        if (bmp != null)
+                        {
+                            //form.Show(bmp);
+                            pbResourceView.Visible = true;
+                            rtbMain.Visible = false;
+                            if (bmp.Width > pbResourceView.Width || bmp.Height > pbResourceView.Height)
+                                pbResourceView.SizeMode = PictureBoxSizeMode.Zoom;
+                            else
+                                pbResourceView.SizeMode = PictureBoxSizeMode.CenterImage;
+                            pbResourceView.Image = bmp;
+                        }
+                    }
+                    else if (rec.Extension == "TXT")
+                    {
+                        byte[] bts = rec.GetRawData(lodFile.stream);
+                        if (bts != null)
+                        {
+                            pbResourceView.Visible = false;
+                            rtbMain.Visible = true;
+                            rtbMain.Text = Encoding.Default.GetString(bts);
+                            //form.Show(Encoding.Default.GetString(bts));
+
+                        }
+                    }
+                    else if (rec.Extension == "DEF")
+                    {
+                        lbDecomposed.Visible = true;
+
+                        var def = rec.GetDefFile(lodFile.stream);
+
+                        trbDefSprites.Maximum = def.headers.Sum(s => s.SpritesCount) - 1;
+                        trbDefSprites.Value = 0;
+
+                        bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
+                        pbResourceView.Visible = true;
                         rtbMain.Visible = false;
-                        if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)
-                            pictureBox7.SizeMode = PictureBoxSizeMode.Zoom;
+                        if (bmp.Width > pbResourceView.Width || bmp.Height > pbResourceView.Height)
+                            pbResourceView.SizeMode = PictureBoxSizeMode.Zoom;
                         else
-                            pictureBox7.SizeMode = PictureBoxSizeMode.CenterImage;
-                        pictureBox7.Image = bmp;
+                            pbResourceView.SizeMode = PictureBoxSizeMode.CenterImage;
+                        pbResourceView.Image = bmp;
                     }
                 }
-                else if (rec.Extension == "TXT")
+                else if (index > -1)
                 {
-                    byte[] bts = rec.GetRawData(lodFile.stream);
-                    if (bts != null)
+                    var rec = lodFile[lbFiles.Items[index].ToString()];
+                    if (rec.Extension == "DEF")
                     {
-                        pictureBox7.Visible = false;
-                        rtbMain.Visible = true;
-                        rtbMain.Text = Encoding.Default.GetString(bts);
-                        //form.Show(Encoding.Default.GetString(bts));
+                        var def = rec.GetDefFile(lodFile.stream);
 
+                        bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
+                        if (bmp.Width > pbResourceView.Width || bmp.Height > pbResourceView.Height)
+                            pbResourceView.SizeMode = PictureBoxSizeMode.Zoom;
+                        else
+                            pbResourceView.SizeMode = PictureBoxSizeMode.CenterImage;
+                        pbResourceView.Image = bmp;
                     }
                 }
-                else if (rec.Extension == "DEF")
-                {
-                    listBox4.Visible = true;
-
-                    var def = rec.GetDefFile(lodFile.stream);
-
-                    trbDefSprites.Maximum = def.headers.Sum(s => s.SpritesCount) - 1;
-                    trbDefSprites.Value = 0;
-
-                    bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
-                    pictureBox7.Visible = true;
-                    rtbMain.Visible = false;
-                    if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)
-                        pictureBox7.SizeMode = PictureBoxSizeMode.Zoom;
-                    else
-                        pictureBox7.SizeMode = PictureBoxSizeMode.CenterImage;
-                    pictureBox7.Image = bmp;
-                }
+                lastindex = index;
             }
-            else if (index > -1)
-            {
-                var rec = lodFile[lbFiles.Items[index].ToString()];
-                if (rec.Extension == "DEF")
-                {
-                    var def = rec.GetDefFile(lodFile.stream);
-
-                    bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
-                    if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)
-                        pictureBox7.SizeMode = PictureBoxSizeMode.Zoom;
-                    else
-                        pictureBox7.SizeMode = PictureBoxSizeMode.CenterImage;
-                    pictureBox7.Image = bmp;
-                }
-            }
-            lastindex = index;
+            sw.Stop();
+            Debug.WriteLine("previewshow: " + (sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency));
         }
 
         private string selectedFile = "";
@@ -319,15 +325,11 @@ namespace h3magic
 
         int lastindex = -100;
 
-        private void listBox1_MouseMove(object sender, MouseEventArgs e)
+        private void lbFiles_MouseMove(object sender, MouseEventArgs e)
         {
             last = e.Location;
             PreviewShow();
-            // Text = last.ToString();
-
         }
-
-
 
         private void button7_Click(object sender, EventArgs e)
         {
@@ -394,10 +396,7 @@ namespace h3magic
                 if (Path.GetExtension(ofd.FileName) == ".exe")
                 {
                     var sw = Stopwatch.StartNew();
-
                     LoadMaster(ofd.FileName);
-
-
                 }
                 else
                 {
@@ -415,24 +414,27 @@ namespace h3magic
 
                     if (lodFile["HCTRAITS.TXT"] == null)
                     {
-                        for (int i = 1; i < tabControl1.TabCount; i++)
-                        {
-                            tabControl1.TabPages.RemoveAt(i);
-                            i--;
-                        }
+                        tabsMain.TabPages.Clear();
+                        tabsMain.TabPages.Add(mainTab);
+
                     }
                     else
                     {
-                        if (!tabControl1.TabPages.Contains(h_classTab))
-                            tabControl1.TabPages.Add(h_classTab);
-                        if (!tabControl1.TabPages.Contains(heroesTab))
-                            tabControl1.TabPages.Add(heroesTab);
-                        if (!tabControl1.TabPages.Contains(creaturesTab))
-                            tabControl1.TabPages.Add(creaturesTab);
+                        if (!tabsMain.TabPages.Contains(heroesTab))
+                            tabsMain.TabPages.Add(heroesTab);
+                        if (!tabsMain.TabPages.Contains(h_classTab))
+                            tabsMain.TabPages.Add(h_classTab);
+                        if (!tabsMain.TabPages.Contains(creaturesTab))
+                            tabsMain.TabPages.Add(creaturesTab);
 
                         // if(!tabControl1.TabPages.Contains(h_classTab))
                     }
                 }
+
+                cb_Filter.Items.Clear();
+                cb_Filter.Items.Add("*");
+                cb_Filter.Items.AddRange(lodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray<object>());
+                tabsMain.Visible = true;
             }
         }
 
@@ -503,10 +505,6 @@ namespace h3magic
             ofd.Filter = filt;
         }
 
-        private void tabControl1_TabIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void cb_castles_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -557,14 +555,14 @@ namespace h3magic
         {
             if (lodFile != null)
             {
-                if (tabControl1.SelectedIndex == 3)
+                if (tabsMain.SelectedIndex == 2)
                 {
                     CreatureManager.LoadInfo(lodFile);
                     cb_castles.Items.Clear();
                     cb_castles.Items.AddRange(CreatureManager.Castles);
 
                 }
-                else if (tabControl1.SelectedIndex == 1)
+                else if (tabsMain.SelectedIndex == 1)
                 {
                     if (!HeroClassManager.Loaded)
                     {
@@ -573,11 +571,9 @@ namespace h3magic
                         lbHeroClasses.Items.AddRange(HeroClassManager.AllClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
                     }
                     pbSkillTree.Image = SecondarySkill.GetSkillTree(Heroes3Master.Master.H3Sprite);
-                    Speciality.GetAllSpecs(Heroes3Master.Master.H3Sprite).Save("d:\\11.bmp");
-
 
                 }
-                else if (tabControl1.SelectedIndex == 2)
+                else if (tabsMain.SelectedIndex == 0)
                 {
                     if (!HeroesManager.Loaded)
                     {
@@ -623,14 +619,14 @@ namespace h3magic
         private void lbHeroes_SelectedIndexChanged(object sender, EventArgs e)
         {
             var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
-            
+
             pictureBox4.Image = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(lodFile.stream);
 
             if (lbHeroes.SelectedIndex > -1 && Heroes3Master.Master != null)
             {
-                hpcHeroProfile.LoadHero(lbHeroes.SelectedIndex, Heroes3Master.Master); 
+                hpcHeroProfile.LoadHero(lbHeroes.SelectedIndex, Heroes3Master.Master);
                 Text = lbHeroes.SelectedIndex.ToString();
-            }            
+            }
 
             textBox24.Text = hs.Name;
             textBox31.Text = hs.Biography;
@@ -756,30 +752,26 @@ namespace h3magic
 
         }
 
-        private void pictureBox7_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void listBox4_SelectedIndexChanged(object sender, EventArgs e)
+        private void lbDecomposed_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBox4.SelectedIndex >= 0)
+            if (lbDecomposed.SelectedIndex >= 0)
             {
-                pictureBox7.Visible = true;
+                pbResourceView.Visible = true;
                 rtbMain.Visible = false;
-                Bitmap bmp = def.GetByName(listBox4.SelectedItem.ToString());
+                Bitmap bmp = def.GetByName(lbDecomposed.SelectedItem.ToString());
                 if (bmp != null)
                 {
-                    if (bmp.Width > pictureBox7.Width || bmp.Height > pictureBox7.Height)
-                        pictureBox7.SizeMode = PictureBoxSizeMode.Zoom;
+                    if (bmp.Width > pbResourceView.Width || bmp.Height > pbResourceView.Height)
+                        pbResourceView.SizeMode = PictureBoxSizeMode.Zoom;
                     else
-                        pictureBox7.SizeMode = PictureBoxSizeMode.CenterImage;
-                    pictureBox7.Image = bmp;
+                        pbResourceView.SizeMode = PictureBoxSizeMode.CenterImage;
+                    pbResourceView.Image = bmp;
                 }
             }
         }

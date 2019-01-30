@@ -45,12 +45,29 @@
             this.m_exit = new System.Windows.Forms.ToolStripMenuItem();
             this.cb_Filter = new System.Windows.Forms.ComboBox();
             this.ldBmp = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.mainTab = new System.Windows.Forms.TabPage();
-            this.chbTimerEnabled = new System.Windows.Forms.CheckBox();
-            this.trbDefSprites = new System.Windows.Forms.TrackBar();
-            this.listBox4 = new System.Windows.Forms.ListBox();
-            this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.tabsMain = new System.Windows.Forms.TabControl();
+            this.heroesTab = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
+            this.textBox29 = new System.Windows.Forms.TextBox();
+            this.textBox30 = new System.Windows.Forms.TextBox();
+            this.textBox31 = new System.Windows.Forms.TextBox();
+            this.textBox32 = new System.Windows.Forms.TextBox();
+            this.textBox28 = new System.Windows.Forms.TextBox();
+            this.textBox27 = new System.Windows.Forms.TextBox();
+            this.textBox26 = new System.Windows.Forms.TextBox();
+            this.textBox25 = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBox24 = new System.Windows.Forms.TextBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lbHeroes = new System.Windows.Forms.ListBox();
+            this.hpcHeroProfile = new h3magic.HeroProfileControl();
             this.h_classTab = new System.Windows.Forms.TabPage();
             this.textBox68 = new System.Windows.Forms.TextBox();
             this.textBox69 = new System.Windows.Forms.TextBox();
@@ -81,8 +98,7 @@
             this.textBox50 = new System.Windows.Forms.TextBox();
             this.textBox49 = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
+            this.lblStartParams = new System.Windows.Forms.Label();
             this.textBox43 = new System.Windows.Forms.TextBox();
             this.textBox44 = new System.Windows.Forms.TextBox();
             this.textBox45 = new System.Windows.Forms.TextBox();
@@ -105,29 +121,6 @@
             this.lbHeroClasses = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.pbSkillTree = new System.Windows.Forms.PictureBox();
-            this.heroesTab = new System.Windows.Forms.TabPage();
-            this.label19 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.textBox29 = new System.Windows.Forms.TextBox();
-            this.textBox30 = new System.Windows.Forms.TextBox();
-            this.textBox31 = new System.Windows.Forms.TextBox();
-            this.textBox32 = new System.Windows.Forms.TextBox();
-            this.textBox28 = new System.Windows.Forms.TextBox();
-            this.textBox27 = new System.Windows.Forms.TextBox();
-            this.textBox26 = new System.Windows.Forms.TextBox();
-            this.textBox25 = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.textBox24 = new System.Windows.Forms.TextBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lbHeroes = new System.Windows.Forms.ListBox();
-            this.hpcHeroProfile = new h3magic.HeroProfileControl();
             this.creaturesTab = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox23 = new System.Windows.Forms.TextBox();
@@ -170,20 +163,25 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.spellsTab = new System.Windows.Forms.TabPage();
+            this.mainTab = new System.Windows.Forms.TabPage();
+            this.chbTimerEnabled = new System.Windows.Forms.CheckBox();
+            this.trbDefSprites = new System.Windows.Forms.TrackBar();
+            this.lbDecomposed = new System.Windows.Forms.ListBox();
+            this.pbResourceView = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.mainTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
-            this.h_classTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).BeginInit();
+            this.tabsMain.SuspendLayout();
             this.heroesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            this.h_classTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).BeginInit();
             this.creaturesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.mainTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbResourceView)).BeginInit();
             this.SuspendLayout();
             // 
             // lbFiles
@@ -195,12 +193,12 @@
             this.lbFiles.Location = new System.Drawing.Point(673, 33);
             this.lbFiles.Name = "lbFiles";
             this.lbFiles.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbFiles.Size = new System.Drawing.Size(133, 220);
+            this.lbFiles.Size = new System.Drawing.Size(133, 202);
             this.lbFiles.TabIndex = 4;
             this.lbFiles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
             this.lbFiles.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.lbFiles.MouseHover += new System.EventHandler(this.listBox1_MouseHover);
-            this.lbFiles.MouseMove += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseMove);
+            this.lbFiles.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbFiles_MouseMove);
             // 
             // button4
             // 
@@ -241,7 +239,7 @@
             // 
             this.progressBar1.Location = new System.Drawing.Point(16, 575);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(908, 23);
+            this.progressBar1.Size = new System.Drawing.Size(890, 23);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar1.TabIndex = 8;
             // 
@@ -273,54 +271,44 @@
             this.m_saveFileAs,
             this.m_exit});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.файлToolStripMenuItem.Text = "Файл";
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.файлToolStripMenuItem.Text = "File";
             // 
             // m_openFile
             // 
             this.m_openFile.Name = "m_openFile";
             this.m_openFile.ShortcutKeys = System.Windows.Forms.Keys.F2;
-            this.m_openFile.Size = new System.Drawing.Size(158, 22);
-            this.m_openFile.Text = "Відкрити";
+            this.m_openFile.Size = new System.Drawing.Size(133, 22);
+            this.m_openFile.Text = "Load";
             this.m_openFile.Click += new System.EventHandler(this.m_openFile_Click);
             // 
             // m_saveFile
             // 
             this.m_saveFile.Name = "m_saveFile";
             this.m_saveFile.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.m_saveFile.Size = new System.Drawing.Size(158, 22);
-            this.m_saveFile.Text = "Зберегти";
+            this.m_saveFile.Size = new System.Drawing.Size(133, 22);
+            this.m_saveFile.Text = "Save";
             this.m_saveFile.Click += new System.EventHandler(this.m_saveFile_Click);
             // 
             // m_saveFileAs
             // 
             this.m_saveFileAs.Name = "m_saveFileAs";
             this.m_saveFileAs.ShortcutKeys = System.Windows.Forms.Keys.F6;
-            this.m_saveFileAs.Size = new System.Drawing.Size(158, 22);
-            this.m_saveFileAs.Text = "Зберегти як";
+            this.m_saveFileAs.Size = new System.Drawing.Size(133, 22);
+            this.m_saveFileAs.Text = "Save As";
             this.m_saveFileAs.Click += new System.EventHandler(this.m_saveFileAs_Click);
             // 
             // m_exit
             // 
             this.m_exit.Name = "m_exit";
-            this.m_exit.Size = new System.Drawing.Size(158, 22);
-            this.m_exit.Text = "Вихід";
+            this.m_exit.Size = new System.Drawing.Size(133, 22);
+            this.m_exit.Text = "Exit";
             this.m_exit.Click += new System.EventHandler(this.m_exit_Click);
             // 
             // cb_Filter
             // 
             this.cb_Filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cb_Filter.FormattingEnabled = true;
-            this.cb_Filter.Items.AddRange(new object[] {
-            "*",
-            "PCX",
-            "TXT",
-            "DEF",
-            "FNT",
-            "PAL",
-            "H3C",
-            "H3M",
-            "JSON"});
             this.cb_Filter.Location = new System.Drawing.Point(673, 6);
             this.cb_Filter.Name = "cb_Filter";
             this.cb_Filter.Size = new System.Drawing.Size(133, 21);
@@ -337,81 +325,235 @@
             this.ldBmp.UseVisualStyleBackColor = true;
             this.ldBmp.Click += new System.EventHandler(this.ldBmp_Click);
             // 
-            // tabControl1
+            // tabsMain
             // 
-            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabControl1.Controls.Add(this.mainTab);
-            this.tabControl1.Controls.Add(this.h_classTab);
-            this.tabControl1.Controls.Add(this.heroesTab);
-            this.tabControl1.Controls.Add(this.creaturesTab);
-            this.tabControl1.Controls.Add(this.spellsTab);
-            this.tabControl1.Location = new System.Drawing.Point(12, 28);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(916, 541);
-            this.tabControl1.TabIndex = 18;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
-            this.tabControl1.TabIndexChanged += new System.EventHandler(this.tabControl1_TabIndexChanged);
+            this.tabsMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.tabsMain.Controls.Add(this.heroesTab);
+            this.tabsMain.Controls.Add(this.h_classTab);
+            this.tabsMain.Controls.Add(this.creaturesTab);
+            this.tabsMain.Controls.Add(this.spellsTab);
+            this.tabsMain.Controls.Add(this.mainTab);
+            this.tabsMain.Location = new System.Drawing.Point(12, 28);
+            this.tabsMain.Name = "tabsMain";
+            this.tabsMain.SelectedIndex = 0;
+            this.tabsMain.Size = new System.Drawing.Size(916, 541);
+            this.tabsMain.TabIndex = 18;
+            this.tabsMain.Visible = false;
+            this.tabsMain.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
-            // mainTab
+            // heroesTab
             // 
-            this.mainTab.Controls.Add(this.chbTimerEnabled);
-            this.mainTab.Controls.Add(this.trbDefSprites);
-            this.mainTab.Controls.Add(this.listBox4);
-            this.mainTab.Controls.Add(this.pictureBox7);
-            this.mainTab.Controls.Add(this.rtbMain);
-            this.mainTab.Controls.Add(this.button8);
-            this.mainTab.Controls.Add(this.ldBmp);
-            this.mainTab.Controls.Add(this.cb_Filter);
-            this.mainTab.Controls.Add(this.button5);
-            this.mainTab.Controls.Add(this.lbFiles);
-            this.mainTab.Controls.Add(this.button4);
-            this.mainTab.Location = new System.Drawing.Point(4, 25);
-            this.mainTab.Name = "mainTab";
-            this.mainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mainTab.Size = new System.Drawing.Size(908, 512);
-            this.mainTab.TabIndex = 0;
-            this.mainTab.Text = "Головна";
-            this.mainTab.UseVisualStyleBackColor = true;
+            this.heroesTab.Controls.Add(this.button2);
+            this.heroesTab.Controls.Add(this.textBox29);
+            this.heroesTab.Controls.Add(this.textBox30);
+            this.heroesTab.Controls.Add(this.textBox31);
+            this.heroesTab.Controls.Add(this.textBox32);
+            this.heroesTab.Controls.Add(this.textBox28);
+            this.heroesTab.Controls.Add(this.textBox27);
+            this.heroesTab.Controls.Add(this.textBox26);
+            this.heroesTab.Controls.Add(this.textBox25);
+            this.heroesTab.Controls.Add(this.label18);
+            this.heroesTab.Controls.Add(this.label17);
+            this.heroesTab.Controls.Add(this.label16);
+            this.heroesTab.Controls.Add(this.label15);
+            this.heroesTab.Controls.Add(this.label14);
+            this.heroesTab.Controls.Add(this.textBox24);
+            this.heroesTab.Controls.Add(this.pictureBox4);
+            this.heroesTab.Controls.Add(this.lbHeroes);
+            this.heroesTab.Controls.Add(this.hpcHeroProfile);
+            this.heroesTab.Location = new System.Drawing.Point(4, 25);
+            this.heroesTab.Name = "heroesTab";
+            this.heroesTab.Padding = new System.Windows.Forms.Padding(3);
+            this.heroesTab.Size = new System.Drawing.Size(908, 512);
+            this.heroesTab.TabIndex = 4;
+            this.heroesTab.Text = "Heroes";
+            this.heroesTab.UseVisualStyleBackColor = true;
             // 
-            // chbTimerEnabled
+            // button2
             // 
-            this.chbTimerEnabled.AutoSize = true;
-            this.chbTimerEnabled.Location = new System.Drawing.Point(418, 428);
-            this.chbTimerEnabled.Name = "chbTimerEnabled";
-            this.chbTimerEnabled.Size = new System.Drawing.Size(15, 14);
-            this.chbTimerEnabled.TabIndex = 21;
-            this.chbTimerEnabled.UseVisualStyleBackColor = true;
-            this.chbTimerEnabled.CheckedChanged += new System.EventHandler(this.chbTimerEnabled_CheckedChanged);
+            this.button2.Location = new System.Drawing.Point(580, 447);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(310, 44);
+            this.button2.TabIndex = 19;
+            this.button2.Text = "Save Changes";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // trbDefSprites
+            // textBox29
             // 
-            this.trbDefSprites.Location = new System.Drawing.Point(7, 423);
-            this.trbDefSprites.Name = "trbDefSprites";
-            this.trbDefSprites.Size = new System.Drawing.Size(405, 45);
-            this.trbDefSprites.TabIndex = 20;
-            this.trbDefSprites.ValueChanged += new System.EventHandler(this.trbDefSprites_ValueChanged);
-            this.trbDefSprites.VisibleChanged += new System.EventHandler(this.trbDefSprites_ValueChanged);
+            this.textBox29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox29.Location = new System.Drawing.Point(804, 317);
+            this.textBox29.Name = "textBox29";
+            this.textBox29.Size = new System.Drawing.Size(40, 20);
+            this.textBox29.TabIndex = 18;
+            this.textBox29.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // listBox4
+            // textBox30
             // 
-            this.listBox4.FormattingEnabled = true;
-            this.listBox4.Location = new System.Drawing.Point(673, 259);
-            this.listBox4.Name = "listBox4";
-            this.listBox4.Size = new System.Drawing.Size(133, 147);
-            this.listBox4.TabIndex = 19;
-            this.listBox4.SelectedIndexChanged += new System.EventHandler(this.listBox4_SelectedIndexChanged);
+            this.textBox30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox30.Location = new System.Drawing.Point(850, 317);
+            this.textBox30.Name = "textBox30";
+            this.textBox30.Size = new System.Drawing.Size(40, 20);
+            this.textBox30.TabIndex = 17;
+            this.textBox30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // pictureBox7
+            // textBox31
             // 
-            this.pictureBox7.Location = new System.Drawing.Point(7, 6);
-            this.pictureBox7.Name = "pictureBox7";
-            this.pictureBox7.Size = new System.Drawing.Size(640, 401);
-            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox7.TabIndex = 18;
-            this.pictureBox7.TabStop = false;
-            this.pictureBox7.Visible = false;
-            this.pictureBox7.Click += new System.EventHandler(this.pictureBox7_Click);
+            this.textBox31.Location = new System.Drawing.Point(580, 74);
+            this.textBox31.Multiline = true;
+            this.textBox31.Name = "textBox31";
+            this.textBox31.Size = new System.Drawing.Size(310, 123);
+            this.textBox31.TabIndex = 16;
+            // 
+            // textBox32
+            // 
+            this.textBox32.Location = new System.Drawing.Point(580, 216);
+            this.textBox32.Multiline = true;
+            this.textBox32.Name = "textBox32";
+            this.textBox32.Size = new System.Drawing.Size(310, 66);
+            this.textBox32.TabIndex = 15;
+            // 
+            // textBox28
+            // 
+            this.textBox28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox28.Location = new System.Drawing.Point(850, 343);
+            this.textBox28.Name = "textBox28";
+            this.textBox28.Size = new System.Drawing.Size(40, 20);
+            this.textBox28.TabIndex = 14;
+            this.textBox28.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox27
+            // 
+            this.textBox27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox27.Location = new System.Drawing.Point(804, 343);
+            this.textBox27.Name = "textBox27";
+            this.textBox27.Size = new System.Drawing.Size(40, 20);
+            this.textBox27.TabIndex = 13;
+            this.textBox27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox26
+            // 
+            this.textBox26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox26.Location = new System.Drawing.Point(850, 291);
+            this.textBox26.Name = "textBox26";
+            this.textBox26.Size = new System.Drawing.Size(40, 20);
+            this.textBox26.TabIndex = 12;
+            this.textBox26.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox25
+            // 
+            this.textBox25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox25.Location = new System.Drawing.Point(804, 291);
+            this.textBox25.Name = "textBox25";
+            this.textBox25.Size = new System.Drawing.Size(40, 20);
+            this.textBox25.TabIndex = 11;
+            this.textBox25.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(577, 200);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(52, 13);
+            this.label18.TabIndex = 8;
+            this.label18.Text = "Speciality";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(582, 346);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(66, 13);
+            this.label17.TabIndex = 7;
+            this.label17.Text = "Unit Stack 3";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(582, 294);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(66, 13);
+            this.label16.TabIndex = 6;
+            this.label16.Text = "Unit Stack 1";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(582, 320);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(66, 13);
+            this.label15.TabIndex = 5;
+            this.label15.Text = "Unit Stack 2";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(577, 58);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(54, 13);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "Biography";
+            // 
+            // textBox24
+            // 
+            this.textBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox24.Location = new System.Drawing.Point(580, 12);
+            this.textBox24.Name = "textBox24";
+            this.textBox24.Size = new System.Drawing.Size(227, 29);
+            this.textBox24.TabIndex = 3;
+            this.textBox24.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.ContextMenuStrip = this.contextMenuStrip1;
+            this.pictureBox4.Location = new System.Drawing.Point(826, 10);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(64, 37);
+            this.pictureBox4.TabIndex = 2;
+            this.pictureBox4.TabStop = false;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.завантажитиToolStripMenuItem,
+            this.зберегтиToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 48);
+            // 
+            // завантажитиToolStripMenuItem
+            // 
+            this.завантажитиToolStripMenuItem.Name = "завантажитиToolStripMenuItem";
+            this.завантажитиToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.завантажитиToolStripMenuItem.Text = "Завантажити";
+            this.завантажитиToolStripMenuItem.Click += new System.EventHandler(this.завантажитиToolStripMenuItem_Click);
+            // 
+            // зберегтиToolStripMenuItem
+            // 
+            this.зберегтиToolStripMenuItem.Name = "зберегтиToolStripMenuItem";
+            this.зберегтиToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.зберегтиToolStripMenuItem.Text = "Зберегти";
+            this.зберегтиToolStripMenuItem.Click += new System.EventHandler(this.зберегтиToolStripMenuItem_Click);
+            // 
+            // lbHeroes
+            // 
+            this.lbHeroes.FormattingEnabled = true;
+            this.lbHeroes.Location = new System.Drawing.Point(6, 9);
+            this.lbHeroes.Name = "lbHeroes";
+            this.lbHeroes.Size = new System.Drawing.Size(130, 485);
+            this.lbHeroes.TabIndex = 0;
+            this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
+            // 
+            // hpcHeroProfile
+            // 
+            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hpcHeroProfile.Hero = null;
+            this.hpcHeroProfile.HeroIndex = 0;
+            this.hpcHeroProfile.Image = null;
+            this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
+            this.hpcHeroProfile.Name = "hpcHeroProfile";
+            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
+            this.hpcHeroProfile.TabIndex = 22;
             // 
             // h_classTab
             // 
@@ -444,8 +586,7 @@
             this.h_classTab.Controls.Add(this.textBox50);
             this.h_classTab.Controls.Add(this.textBox49);
             this.h_classTab.Controls.Add(this.label26);
-            this.h_classTab.Controls.Add(this.label27);
-            this.h_classTab.Controls.Add(this.label25);
+            this.h_classTab.Controls.Add(this.lblStartParams);
             this.h_classTab.Controls.Add(this.textBox43);
             this.h_classTab.Controls.Add(this.textBox44);
             this.h_classTab.Controls.Add(this.textBox45);
@@ -473,7 +614,7 @@
             this.h_classTab.Padding = new System.Windows.Forms.Padding(3);
             this.h_classTab.Size = new System.Drawing.Size(908, 512);
             this.h_classTab.TabIndex = 3;
-            this.h_classTab.Text = "Класи ";
+            this.h_classTab.Text = "Hero Classes";
             this.h_classTab.UseVisualStyleBackColor = true;
             // 
             // textBox68
@@ -732,36 +873,26 @@
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label26.Location = new System.Drawing.Point(259, 184);
+            this.label26.Location = new System.Drawing.Point(264, 137);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(49, 13);
+            this.label26.Size = new System.Drawing.Size(31, 13);
             this.label26.TabIndex = 60;
-            this.label26.Text = "1 рівня";
+            this.label26.Text = "1 lvl";
             // 
-            // label27
+            // lblStartParams
             // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label27.Location = new System.Drawing.Point(246, 166);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(73, 13);
-            this.label27.TabIndex = 59;
-            this.label27.Text = "Параметри";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label25.Location = new System.Drawing.Point(335, 180);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(86, 13);
-            this.label25.TabIndex = 58;
-            this.label25.Text = "появи (з 100)";
+            this.lblStartParams.AutoSize = true;
+            this.lblStartParams.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblStartParams.Location = new System.Drawing.Point(248, 122);
+            this.lblStartParams.Name = "lblStartParams";
+            this.lblStartParams.Size = new System.Drawing.Size(70, 13);
+            this.lblStartParams.TabIndex = 59;
+            this.lblStartParams.Text = "Parameters";
             // 
             // textBox43
             // 
             this.textBox43.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox43.Location = new System.Drawing.Point(379, 365);
+            this.textBox43.Location = new System.Drawing.Point(379, 166);
             this.textBox43.Name = "textBox43";
             this.textBox43.Size = new System.Drawing.Size(48, 20);
             this.textBox43.TabIndex = 57;
@@ -770,7 +901,7 @@
             // textBox44
             // 
             this.textBox44.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox44.Location = new System.Drawing.Point(379, 320);
+            this.textBox44.Location = new System.Drawing.Point(379, 211);
             this.textBox44.Name = "textBox44";
             this.textBox44.Size = new System.Drawing.Size(48, 20);
             this.textBox44.TabIndex = 56;
@@ -779,7 +910,7 @@
             // textBox45
             // 
             this.textBox45.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox45.Location = new System.Drawing.Point(379, 273);
+            this.textBox45.Location = new System.Drawing.Point(379, 258);
             this.textBox45.Name = "textBox45";
             this.textBox45.Size = new System.Drawing.Size(48, 20);
             this.textBox45.TabIndex = 55;
@@ -788,7 +919,7 @@
             // textBox46
             // 
             this.textBox46.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox46.Location = new System.Drawing.Point(379, 228);
+            this.textBox46.Location = new System.Drawing.Point(379, 303);
             this.textBox46.Name = "textBox46";
             this.textBox46.Size = new System.Drawing.Size(48, 20);
             this.textBox46.TabIndex = 54;
@@ -797,7 +928,7 @@
             // textBox39
             // 
             this.textBox39.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox39.Location = new System.Drawing.Point(321, 365);
+            this.textBox39.Location = new System.Drawing.Point(321, 166);
             this.textBox39.Name = "textBox39";
             this.textBox39.Size = new System.Drawing.Size(48, 20);
             this.textBox39.TabIndex = 53;
@@ -806,7 +937,7 @@
             // textBox40
             // 
             this.textBox40.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox40.Location = new System.Drawing.Point(321, 320);
+            this.textBox40.Location = new System.Drawing.Point(321, 211);
             this.textBox40.Name = "textBox40";
             this.textBox40.Size = new System.Drawing.Size(48, 20);
             this.textBox40.TabIndex = 52;
@@ -815,7 +946,7 @@
             // textBox41
             // 
             this.textBox41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox41.Location = new System.Drawing.Point(321, 273);
+            this.textBox41.Location = new System.Drawing.Point(321, 258);
             this.textBox41.Name = "textBox41";
             this.textBox41.Size = new System.Drawing.Size(48, 20);
             this.textBox41.TabIndex = 51;
@@ -824,7 +955,7 @@
             // textBox42
             // 
             this.textBox42.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox42.Location = new System.Drawing.Point(321, 228);
+            this.textBox42.Location = new System.Drawing.Point(321, 303);
             this.textBox42.Name = "textBox42";
             this.textBox42.Size = new System.Drawing.Size(48, 20);
             this.textBox42.TabIndex = 50;
@@ -833,7 +964,7 @@
             // textBox38
             // 
             this.textBox38.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox38.Location = new System.Drawing.Point(267, 365);
+            this.textBox38.Location = new System.Drawing.Point(267, 303);
             this.textBox38.Name = "textBox38";
             this.textBox38.Size = new System.Drawing.Size(36, 20);
             this.textBox38.TabIndex = 49;
@@ -842,7 +973,7 @@
             // textBox37
             // 
             this.textBox37.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox37.Location = new System.Drawing.Point(267, 320);
+            this.textBox37.Location = new System.Drawing.Point(267, 258);
             this.textBox37.Name = "textBox37";
             this.textBox37.Size = new System.Drawing.Size(36, 20);
             this.textBox37.TabIndex = 48;
@@ -851,7 +982,7 @@
             // textBox36
             // 
             this.textBox36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox36.Location = new System.Drawing.Point(267, 273);
+            this.textBox36.Location = new System.Drawing.Point(267, 211);
             this.textBox36.Name = "textBox36";
             this.textBox36.Size = new System.Drawing.Size(36, 20);
             this.textBox36.TabIndex = 47;
@@ -860,7 +991,7 @@
             // textBox35
             // 
             this.textBox35.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox35.Location = new System.Drawing.Point(267, 228);
+            this.textBox35.Location = new System.Drawing.Point(267, 166);
             this.textBox35.Name = "textBox35";
             this.textBox35.Size = new System.Drawing.Size(36, 20);
             this.textBox35.TabIndex = 46;
@@ -870,7 +1001,7 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label24.Location = new System.Drawing.Point(389, 205);
+            this.label24.Location = new System.Drawing.Point(388, 140);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(28, 13);
             this.label24.TabIndex = 45;
@@ -880,7 +1011,7 @@
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label23.Location = new System.Drawing.Point(334, 205);
+            this.label23.Location = new System.Drawing.Point(333, 140);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(25, 13);
             this.label23.TabIndex = 44;
@@ -890,11 +1021,11 @@
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label22.Location = new System.Drawing.Point(337, 165);
+            this.label22.Location = new System.Drawing.Point(328, 122);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(79, 13);
+            this.label22.Size = new System.Drawing.Size(93, 13);
             this.label22.TabIndex = 34;
-            this.label22.Text = "Ймовірність";
+            this.label22.Text = "Stat Probability";
             // 
             // label21
             // 
@@ -902,9 +1033,9 @@
             this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label21.Location = new System.Drawing.Point(593, 122);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(162, 13);
+            this.label21.Size = new System.Drawing.Size(94, 13);
             this.label21.TabIndex = 33;
-            this.label21.Text = "Ймовірність появи (з 112)";
+            this.label21.Text = "Skill Probability";
             // 
             // textBox34
             // 
@@ -928,7 +1059,7 @@
             // pictureBox6
             // 
             this.pictureBox6.Image = global::h3magic.Properties.Resources.ttt;
-            this.pictureBox6.Location = new System.Drawing.Point(203, 217);
+            this.pictureBox6.Location = new System.Drawing.Point(203, 155);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(48, 180);
             this.pictureBox6.TabIndex = 35;
@@ -937,19 +1068,19 @@
             // lbHeroClasses
             // 
             this.lbHeroClasses.FormattingEnabled = true;
-            this.lbHeroClasses.Location = new System.Drawing.Point(19, 16);
+            this.lbHeroClasses.Location = new System.Drawing.Point(6, 9);
             this.lbHeroClasses.Name = "lbHeroClasses";
-            this.lbHeroClasses.Size = new System.Drawing.Size(163, 433);
+            this.lbHeroClasses.Size = new System.Drawing.Size(130, 485);
             this.lbHeroClasses.TabIndex = 1;
             this.lbHeroClasses.SelectedIndexChanged += new System.EventHandler(this.listBox3_SelectedIndexChanged);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(225, 426);
+            this.button3.Location = new System.Drawing.Point(210, 426);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(189, 23);
+            this.button3.Size = new System.Drawing.Size(211, 35);
             this.button3.TabIndex = 0;
-            this.button3.Text = "Зберегти зміни";
+            this.button3.Text = "Save Changes";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -961,230 +1092,6 @@
             this.pbSkillTree.Size = new System.Drawing.Size(431, 309);
             this.pbSkillTree.TabIndex = 32;
             this.pbSkillTree.TabStop = false;
-            // 
-            // heroesTab
-            // 
-            this.heroesTab.Controls.Add(this.label19);
-            this.heroesTab.Controls.Add(this.button2);
-            this.heroesTab.Controls.Add(this.textBox29);
-            this.heroesTab.Controls.Add(this.textBox30);
-            this.heroesTab.Controls.Add(this.textBox31);
-            this.heroesTab.Controls.Add(this.textBox32);
-            this.heroesTab.Controls.Add(this.textBox28);
-            this.heroesTab.Controls.Add(this.textBox27);
-            this.heroesTab.Controls.Add(this.textBox26);
-            this.heroesTab.Controls.Add(this.textBox25);
-            this.heroesTab.Controls.Add(this.label18);
-            this.heroesTab.Controls.Add(this.label17);
-            this.heroesTab.Controls.Add(this.label16);
-            this.heroesTab.Controls.Add(this.label15);
-            this.heroesTab.Controls.Add(this.label14);
-            this.heroesTab.Controls.Add(this.textBox24);
-            this.heroesTab.Controls.Add(this.pictureBox4);
-            this.heroesTab.Controls.Add(this.lbHeroes);
-            this.heroesTab.Controls.Add(this.hpcHeroProfile);
-            this.heroesTab.Location = new System.Drawing.Point(4, 25);
-            this.heroesTab.Name = "heroesTab";
-            this.heroesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.heroesTab.Size = new System.Drawing.Size(908, 512);
-            this.heroesTab.TabIndex = 4;
-            this.heroesTab.Text = "Герої";
-            this.heroesTab.UseVisualStyleBackColor = true;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(849, 291);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(41, 13);
-            this.label19.TabIndex = 21;
-            this.label19.Text = "label19";
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(598, 383);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(125, 23);
-            this.button2.TabIndex = 19;
-            this.button2.Text = "Зберегти зміни";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // textBox29
-            // 
-            this.textBox29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox29.Location = new System.Drawing.Point(637, 314);
-            this.textBox29.Name = "textBox29";
-            this.textBox29.Size = new System.Drawing.Size(40, 20);
-            this.textBox29.TabIndex = 18;
-            this.textBox29.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox30
-            // 
-            this.textBox30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox30.Location = new System.Drawing.Point(683, 314);
-            this.textBox30.Name = "textBox30";
-            this.textBox30.Size = new System.Drawing.Size(40, 20);
-            this.textBox30.TabIndex = 17;
-            this.textBox30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox31
-            // 
-            this.textBox31.Location = new System.Drawing.Point(580, 74);
-            this.textBox31.Multiline = true;
-            this.textBox31.Name = "textBox31";
-            this.textBox31.Size = new System.Drawing.Size(310, 123);
-            this.textBox31.TabIndex = 16;
-            // 
-            // textBox32
-            // 
-            this.textBox32.Location = new System.Drawing.Point(580, 216);
-            this.textBox32.Multiline = true;
-            this.textBox32.Name = "textBox32";
-            this.textBox32.Size = new System.Drawing.Size(310, 66);
-            this.textBox32.TabIndex = 15;
-            // 
-            // textBox28
-            // 
-            this.textBox28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox28.Location = new System.Drawing.Point(683, 340);
-            this.textBox28.Name = "textBox28";
-            this.textBox28.Size = new System.Drawing.Size(40, 20);
-            this.textBox28.TabIndex = 14;
-            this.textBox28.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox27
-            // 
-            this.textBox27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox27.Location = new System.Drawing.Point(637, 340);
-            this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new System.Drawing.Size(40, 20);
-            this.textBox27.TabIndex = 13;
-            this.textBox27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox26
-            // 
-            this.textBox26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox26.Location = new System.Drawing.Point(683, 288);
-            this.textBox26.Name = "textBox26";
-            this.textBox26.Size = new System.Drawing.Size(40, 20);
-            this.textBox26.TabIndex = 12;
-            this.textBox26.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // textBox25
-            // 
-            this.textBox25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox25.Location = new System.Drawing.Point(637, 288);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(40, 20);
-            this.textBox25.TabIndex = 11;
-            this.textBox25.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(577, 200);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(77, 13);
-            this.label18.TabIndex = 8;
-            this.label18.Text = "Спеціальність";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(582, 343);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(36, 13);
-            this.label17.TabIndex = 7;
-            this.label17.Text = "стек3";
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(582, 291);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(36, 13);
-            this.label16.TabIndex = 6;
-            this.label16.Text = "стек1";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(582, 317);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(36, 13);
-            this.label15.TabIndex = 5;
-            this.label15.Text = "стек2";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(577, 58);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(55, 13);
-            this.label14.TabIndex = 4;
-            this.label14.Text = "Біографія";
-            // 
-            // textBox24
-            // 
-            this.textBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox24.Location = new System.Drawing.Point(580, 9);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.Size = new System.Drawing.Size(268, 29);
-            this.textBox24.TabIndex = 3;
-            this.textBox24.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.ContextMenuStrip = this.contextMenuStrip1;
-            this.pictureBox4.Location = new System.Drawing.Point(593, 457);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(64, 37);
-            this.pictureBox4.TabIndex = 2;
-            this.pictureBox4.TabStop = false;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.завантажитиToolStripMenuItem,
-            this.зберегтиToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 48);
-            // 
-            // завантажитиToolStripMenuItem
-            // 
-            this.завантажитиToolStripMenuItem.Name = "завантажитиToolStripMenuItem";
-            this.завантажитиToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.завантажитиToolStripMenuItem.Text = "Завантажити";
-            this.завантажитиToolStripMenuItem.Click += new System.EventHandler(this.завантажитиToolStripMenuItem_Click);
-            // 
-            // зберегтиToolStripMenuItem
-            // 
-            this.зберегтиToolStripMenuItem.Name = "зберегтиToolStripMenuItem";
-            this.зберегтиToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.зберегтиToolStripMenuItem.Text = "Зберегти";
-            this.зберегтиToolStripMenuItem.Click += new System.EventHandler(this.зберегтиToolStripMenuItem_Click);
-            // 
-            // lbHeroes
-            // 
-            this.lbHeroes.FormattingEnabled = true;
-            this.lbHeroes.Location = new System.Drawing.Point(6, 9);
-            this.lbHeroes.Name = "lbHeroes";
-            this.lbHeroes.Size = new System.Drawing.Size(130, 485);
-            this.lbHeroes.TabIndex = 0;
-            this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
-            // 
-            // hpcHeroProfile
-            // 
-            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.hpcHeroProfile.Hero = null;
-            this.hpcHeroProfile.HeroIndex = 0;
-            this.hpcHeroProfile.Image = null;
-            this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
-            this.hpcHeroProfile.Name = "hpcHeroProfile";
-            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
-            this.hpcHeroProfile.TabIndex = 22;
             // 
             // creaturesTab
             // 
@@ -1233,7 +1140,7 @@
             this.creaturesTab.Padding = new System.Windows.Forms.Padding(3);
             this.creaturesTab.Size = new System.Drawing.Size(908, 512);
             this.creaturesTab.TabIndex = 1;
-            this.creaturesTab.Text = "Створіння";
+            this.creaturesTab.Text = "Creatures";
             this.creaturesTab.UseVisualStyleBackColor = true;
             // 
             // button1
@@ -1613,41 +1520,102 @@
             this.spellsTab.Name = "spellsTab";
             this.spellsTab.Size = new System.Drawing.Size(908, 512);
             this.spellsTab.TabIndex = 5;
-            this.spellsTab.Text = "Закляття";
+            this.spellsTab.Text = "Spells";
             this.spellsTab.UseVisualStyleBackColor = true;
+            // 
+            // mainTab
+            // 
+            this.mainTab.Controls.Add(this.chbTimerEnabled);
+            this.mainTab.Controls.Add(this.trbDefSprites);
+            this.mainTab.Controls.Add(this.lbDecomposed);
+            this.mainTab.Controls.Add(this.pbResourceView);
+            this.mainTab.Controls.Add(this.rtbMain);
+            this.mainTab.Controls.Add(this.button8);
+            this.mainTab.Controls.Add(this.ldBmp);
+            this.mainTab.Controls.Add(this.cb_Filter);
+            this.mainTab.Controls.Add(this.button5);
+            this.mainTab.Controls.Add(this.lbFiles);
+            this.mainTab.Controls.Add(this.button4);
+            this.mainTab.Location = new System.Drawing.Point(4, 25);
+            this.mainTab.Name = "mainTab";
+            this.mainTab.Padding = new System.Windows.Forms.Padding(3);
+            this.mainTab.Size = new System.Drawing.Size(908, 512);
+            this.mainTab.TabIndex = 0;
+            this.mainTab.Text = "Resources";
+            this.mainTab.UseVisualStyleBackColor = true;
+            // 
+            // chbTimerEnabled
+            // 
+            this.chbTimerEnabled.AutoSize = true;
+            this.chbTimerEnabled.Location = new System.Drawing.Point(418, 428);
+            this.chbTimerEnabled.Name = "chbTimerEnabled";
+            this.chbTimerEnabled.Size = new System.Drawing.Size(15, 14);
+            this.chbTimerEnabled.TabIndex = 21;
+            this.chbTimerEnabled.UseVisualStyleBackColor = true;
+            this.chbTimerEnabled.CheckedChanged += new System.EventHandler(this.chbTimerEnabled_CheckedChanged);
+            // 
+            // trbDefSprites
+            // 
+            this.trbDefSprites.Location = new System.Drawing.Point(7, 423);
+            this.trbDefSprites.Name = "trbDefSprites";
+            this.trbDefSprites.Size = new System.Drawing.Size(405, 45);
+            this.trbDefSprites.TabIndex = 20;
+            this.trbDefSprites.ValueChanged += new System.EventHandler(this.trbDefSprites_ValueChanged);
+            this.trbDefSprites.VisibleChanged += new System.EventHandler(this.trbDefSprites_ValueChanged);
+            // 
+            // lbDecomposed
+            // 
+            this.lbDecomposed.FormattingEnabled = true;
+            this.lbDecomposed.Location = new System.Drawing.Point(673, 259);
+            this.lbDecomposed.Name = "lbDecomposed";
+            this.lbDecomposed.Size = new System.Drawing.Size(133, 147);
+            this.lbDecomposed.TabIndex = 19;
+            this.lbDecomposed.SelectedIndexChanged += new System.EventHandler(this.lbDecomposed_SelectedIndexChanged);
+            // 
+            // pbResourceView
+            // 
+            this.pbResourceView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbResourceView.Location = new System.Drawing.Point(7, 6);
+            this.pbResourceView.Name = "pbResourceView";
+            this.pbResourceView.Size = new System.Drawing.Size(640, 401);
+            this.pbResourceView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbResourceView.TabIndex = 18;
+            this.pbResourceView.TabStop = false;
+            this.pbResourceView.Visible = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(939, 612);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabsMain);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "h3Magic";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.mainTab.ResumeLayout(false);
-            this.mainTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
-            this.h_classTab.ResumeLayout(false);
-            this.h_classTab.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).EndInit();
+            this.tabsMain.ResumeLayout(false);
             this.heroesTab.ResumeLayout(false);
             this.heroesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.h_classTab.ResumeLayout(false);
+            this.h_classTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).EndInit();
             this.creaturesTab.ResumeLayout(false);
             this.creaturesTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.mainTab.ResumeLayout(false);
+            this.mainTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbResourceView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1670,7 +1638,7 @@
         private System.Windows.Forms.ToolStripMenuItem m_exit;
         private System.Windows.Forms.ComboBox cb_Filter;
         private System.Windows.Forms.Button ldBmp;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl tabsMain;
         private System.Windows.Forms.TabPage mainTab;
         private System.Windows.Forms.TabPage creaturesTab;
         private System.Windows.Forms.PictureBox pictureBox1;
@@ -1740,8 +1708,7 @@
         private System.Windows.Forms.TextBox textBox36;
         private System.Windows.Forms.TextBox textBox35;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label lblStartParams;
         private System.Windows.Forms.TextBox textBox61;
         private System.Windows.Forms.TextBox textBox62;
         private System.Windows.Forms.TextBox textBox63;
@@ -1789,11 +1756,10 @@
         private System.Windows.Forms.TextBox textBox32;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage spellsTab;
-        private System.Windows.Forms.ListBox listBox4;
-        private System.Windows.Forms.PictureBox pictureBox7;
+        private System.Windows.Forms.ListBox lbDecomposed;
+        private System.Windows.Forms.PictureBox pbResourceView;
         private System.Windows.Forms.TrackBar trbDefSprites;
         private System.Windows.Forms.CheckBox chbTimerEnabled;
-        private System.Windows.Forms.Label label19;
         private HeroProfileControl hpcHeroProfile;
     }
 }

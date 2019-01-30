@@ -33,7 +33,7 @@ namespace h3magic
 
         public HeroProfileControl()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         //331 288
@@ -138,24 +138,30 @@ namespace h3magic
 
         private void PictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (lastRectIndex >= 0)
+            if (Hero != null)
             {
-                var rectF = Multiply(areas[lastRectIndex], ratio);
-                rectF.Offset(dx, dy);
-                var pen = new Pen(Color.LightSkyBlue, 2);
-                //pen.Alignment = PenAlignment.Inset; //<-- this
+                if (lastRectIndex >= 0)
+                {
+                    var rectF = Multiply(areas[lastRectIndex], ratio);
+                    rectF.Offset(dx, dy);
+                    var pen = new Pen(Color.LightSkyBlue, 2);
+                    //pen.Alignment = PenAlignment.Inset; //<-- this
 
-                e.Graphics.DrawRectangle(pen, Rectangle.Round(rectF));
+                    e.Graphics.DrawRectangle(pen, Rectangle.Round(rectF));
+                }
             }
         }
 
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            int index = GetBoundingRectangleIndex(e.X, e.Y, ratio, dx, dy);
-            if (index != lastRectIndex)
+            if (Hero != null)
             {
-                lastRectIndex = index;
-                PictureBox.Invalidate();
+                int index = GetBoundingRectangleIndex(e.X, e.Y, ratio, dx, dy);
+                if (index != lastRectIndex)
+                {
+                    lastRectIndex = index;
+                    PictureBox.Invalidate();
+                }
             }
         }
 

@@ -53,6 +53,7 @@ namespace h3magic
 
         public static Bitmap GetSkillTree(LodFile h3sprite)
         {
+            var sw = Stopwatch.StartNew();
             if (skillTree != null)
                 return skillTree;
 
@@ -65,6 +66,8 @@ namespace h3magic
                         g.DrawImage(def.GetByAbsoluteNumber(3 + (i * 7 + j) * 3), i * 104, 44 * j);
             }
             skillTree = bmp;
+            float ms = sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency;
+            Debug.WriteLine("skilltree: " + ms);
             return skillTree;
         }
 
