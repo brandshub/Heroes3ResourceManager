@@ -131,8 +131,8 @@ namespace h3magic
                 CreatureManager.Save(this);
             if (HeroesManager.Loaded)
                 HeroesManager.Save(this);
-            if (HeroClassManager.Loaded)
-                HeroClassManager.Save(this);
+            //TODO
+            HeroClass.Save(this);
 
             FileStream fs = new FileStream(fileName, FileMode.Create);
             byte[] buffer = new byte[4096];

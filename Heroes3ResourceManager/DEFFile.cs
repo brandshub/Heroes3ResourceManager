@@ -6,6 +6,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace h3magic
 {
@@ -22,6 +23,7 @@ namespace h3magic
         public List<SpriteBlockHeader> headers;
 
         private byte[,] palette = new byte[256, 3];
+        private int[] palette2 = new int[256];
         private byte[] bytes;
 
 
@@ -69,6 +71,19 @@ namespace h3magic
             return null;
         }
 
+        public byte[] GetByAbsoluteNumber2(int number)
+        {
+
+            for (int i = 0; i < headers.Count; i++)
+            {
+                if (number >= headers[i].SpritesCount)
+                    number -= headers[i].SpritesCount;
+                else
+                    return GetSprite2(i, number);
+            }
+            return null;
+        }
+
         public void LoadPalette()
         {
             for (int i = 0; i < 256; i++)
@@ -76,6 +91,8 @@ namespace h3magic
                 palette[i, 0] = bytes[PALETTE_OFFSET + i * 3];
                 palette[i, 1] = bytes[PALETTE_OFFSET + i * 3 + 1];
                 palette[i, 2] = bytes[PALETTE_OFFSET + i * 3 + 2];
+
+                palette2[i] = palette[i, 2] | (palette[i, 1] << 8) | (palette[i, 0] << 16);
             }
         }
 
@@ -92,7 +109,6 @@ namespace h3magic
 
         public unsafe Bitmap GetSprite(int blockIndex, int spriteIndex)
         {
-            var sw = Stopwatch.StartNew();
             SpriteBlockHeader sbh = headers[blockIndex];
 
             spriteIndex = spriteIndex % sbh.spriteHeaders.Count;
@@ -100,24 +116,23 @@ namespace h3magic
             var sh = sbh.spriteHeaders[spriteIndex];
             int offset = sbh.Offsets[spriteIndex];
 
-            Bitmap bmp = new Bitmap(sh.FullWidth, sh.FullHeight, PixelFormat.Format24bppRgb);
-            Color c = Color.FromArgb(palette[0, 0], palette[0, 1], palette[0, 2]);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                g.FillRectangle(new SolidBrush(c), 0, 0, sh.FullWidth, sh.FullHeight);
-            }
-            BitmapData imageData = bmp.LockBits(new Rectangle(0, 0, sh.FullWidth, sh.FullHeight), ImageLockMode.ReadWrite, bmp.PixelFormat);
+            var bmp = new Bitmap(sh.FullWidth, sh.FullHeight, PixelFormat.Format24bppRgb);
+            var color = Color.FromArgb(palette[0, 0], palette[0, 1], palette[0, 2]);
+            using (var g = Graphics.FromImage(bmp))            
+                g.FillRectangle(new SolidBrush(color), 0, 0, sh.FullWidth, sh.FullHeight);
+            
+            var imageData = bmp.LockBits(new Rectangle(0, 0, sh.FullWidth, sh.FullHeight), ImageLockMode.ReadWrite, bmp.PixelFormat);
 
-            double r1 = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
             offset += 32;
-
+            //TODO apply same byte logic as for loadsprite12
             if (sh.Type == 0)
             {
                 LoadSpriteType0(sh, imageData, offset);
             }
             else if (sh.Type == 1)
             {
-                LoadSpriteType1(sh, imageData, offset);
+                var d = LoadSpriteType12(sh, bytes, offset);
+                Marshal.Copy(d, 0, imageData.Scan0, d.Length);
             }
             else if (sh.Type == 2)
             {
@@ -128,9 +143,22 @@ namespace h3magic
                 LoadSpriteType3(sh, imageData, offset);
             }
             bmp.UnlockBits(imageData);
-            double result = sw.ElapsedTicks * 1000.0 / Stopwatch.Frequency;
-            //Debug.WriteLine("sprite load: " + result);
             return bmp;
+        }
+
+        public unsafe byte[] GetSprite2(int blockIndex, int spriteIndex)
+        {
+            SpriteBlockHeader sbh = headers[blockIndex];
+            spriteIndex = spriteIndex % sbh.spriteHeaders.Count;
+
+            var sh = sbh.spriteHeaders[spriteIndex];
+            int offset = sbh.Offsets[spriteIndex];
+            offset += 32;
+
+            if (sh.Type == 1)
+                return LoadSpriteType12(sh, bytes, offset);
+
+            throw new Exception("wrong type");
         }
 
         private unsafe void LoadSpriteType0(SpriteHeader sh, BitmapData data, int offset)
@@ -159,7 +187,35 @@ namespace h3magic
             //Debug.WriteLine("t0: " + result);
         }
 
+        private byte[,] LoadSpriteType0(SpriteHeader sh, byte[] data, int offset)
+        {
+            var sw = Stopwatch.StartNew();
+            var imageBytes = new byte[sh.FullHeight, sh.FullWidth * 3];
+            int padding = ((4 - ((sh.FullWidth * 3) % 4)) % 4) * 3;
 
+            int pos = offset;
+            for (int i = 0; i < sh.SpriteHeight; i++)
+            {
+                int currentCol = 0;
+                for (int j = 0; j < sh.SpriteWidth; j++)
+                {
+                    byte color = bytes[pos++];
+                    imageBytes[i, currentCol++] = palette[color, 2];
+                    imageBytes[i, currentCol++] = palette[color, 1];
+                    imageBytes[i, currentCol++] = palette[color, 0];
+                }
+
+                for (int j = 0; j < padding; j++)
+                {
+                    imageBytes[i, currentCol++] = palette[0, 2];
+                    imageBytes[i, currentCol++] = palette[0, 1];
+                    imageBytes[i, currentCol++] = palette[0, 0];
+                }
+            }
+            double result = sw.ElapsedTicks / (double)Stopwatch.Frequency;
+            Debug.WriteLine("LoadSpriteType0: " + result);
+            return imageBytes;
+        }
 
         private unsafe void LoadSpriteType1(SpriteHeader sh, BitmapData data, int offset)
         {
@@ -228,28 +284,94 @@ namespace h3magic
                         }
 
                     }
-                    /* else if(type== 6)
-                     {
-                         for (int j = 0; j < blength; j++)
-                         {                            
-                             *currentRow = palette[6, 2];
-                             currentRow++;
-                             *currentRow = palette[6, 1];
-                             currentRow++;
-                             *currentRow = palette[6, 0];
-                             currentRow++;                       
-                         }
-                     }
-                     else
-                     {
-                         currentRow += 3 * blength;
-                     }*/
                 }
-
-
             }
             double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
-           // Debug.WriteLine("t1: " + result);
+            // Debug.WriteLine("t1: " + result);
+        }
+
+
+        private unsafe byte[] LoadSpriteType12(SpriteHeader sh, byte[] data, int offset)
+        {
+
+
+            int len = sh.SpriteHeight;
+            int tm = sh.TopMargin;
+            int lm = sh.LeftMargin;
+            int sw = sh.SpriteWidth;
+
+            if (sh.SpriteHeight > sh.FullHeight)
+            {
+                len = sh.FullHeight;
+                tm = 0;
+                lm = 0;
+                sw = 0;
+                offset -= 16;
+            }
+
+            int type, blength;
+            int bWidth = sh.FullWidth * 3;
+            if (bWidth % 4 != 0)
+                bWidth += 4 - bWidth % 4;
+
+
+            int bw4 = bWidth / 4;
+
+            var imageBytes = new byte[sh.FullHeight * bWidth];
+
+            int[] ffsets = new int[len];
+            for (int i = 0; i < len; i++)
+                ffsets[i] = BitConverter.ToInt32(bytes, offset + i * 4);
+
+            int currentCol = 0;
+            int boundary = imageBytes.Length / 3;
+
+            /*  while (currentCol < boundary)
+              {
+                  imageBytes[currentCol++] = palette[0, 2];
+                  imageBytes[currentCol++] = palette[0, 1];
+                  imageBytes[currentCol++] = palette[0, 0];
+              }*/
+
+
+            fixed (byte* ptr = imageBytes)
+            {
+                for (int i = 0; i < len; i++)
+                {
+                    int pos = ffsets[i] + offset;
+                    currentCol = i * bWidth + lm * 3;
+
+                    int bound;
+                    if (i < len - 1)
+                        bound = offset + ffsets[i + 1];
+                    else
+                        bound = Math.Min(offset + ffsets[i] + sw, bytes.Length);
+
+                    while (pos < bound)
+                    {
+                        type = bytes[pos++];
+                        blength = (bytes[pos++] + 1);
+                        if (type == 0xff)
+                        {
+                            for (int j = 0; j < blength; j++)
+                            {
+                                *((int*)(ptr + currentCol)) = palette2[bytes[pos]];
+                                currentCol += 3;
+                                pos++;
+                            }
+                        }
+                        else
+                        {
+                            for (int j = 0; j < blength; j++)
+                            {
+                                *((int*)(ptr + currentCol)) = palette2[type];
+                                currentCol += 3;
+                            }
+                        }
+                    }
+                }
+            }
+            return imageBytes;
         }
 
         private unsafe void LoadSpriteType2(SpriteHeader sh, BitmapData data, int offset)

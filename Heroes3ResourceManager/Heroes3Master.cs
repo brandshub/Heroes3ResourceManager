@@ -21,7 +21,7 @@ namespace h3magic
         }
 
 
-        public static Heroes3Master LoadData(string executablePath)
+        public static Heroes3Master LoadInfo(string executablePath)
         {
             Master = new Heroes3Master();
             Master.Executable = new ExeFile(executablePath);
@@ -46,6 +46,15 @@ namespace h3magic
                     fs.Close();
                 }
             }
+
+            HeroesManager.LoadInfo(Master.H3Bitmap);
+            HeroClass.LoadInfo(Master.H3Bitmap);
+            CreatureManager.LoadInfo(Master.H3Bitmap);
+            SpellStat.LoadInfo(Master.H3Bitmap);
+            SecondarySkill.LoadInfo(Master.H3Bitmap);
+
+            Speciality.LoadInfo(Master.Executable.Data);
+            HeroExeData.LoadInfo(Master.Executable.Data);
 
             return Master;
         }

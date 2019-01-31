@@ -32,23 +32,26 @@ namespace h3magic
         public int Index { get; private set; }
 
         public HeroStats Hero { get { if (HeroesManager.Loaded) return HeroesManager.AllHeroes[Index]; return null; } }
-        public HeroClass Class { get { return HeroClassManager.AllClasses[ClassIndex]; } }
+        public HeroClass Class { get { return HeroClass.GetByIndex(ClassIndex); } }
 
-        public CreatureStats Creature1 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[Unit1Index]; return null; } }
-        public CreatureStats Creature2 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[Unit2Index]; return null; } }
-        public CreatureStats Creature3 { get { if (CreatureManager.Loaded) return CreatureManager.AllCreatures[Unit3Index]; return null; } }
+        public Creature Creature1 { get { return CreatureManager.GetByIndex(Unit1Index); } }
+        public Creature Creature2 { get { return CreatureManager.GetByIndex(Unit2Index); } }
+        public Creature Creature3 { get { return CreatureManager.GetByIndex(Unit3Index); } }
 
         public SecondarySkill Skill1 { get { if (SecondarySkill.Loaded) return SecondarySkill.AllSkills[FirstSkillIndex]; return null; } }
         public SecondarySkill Skill2 { get { if (SecondarySkill.Loaded && SecondSkillIndex != -1) return SecondarySkill.AllSkills[SecondSkillIndex]; return null; } }
 
         public SpellStat Spell { get { return SpellStat.GetSpellByIndex(SpellIndex); } }
 
-        public static void LoadData(byte[] executableBinary)
+        public Speciality Spec { get { return Speciality.GetByIndex(Index); } }
+
+
+        public static void LoadInfo(byte[] executableBinary)
         {
             if (Data == null)
             {
                 Data = new List<HeroExeData>();
-                int startOffset = (int)HeroesSection.FindOffset1(executableBinary);
+                int startOffset = (int)HeroesSection.FindHeroOffset1(executableBinary);
                 int currentOffset = startOffset;
                 int bound = HeroesManager.AllHeroes.Count;
                 for (int i = 0; i < bound; i++)

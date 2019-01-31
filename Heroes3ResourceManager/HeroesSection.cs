@@ -17,78 +17,19 @@ namespace h3magic
         public static long HeroOffset1 { get; private set; }
         public static long HeroOffset2 { get; private set; }
 
-        public static long FindOffset1(byte[] data)
+        public static long FindHeroOffset1(byte[] data)
         {
-            HeroOffset1 = FindPosition3(data, firstHero) - 4;
+            HeroOffset1 = FindPosition(data, firstHero) - 4;
             return HeroOffset1;
         }
 
-        public static long FindOffsetX(byte[] data)
+        public static long FindHeroOffset2(byte[] data)
         {
-            HeroOffset2 = FindPosition3(data, heroSpecs) - 4;
+            HeroOffset2 = FindPosition(data, heroSpecs) - 4;
             return HeroOffset2;
-        }       
-
-        public static long FindPosition2(Stream stream, byte[] byteSequence)
-        {
-            if (byteSequence.Length > stream.Length)
-                return -1;
-            var bytes = new byte[stream.Length];
-            stream.Position = 0;
-            stream.Read(bytes, 0, bytes.Length);
-            byte b0 = byteSequence[0];
-            int limit = bytes.Length - byteSequence.Length;
-            for (int i = 0; i < limit; i++)
-            {
-                if (bytes[i] == b0)
-                {
-                    bool found = true;
-                    for (int j = 1; j < byteSequence.Length; j++)
-                    {
-                        if (bytes[i + j] != byteSequence[j])
-                        {
-                            found = false;
-                            break;
-                        }
-                    }
-
-                    if (found)
-                        return i;
-                }
-            }
-            return -1;
         }
 
-        public static long FindPosition2(byte[] bytes, byte[] byteSequence)
-        {
-            if (byteSequence.Length > bytes.Length)
-                return -1;
-
-            byte b0 = byteSequence[0];
-            int limit = bytes.Length - byteSequence.Length;
-            for (int i = 0; i < limit; i++)
-            {
-                if (bytes[i] == b0)
-                {
-                    bool found = true;
-                    for (int j = 1; j < byteSequence.Length; j++)
-                    {
-                        if (bytes[i + j] != byteSequence[j])
-                        {
-                            found = false;
-                            break;
-                        }
-                    }
-
-                    if (found)
-                        return i;
-                }
-            }
-            return -1;
-        }
-
-
-        public static unsafe long FindPosition3(byte[] bytes, byte[] search)
+        public static unsafe long FindPosition(byte[] bytes, byte[] search)
         {
             if (search.Length > bytes.Length)
                 return -1;
@@ -96,11 +37,11 @@ namespace h3magic
 
             int limit = search.Length >> 2;
             int ub = bytes.Length - search.Length;
-
+            
             fixed (byte* fh = search)
             fixed (byte* bts = bytes)
             {
-                int* fb = (int*)fh;
+                int* fb = (int*)fh;               
 
                 for (int i = 0; i < ub; i++)
                 {
@@ -125,8 +66,7 @@ namespace h3magic
 
             }
             return -1;
-        }
-
+        }      
 
     }
 }

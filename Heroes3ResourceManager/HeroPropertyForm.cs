@@ -24,7 +24,22 @@ namespace h3magic
                 InitPropertyType();
             }
         }
-        public int SelectedValue { get { return selectedValue; } set { selectedValue = value; currentHover = selectedValue; } }
+        public int SelectedValue
+        {
+            get { return selectedValue; }
+            set
+            {
+                if (propertyType == "Creature")
+                {
+                    selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
+                }
+                else
+                {
+                    selectedValue = value;
+                }
+                currentHover = selectedValue;
+            }
+        }
         public int CurrentIndex { get; set; }
 
         public HeroPropertyForm()
@@ -69,8 +84,8 @@ namespace h3magic
             if (currentHover != -1)
             {
                 selectedValue = currentHover;
-                
-                
+
+
                 if (ItemSelected != null)
                     ItemSelected(currentHover);
                 Close();
@@ -93,13 +108,13 @@ namespace h3magic
 
                 if (propertyType == "Creature")
                 {
-                    flag = total < CreatureManager.AllCreatures.Count - 1;
+                    flag = total < CreatureManager.OnlyActiveCreatures.Count - 1;
                 }
                 else if (propertyType == "SecondarySkill")
                 {
                     flag = total < SecondarySkill.AllSkills.Count * 3;
                 }
-                else if(propertyType == "Spell")
+                else if (propertyType == "Spell")
                 {
                     flag = total < SpellStat.AllSpells.Count;
                 }
@@ -168,7 +183,10 @@ namespace h3magic
         private static Bitmap GetImageForPropertyType(string propertyType, int index)
         {
             if (propertyType == "Creature")
-                return CreatureManager.GetImageByCreatureInnerIndex(Heroes3Master.Master.H3Sprite, index);
+            {
+                int realIndex = CreatureManager.OnlyActiveCreatures[index].CreatureIndex;
+                return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, realIndex);
+            }
             if (propertyType == "SecondarySkill")
                 return SecondarySkill.AllSkills[index / 3].GetImage(Heroes3Master.Master.H3Sprite, 1 + index % 3);
             if (propertyType == "Spell")

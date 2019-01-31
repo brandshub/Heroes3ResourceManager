@@ -46,7 +46,7 @@
             this.cb_Filter = new System.Windows.Forms.ComboBox();
             this.ldBmp = new System.Windows.Forms.Button();
             this.tabsMain = new System.Windows.Forms.TabControl();
-            this.heroesTab = new System.Windows.Forms.TabPage();
+            this.tabHeroes = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox29 = new System.Windows.Forms.TextBox();
             this.textBox30 = new System.Windows.Forms.TextBox();
@@ -68,7 +68,7 @@
             this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbHeroes = new System.Windows.Forms.ListBox();
             this.hpcHeroProfile = new h3magic.HeroProfileControl();
-            this.h_classTab = new System.Windows.Forms.TabPage();
+            this.tabHeroClass = new System.Windows.Forms.TabPage();
             this.textBox68 = new System.Windows.Forms.TextBox();
             this.textBox69 = new System.Windows.Forms.TextBox();
             this.textBox70 = new System.Windows.Forms.TextBox();
@@ -121,7 +121,7 @@
             this.lbHeroClasses = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.pbSkillTree = new System.Windows.Forms.PictureBox();
-            this.creaturesTab = new System.Windows.Forms.TabPage();
+            this.tabCreatures = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox23 = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -162,24 +162,24 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.spellsTab = new System.Windows.Forms.TabPage();
-            this.mainTab = new System.Windows.Forms.TabPage();
+            this.tabSpells = new System.Windows.Forms.TabPage();
+            this.tabMain = new System.Windows.Forms.TabPage();
             this.chbTimerEnabled = new System.Windows.Forms.CheckBox();
             this.trbDefSprites = new System.Windows.Forms.TrackBar();
             this.lbDecomposed = new System.Windows.Forms.ListBox();
             this.pbResourceView = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.tabsMain.SuspendLayout();
-            this.heroesTab.SuspendLayout();
+            this.tabHeroes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
-            this.h_classTab.SuspendLayout();
+            this.tabHeroClass.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).BeginInit();
-            this.creaturesTab.SuspendLayout();
+            this.tabCreatures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.mainTab.SuspendLayout();
+            this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbResourceView)).BeginInit();
             this.SuspendLayout();
@@ -195,7 +195,7 @@
             this.lbFiles.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbFiles.Size = new System.Drawing.Size(133, 202);
             this.lbFiles.TabIndex = 4;
-            this.lbFiles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
+            this.lbFiles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbFiles_DrawItem);
             this.lbFiles.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             this.lbFiles.MouseHover += new System.EventHandler(this.listBox1_MouseHover);
             this.lbFiles.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbFiles_MouseMove);
@@ -328,46 +328,46 @@
             // tabsMain
             // 
             this.tabsMain.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.tabsMain.Controls.Add(this.heroesTab);
-            this.tabsMain.Controls.Add(this.h_classTab);
-            this.tabsMain.Controls.Add(this.creaturesTab);
-            this.tabsMain.Controls.Add(this.spellsTab);
-            this.tabsMain.Controls.Add(this.mainTab);
+            this.tabsMain.Controls.Add(this.tabHeroes);
+            this.tabsMain.Controls.Add(this.tabHeroClass);
+            this.tabsMain.Controls.Add(this.tabCreatures);
+            this.tabsMain.Controls.Add(this.tabSpells);
+            this.tabsMain.Controls.Add(this.tabMain);
             this.tabsMain.Location = new System.Drawing.Point(12, 28);
             this.tabsMain.Name = "tabsMain";
             this.tabsMain.SelectedIndex = 0;
             this.tabsMain.Size = new System.Drawing.Size(916, 541);
             this.tabsMain.TabIndex = 18;
             this.tabsMain.Visible = false;
-            this.tabsMain.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tabsMain.SelectedIndexChanged += new System.EventHandler(this.tabsMain_SelectedIndexChanged);
             // 
             // heroesTab
             // 
-            this.heroesTab.Controls.Add(this.button2);
-            this.heroesTab.Controls.Add(this.textBox29);
-            this.heroesTab.Controls.Add(this.textBox30);
-            this.heroesTab.Controls.Add(this.textBox31);
-            this.heroesTab.Controls.Add(this.textBox32);
-            this.heroesTab.Controls.Add(this.textBox28);
-            this.heroesTab.Controls.Add(this.textBox27);
-            this.heroesTab.Controls.Add(this.textBox26);
-            this.heroesTab.Controls.Add(this.textBox25);
-            this.heroesTab.Controls.Add(this.label18);
-            this.heroesTab.Controls.Add(this.label17);
-            this.heroesTab.Controls.Add(this.label16);
-            this.heroesTab.Controls.Add(this.label15);
-            this.heroesTab.Controls.Add(this.label14);
-            this.heroesTab.Controls.Add(this.textBox24);
-            this.heroesTab.Controls.Add(this.pictureBox4);
-            this.heroesTab.Controls.Add(this.lbHeroes);
-            this.heroesTab.Controls.Add(this.hpcHeroProfile);
-            this.heroesTab.Location = new System.Drawing.Point(4, 25);
-            this.heroesTab.Name = "heroesTab";
-            this.heroesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.heroesTab.Size = new System.Drawing.Size(908, 512);
-            this.heroesTab.TabIndex = 4;
-            this.heroesTab.Text = "Heroes";
-            this.heroesTab.UseVisualStyleBackColor = true;
+            this.tabHeroes.Controls.Add(this.button2);
+            this.tabHeroes.Controls.Add(this.textBox29);
+            this.tabHeroes.Controls.Add(this.textBox30);
+            this.tabHeroes.Controls.Add(this.textBox31);
+            this.tabHeroes.Controls.Add(this.textBox32);
+            this.tabHeroes.Controls.Add(this.textBox28);
+            this.tabHeroes.Controls.Add(this.textBox27);
+            this.tabHeroes.Controls.Add(this.textBox26);
+            this.tabHeroes.Controls.Add(this.textBox25);
+            this.tabHeroes.Controls.Add(this.label18);
+            this.tabHeroes.Controls.Add(this.label17);
+            this.tabHeroes.Controls.Add(this.label16);
+            this.tabHeroes.Controls.Add(this.label15);
+            this.tabHeroes.Controls.Add(this.label14);
+            this.tabHeroes.Controls.Add(this.textBox24);
+            this.tabHeroes.Controls.Add(this.pictureBox4);
+            this.tabHeroes.Controls.Add(this.lbHeroes);
+            this.tabHeroes.Controls.Add(this.hpcHeroProfile);
+            this.tabHeroes.Location = new System.Drawing.Point(4, 25);
+            this.tabHeroes.Name = "heroesTab";
+            this.tabHeroes.Padding = new System.Windows.Forms.Padding(3);
+            this.tabHeroes.Size = new System.Drawing.Size(908, 512);
+            this.tabHeroes.TabIndex = 4;
+            this.tabHeroes.Text = "Heroes";
+            this.tabHeroes.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
@@ -557,65 +557,65 @@
             // 
             // h_classTab
             // 
-            this.h_classTab.Controls.Add(this.textBox68);
-            this.h_classTab.Controls.Add(this.textBox69);
-            this.h_classTab.Controls.Add(this.textBox70);
-            this.h_classTab.Controls.Add(this.textBox71);
-            this.h_classTab.Controls.Add(this.textBox72);
-            this.h_classTab.Controls.Add(this.textBox73);
-            this.h_classTab.Controls.Add(this.textBox74);
-            this.h_classTab.Controls.Add(this.textBox61);
-            this.h_classTab.Controls.Add(this.textBox62);
-            this.h_classTab.Controls.Add(this.textBox63);
-            this.h_classTab.Controls.Add(this.textBox64);
-            this.h_classTab.Controls.Add(this.textBox65);
-            this.h_classTab.Controls.Add(this.textBox66);
-            this.h_classTab.Controls.Add(this.textBox67);
-            this.h_classTab.Controls.Add(this.textBox54);
-            this.h_classTab.Controls.Add(this.textBox55);
-            this.h_classTab.Controls.Add(this.textBox56);
-            this.h_classTab.Controls.Add(this.textBox57);
-            this.h_classTab.Controls.Add(this.textBox58);
-            this.h_classTab.Controls.Add(this.textBox59);
-            this.h_classTab.Controls.Add(this.textBox60);
-            this.h_classTab.Controls.Add(this.textBox53);
-            this.h_classTab.Controls.Add(this.textBox52);
-            this.h_classTab.Controls.Add(this.textBox51);
-            this.h_classTab.Controls.Add(this.textBox47);
-            this.h_classTab.Controls.Add(this.textBox48);
-            this.h_classTab.Controls.Add(this.textBox50);
-            this.h_classTab.Controls.Add(this.textBox49);
-            this.h_classTab.Controls.Add(this.label26);
-            this.h_classTab.Controls.Add(this.lblStartParams);
-            this.h_classTab.Controls.Add(this.textBox43);
-            this.h_classTab.Controls.Add(this.textBox44);
-            this.h_classTab.Controls.Add(this.textBox45);
-            this.h_classTab.Controls.Add(this.textBox46);
-            this.h_classTab.Controls.Add(this.textBox39);
-            this.h_classTab.Controls.Add(this.textBox40);
-            this.h_classTab.Controls.Add(this.textBox41);
-            this.h_classTab.Controls.Add(this.textBox42);
-            this.h_classTab.Controls.Add(this.textBox38);
-            this.h_classTab.Controls.Add(this.textBox37);
-            this.h_classTab.Controls.Add(this.textBox36);
-            this.h_classTab.Controls.Add(this.textBox35);
-            this.h_classTab.Controls.Add(this.label24);
-            this.h_classTab.Controls.Add(this.label23);
-            this.h_classTab.Controls.Add(this.label22);
-            this.h_classTab.Controls.Add(this.label21);
-            this.h_classTab.Controls.Add(this.textBox34);
-            this.h_classTab.Controls.Add(this.textBox33);
-            this.h_classTab.Controls.Add(this.pictureBox6);
-            this.h_classTab.Controls.Add(this.lbHeroClasses);
-            this.h_classTab.Controls.Add(this.button3);
-            this.h_classTab.Controls.Add(this.pbSkillTree);
-            this.h_classTab.Location = new System.Drawing.Point(4, 25);
-            this.h_classTab.Name = "h_classTab";
-            this.h_classTab.Padding = new System.Windows.Forms.Padding(3);
-            this.h_classTab.Size = new System.Drawing.Size(908, 512);
-            this.h_classTab.TabIndex = 3;
-            this.h_classTab.Text = "Hero Classes";
-            this.h_classTab.UseVisualStyleBackColor = true;
+            this.tabHeroClass.Controls.Add(this.textBox68);
+            this.tabHeroClass.Controls.Add(this.textBox69);
+            this.tabHeroClass.Controls.Add(this.textBox70);
+            this.tabHeroClass.Controls.Add(this.textBox71);
+            this.tabHeroClass.Controls.Add(this.textBox72);
+            this.tabHeroClass.Controls.Add(this.textBox73);
+            this.tabHeroClass.Controls.Add(this.textBox74);
+            this.tabHeroClass.Controls.Add(this.textBox61);
+            this.tabHeroClass.Controls.Add(this.textBox62);
+            this.tabHeroClass.Controls.Add(this.textBox63);
+            this.tabHeroClass.Controls.Add(this.textBox64);
+            this.tabHeroClass.Controls.Add(this.textBox65);
+            this.tabHeroClass.Controls.Add(this.textBox66);
+            this.tabHeroClass.Controls.Add(this.textBox67);
+            this.tabHeroClass.Controls.Add(this.textBox54);
+            this.tabHeroClass.Controls.Add(this.textBox55);
+            this.tabHeroClass.Controls.Add(this.textBox56);
+            this.tabHeroClass.Controls.Add(this.textBox57);
+            this.tabHeroClass.Controls.Add(this.textBox58);
+            this.tabHeroClass.Controls.Add(this.textBox59);
+            this.tabHeroClass.Controls.Add(this.textBox60);
+            this.tabHeroClass.Controls.Add(this.textBox53);
+            this.tabHeroClass.Controls.Add(this.textBox52);
+            this.tabHeroClass.Controls.Add(this.textBox51);
+            this.tabHeroClass.Controls.Add(this.textBox47);
+            this.tabHeroClass.Controls.Add(this.textBox48);
+            this.tabHeroClass.Controls.Add(this.textBox50);
+            this.tabHeroClass.Controls.Add(this.textBox49);
+            this.tabHeroClass.Controls.Add(this.label26);
+            this.tabHeroClass.Controls.Add(this.lblStartParams);
+            this.tabHeroClass.Controls.Add(this.textBox43);
+            this.tabHeroClass.Controls.Add(this.textBox44);
+            this.tabHeroClass.Controls.Add(this.textBox45);
+            this.tabHeroClass.Controls.Add(this.textBox46);
+            this.tabHeroClass.Controls.Add(this.textBox39);
+            this.tabHeroClass.Controls.Add(this.textBox40);
+            this.tabHeroClass.Controls.Add(this.textBox41);
+            this.tabHeroClass.Controls.Add(this.textBox42);
+            this.tabHeroClass.Controls.Add(this.textBox38);
+            this.tabHeroClass.Controls.Add(this.textBox37);
+            this.tabHeroClass.Controls.Add(this.textBox36);
+            this.tabHeroClass.Controls.Add(this.textBox35);
+            this.tabHeroClass.Controls.Add(this.label24);
+            this.tabHeroClass.Controls.Add(this.label23);
+            this.tabHeroClass.Controls.Add(this.label22);
+            this.tabHeroClass.Controls.Add(this.label21);
+            this.tabHeroClass.Controls.Add(this.textBox34);
+            this.tabHeroClass.Controls.Add(this.textBox33);
+            this.tabHeroClass.Controls.Add(this.pictureBox6);
+            this.tabHeroClass.Controls.Add(this.lbHeroClasses);
+            this.tabHeroClass.Controls.Add(this.button3);
+            this.tabHeroClass.Controls.Add(this.pbSkillTree);
+            this.tabHeroClass.Location = new System.Drawing.Point(4, 25);
+            this.tabHeroClass.Name = "h_classTab";
+            this.tabHeroClass.Padding = new System.Windows.Forms.Padding(3);
+            this.tabHeroClass.Size = new System.Drawing.Size(908, 512);
+            this.tabHeroClass.TabIndex = 3;
+            this.tabHeroClass.Text = "Hero Classes";
+            this.tabHeroClass.UseVisualStyleBackColor = true;
             // 
             // textBox68
             // 
@@ -1072,7 +1072,7 @@
             this.lbHeroClasses.Name = "lbHeroClasses";
             this.lbHeroClasses.Size = new System.Drawing.Size(130, 485);
             this.lbHeroClasses.TabIndex = 1;
-            this.lbHeroClasses.SelectedIndexChanged += new System.EventHandler(this.listBox3_SelectedIndexChanged);
+            this.lbHeroClasses.SelectedIndexChanged += new System.EventHandler(this.lbHeroClasses_SelectedIndexChanged);
             // 
             // button3
             // 
@@ -1082,7 +1082,7 @@
             this.button3.TabIndex = 0;
             this.button3.Text = "Save Changes";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.btnSaveHeroClass_Click);
             // 
             // pbSkillTree
             // 
@@ -1095,53 +1095,53 @@
             // 
             // creaturesTab
             // 
-            this.creaturesTab.Controls.Add(this.button1);
-            this.creaturesTab.Controls.Add(this.textBox23);
-            this.creaturesTab.Controls.Add(this.label13);
-            this.creaturesTab.Controls.Add(this.textBox22);
-            this.creaturesTab.Controls.Add(this.label12);
-            this.creaturesTab.Controls.Add(this.textBox21);
-            this.creaturesTab.Controls.Add(this.label11);
-            this.creaturesTab.Controls.Add(this.textBox20);
-            this.creaturesTab.Controls.Add(this.label10);
-            this.creaturesTab.Controls.Add(this.textBox19);
-            this.creaturesTab.Controls.Add(this.label9);
-            this.creaturesTab.Controls.Add(this.textBox18);
-            this.creaturesTab.Controls.Add(this.label8);
-            this.creaturesTab.Controls.Add(this.textBox17);
-            this.creaturesTab.Controls.Add(this.label7);
-            this.creaturesTab.Controls.Add(this.cb_creatures);
-            this.creaturesTab.Controls.Add(this.cb_castles);
-            this.creaturesTab.Controls.Add(this.textBox16);
-            this.creaturesTab.Controls.Add(this.textBox14);
-            this.creaturesTab.Controls.Add(this.textBox15);
-            this.creaturesTab.Controls.Add(this.textBox12);
-            this.creaturesTab.Controls.Add(this.textBox13);
-            this.creaturesTab.Controls.Add(this.textBox11);
-            this.creaturesTab.Controls.Add(this.textBox10);
-            this.creaturesTab.Controls.Add(this.textBox9);
-            this.creaturesTab.Controls.Add(this.textBox8);
-            this.creaturesTab.Controls.Add(this.label6);
-            this.creaturesTab.Controls.Add(this.textBox7);
-            this.creaturesTab.Controls.Add(this.label5);
-            this.creaturesTab.Controls.Add(this.textBox6);
-            this.creaturesTab.Controls.Add(this.label4);
-            this.creaturesTab.Controls.Add(this.textBox5);
-            this.creaturesTab.Controls.Add(this.label3);
-            this.creaturesTab.Controls.Add(this.textBox4);
-            this.creaturesTab.Controls.Add(this.label2);
-            this.creaturesTab.Controls.Add(this.textBox3);
-            this.creaturesTab.Controls.Add(this.label1);
-            this.creaturesTab.Controls.Add(this.textBox1);
-            this.creaturesTab.Controls.Add(this.pictureBox1);
-            this.creaturesTab.Controls.Add(this.pictureBox2);
-            this.creaturesTab.Location = new System.Drawing.Point(4, 25);
-            this.creaturesTab.Name = "creaturesTab";
-            this.creaturesTab.Padding = new System.Windows.Forms.Padding(3);
-            this.creaturesTab.Size = new System.Drawing.Size(908, 512);
-            this.creaturesTab.TabIndex = 1;
-            this.creaturesTab.Text = "Creatures";
-            this.creaturesTab.UseVisualStyleBackColor = true;
+            this.tabCreatures.Controls.Add(this.button1);
+            this.tabCreatures.Controls.Add(this.textBox23);
+            this.tabCreatures.Controls.Add(this.label13);
+            this.tabCreatures.Controls.Add(this.textBox22);
+            this.tabCreatures.Controls.Add(this.label12);
+            this.tabCreatures.Controls.Add(this.textBox21);
+            this.tabCreatures.Controls.Add(this.label11);
+            this.tabCreatures.Controls.Add(this.textBox20);
+            this.tabCreatures.Controls.Add(this.label10);
+            this.tabCreatures.Controls.Add(this.textBox19);
+            this.tabCreatures.Controls.Add(this.label9);
+            this.tabCreatures.Controls.Add(this.textBox18);
+            this.tabCreatures.Controls.Add(this.label8);
+            this.tabCreatures.Controls.Add(this.textBox17);
+            this.tabCreatures.Controls.Add(this.label7);
+            this.tabCreatures.Controls.Add(this.cb_creatures);
+            this.tabCreatures.Controls.Add(this.cb_castles);
+            this.tabCreatures.Controls.Add(this.textBox16);
+            this.tabCreatures.Controls.Add(this.textBox14);
+            this.tabCreatures.Controls.Add(this.textBox15);
+            this.tabCreatures.Controls.Add(this.textBox12);
+            this.tabCreatures.Controls.Add(this.textBox13);
+            this.tabCreatures.Controls.Add(this.textBox11);
+            this.tabCreatures.Controls.Add(this.textBox10);
+            this.tabCreatures.Controls.Add(this.textBox9);
+            this.tabCreatures.Controls.Add(this.textBox8);
+            this.tabCreatures.Controls.Add(this.label6);
+            this.tabCreatures.Controls.Add(this.textBox7);
+            this.tabCreatures.Controls.Add(this.label5);
+            this.tabCreatures.Controls.Add(this.textBox6);
+            this.tabCreatures.Controls.Add(this.label4);
+            this.tabCreatures.Controls.Add(this.textBox5);
+            this.tabCreatures.Controls.Add(this.label3);
+            this.tabCreatures.Controls.Add(this.textBox4);
+            this.tabCreatures.Controls.Add(this.label2);
+            this.tabCreatures.Controls.Add(this.textBox3);
+            this.tabCreatures.Controls.Add(this.label1);
+            this.tabCreatures.Controls.Add(this.textBox1);
+            this.tabCreatures.Controls.Add(this.pictureBox1);
+            this.tabCreatures.Controls.Add(this.pictureBox2);
+            this.tabCreatures.Location = new System.Drawing.Point(4, 25);
+            this.tabCreatures.Name = "creaturesTab";
+            this.tabCreatures.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCreatures.Size = new System.Drawing.Size(908, 512);
+            this.tabCreatures.TabIndex = 1;
+            this.tabCreatures.Text = "Creatures";
+            this.tabCreatures.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -1516,33 +1516,33 @@
             // 
             // spellsTab
             // 
-            this.spellsTab.Location = new System.Drawing.Point(4, 25);
-            this.spellsTab.Name = "spellsTab";
-            this.spellsTab.Size = new System.Drawing.Size(908, 512);
-            this.spellsTab.TabIndex = 5;
-            this.spellsTab.Text = "Spells";
-            this.spellsTab.UseVisualStyleBackColor = true;
+            this.tabSpells.Location = new System.Drawing.Point(4, 25);
+            this.tabSpells.Name = "spellsTab";
+            this.tabSpells.Size = new System.Drawing.Size(908, 512);
+            this.tabSpells.TabIndex = 5;
+            this.tabSpells.Text = "Spells";
+            this.tabSpells.UseVisualStyleBackColor = true;
             // 
             // mainTab
             // 
-            this.mainTab.Controls.Add(this.chbTimerEnabled);
-            this.mainTab.Controls.Add(this.trbDefSprites);
-            this.mainTab.Controls.Add(this.lbDecomposed);
-            this.mainTab.Controls.Add(this.pbResourceView);
-            this.mainTab.Controls.Add(this.rtbMain);
-            this.mainTab.Controls.Add(this.button8);
-            this.mainTab.Controls.Add(this.ldBmp);
-            this.mainTab.Controls.Add(this.cb_Filter);
-            this.mainTab.Controls.Add(this.button5);
-            this.mainTab.Controls.Add(this.lbFiles);
-            this.mainTab.Controls.Add(this.button4);
-            this.mainTab.Location = new System.Drawing.Point(4, 25);
-            this.mainTab.Name = "mainTab";
-            this.mainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mainTab.Size = new System.Drawing.Size(908, 512);
-            this.mainTab.TabIndex = 0;
-            this.mainTab.Text = "Resources";
-            this.mainTab.UseVisualStyleBackColor = true;
+            this.tabMain.Controls.Add(this.chbTimerEnabled);
+            this.tabMain.Controls.Add(this.trbDefSprites);
+            this.tabMain.Controls.Add(this.lbDecomposed);
+            this.tabMain.Controls.Add(this.pbResourceView);
+            this.tabMain.Controls.Add(this.rtbMain);
+            this.tabMain.Controls.Add(this.button8);
+            this.tabMain.Controls.Add(this.ldBmp);
+            this.tabMain.Controls.Add(this.cb_Filter);
+            this.tabMain.Controls.Add(this.button5);
+            this.tabMain.Controls.Add(this.lbFiles);
+            this.tabMain.Controls.Add(this.button4);
+            this.tabMain.Location = new System.Drawing.Point(4, 25);
+            this.tabMain.Name = "mainTab";
+            this.tabMain.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMain.Size = new System.Drawing.Size(908, 512);
+            this.tabMain.TabIndex = 0;
+            this.tabMain.Text = "Resources";
+            this.tabMain.UseVisualStyleBackColor = true;
             // 
             // chbTimerEnabled
             // 
@@ -1600,20 +1600,20 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.tabsMain.ResumeLayout(false);
-            this.heroesTab.ResumeLayout(false);
-            this.heroesTab.PerformLayout();
+            this.tabHeroes.ResumeLayout(false);
+            this.tabHeroes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
-            this.h_classTab.ResumeLayout(false);
-            this.h_classTab.PerformLayout();
+            this.tabHeroClass.ResumeLayout(false);
+            this.tabHeroClass.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).EndInit();
-            this.creaturesTab.ResumeLayout(false);
-            this.creaturesTab.PerformLayout();
+            this.tabCreatures.ResumeLayout(false);
+            this.tabCreatures.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.mainTab.ResumeLayout(false);
-            this.mainTab.PerformLayout();
+            this.tabMain.ResumeLayout(false);
+            this.tabMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbResourceView)).EndInit();
             this.ResumeLayout(false);
@@ -1639,8 +1639,8 @@
         private System.Windows.Forms.ComboBox cb_Filter;
         private System.Windows.Forms.Button ldBmp;
         private System.Windows.Forms.TabControl tabsMain;
-        private System.Windows.Forms.TabPage mainTab;
-        private System.Windows.Forms.TabPage creaturesTab;
+        private System.Windows.Forms.TabPage tabMain;
+        private System.Windows.Forms.TabPage tabCreatures;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox7;
@@ -1684,7 +1684,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem завантажитиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem зберегтиToolStripMenuItem;
-        private System.Windows.Forms.TabPage h_classTab;
+        private System.Windows.Forms.TabPage tabHeroClass;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ListBox lbHeroClasses;
         private System.Windows.Forms.TextBox textBox34;
@@ -1737,7 +1737,7 @@
         private System.Windows.Forms.TextBox textBox72;
         private System.Windows.Forms.TextBox textBox73;
         private System.Windows.Forms.TextBox textBox74;
-        private System.Windows.Forms.TabPage heroesTab;
+        private System.Windows.Forms.TabPage tabHeroes;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.ListBox lbHeroes;
         private System.Windows.Forms.Label label18;
@@ -1755,7 +1755,7 @@
         private System.Windows.Forms.TextBox textBox31;
         private System.Windows.Forms.TextBox textBox32;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TabPage spellsTab;
+        private System.Windows.Forms.TabPage tabSpells;
         private System.Windows.Forms.ListBox lbDecomposed;
         private System.Windows.Forms.PictureBox pbResourceView;
         private System.Windows.Forms.TrackBar trbDefSprites;

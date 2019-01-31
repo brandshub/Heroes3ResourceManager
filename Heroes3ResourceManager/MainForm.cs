@@ -12,6 +12,7 @@ using System.IO.Compression;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
+
 namespace h3magic
 {
     public partial class MainForm : Form
@@ -45,7 +46,7 @@ namespace h3magic
 
             CheckForIllegalCrossThreadCalls = false;
 
-            timer.Interval = 150;
+            timer.Interval = 143;
             timer.Tick += Timer_Tick;
 
             icons.Add("H3C", Properties.Resources.H3C);
@@ -56,8 +57,50 @@ namespace h3magic
             hpcHeroProfile.PropertyClicked += HpcHeroProfile_PropertyDoubleClicked;
             heroPropertyForm.ItemSelected += HeroPropertyForm_ItemSelected;
             heroPropertyForm.Owner = this;
-            //LoadMaster(@"d:\Games\h3\Heroes3.exe");
+            LoadMaster(@"d:\Games\h3\Heroes3.exe");
+            //  Measure();
         }
+
+
+        private void Measure()
+        {
+
+            var spr = Heroes3Master.Master.H3Sprite;
+            //var bmp = CreatureManager.GetAllCreaturesBitmap(spr);
+            // bmp = CreatureManager.GetAllCreaturesBitmap2(spr);
+
+
+            int n = 100;
+            long z = 0;
+
+            /* var bytes = Heroes3Master.Master.Executable.Data;
+             if (HeroesSection.FindHeroOffset2(bytes) != HeroesSection.FindOffset3X(bytes))
+             {
+                 Text = "false";
+                 return;
+             }*/
+
+            var sw = Stopwatch.StartNew();
+            for (int i = 0; i < n; i++)
+            {
+                /* var offset = HeroesSection.FindHeroOffset2(bytes);
+                 z = offset;*/
+            }
+            sw.Stop();
+            float ms1 = sw.ElapsedMs();
+            sw.Restart();
+
+            for (int i = 0; i < n; i++)
+            {
+                /*  var offset = HeroesSection.FindOffset3X(bytes);
+                  z = offset;*/
+            }
+            sw.Stop();
+            float ms2 = sw.ElapsedMs();
+            Text = ms1 + " " + ms2;
+
+        }
+
 
         private void HeroPropertyForm_ItemSelected(int selIndex)
         {
@@ -66,7 +109,7 @@ namespace h3magic
 
             if (type == "Creature")
             {
-                int realIndex = CreatureManager.AllCreatures[selIndex].CreatureIndex;
+                int realIndex = CreatureManager.OnlyActiveCreatures[selIndex].CreatureIndex;
                 hero.HasChanged = true;
                 switch (heroPropertyForm.CurrentIndex)
                 {
@@ -102,8 +145,6 @@ namespace h3magic
                 hero.SpellIndex = selIndex;
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
             }
-
-
         }
 
         private void HpcHeroProfile_PropertyDoubleClicked(string type, int relativeIndex, int currentValue)
@@ -118,50 +159,41 @@ namespace h3magic
         public void LoadMaster(string executablPath)
         {
             var sw = Stopwatch.StartNew();
-            var master = Heroes3Master.LoadData(executablPath);
+
+            var master = Heroes3Master.LoadInfo(executablPath);
 
             lodFile = master.H3Bitmap;
             h3bitmapLod = lodFile;
             h3spriteLod = master.H3Sprite;
 
             lbFiles.Items.AddRange(lodFile.GetNames());
-
             lbHeroes.Items.Clear();
-            HeroesManager.LoadInfo(lodFile);
             lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
 
             lbHeroClasses.Items.Clear();
-            HeroClassManager.LoadInfo(lodFile);
-            lbHeroClasses.Items.AddRange(HeroClassManager.AllClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
+            lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
 
-
-            CreatureManager.LoadInfo(lodFile);
             cb_castles.Items.Clear();
             cb_castles.Items.AddRange(CreatureManager.Castles);
 
-            SpellStat.LoadInfo(master.H3Bitmap);
-
+            tabsMain.TabPages.Clear();
             if (lodFile["HCTRAITS.TXT"] == null)
             {
-                for (int i = 1; i < tabsMain.TabCount; i++)
-                {
-                    tabsMain.TabPages.RemoveAt(i);
-                    i--;
-                }
+                tabsMain.TabPages.Add(tabMain);
             }
             else
             {
-                if (!tabsMain.TabPages.Contains(h_classTab))
-                    tabsMain.TabPages.Add(h_classTab);
-                if (!tabsMain.TabPages.Contains(heroesTab))
-                    tabsMain.TabPages.Add(heroesTab);
-                if (!tabsMain.TabPages.Contains(creaturesTab))
-                    tabsMain.TabPages.Add(creaturesTab);
+                tabsMain.TabPages.Add(tabHeroes);
+                tabsMain.TabPages.Add(tabHeroClass);           
+                tabsMain.TabPages.Add(tabCreatures);
+                tabsMain.TabPages.Add(tabSpells);
+                tabsMain.TabPages.Add(tabMain);
             }
 
-            SecondarySkill.LoadInfo(lodFile);
+            cb_Filter.Items.Clear();
+            cb_Filter.Items.Add("*");
+            cb_Filter.Items.AddRange(lodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray<object>());
 
-            HeroExeData.LoadData(master.Executable.Data);
             sw.Stop();
             Text = sw.ElapsedMilliseconds + " ms";
 
@@ -391,20 +423,17 @@ namespace h3magic
                 if (lodFile != null)
                     lodFile.stream.Close();
 
-
-
                 if (Path.GetExtension(ofd.FileName) == ".exe")
-                {
-                    var sw = Stopwatch.StartNew();
+                {                   
                     LoadMaster(ofd.FileName);
                 }
                 else
                 {
-
                     var fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     lodFile = new LodFile(fs);
                     lbFiles.Items.Clear();
                     lodFile.LoadFAT();
+
                     lbFiles.Items.AddRange(lodFile.GetNames());
 
                     if (fs.Name.ToLower().Contains("h3bitmap"))
@@ -412,28 +441,26 @@ namespace h3magic
                     else if (fs.Name.ToLower().Contains("h3sprite"))
                         h3spriteLod = lodFile;
 
+                    tabsMain.TabPages.Clear();
                     if (lodFile["HCTRAITS.TXT"] == null)
-                    {
-                        tabsMain.TabPages.Clear();
-                        tabsMain.TabPages.Add(mainTab);
-
+                    {                       
+                        tabsMain.TabPages.Add(tabMain);
                     }
                     else
                     {
-                        if (!tabsMain.TabPages.Contains(heroesTab))
-                            tabsMain.TabPages.Add(heroesTab);
-                        if (!tabsMain.TabPages.Contains(h_classTab))
-                            tabsMain.TabPages.Add(h_classTab);
-                        if (!tabsMain.TabPages.Contains(creaturesTab))
-                            tabsMain.TabPages.Add(creaturesTab);
-
-                        // if(!tabControl1.TabPages.Contains(h_classTab))
+                        tabsMain.TabPages.Add(tabHeroes);
+                        tabsMain.TabPages.Add(tabHeroClass);
+                        tabsMain.TabPages.Add(tabCreatures);
+                        tabsMain.TabPages.Add(tabSpells);
+                        tabsMain.TabPages.Add(tabMain);
                     }
+
+                    cb_Filter.Items.Clear();
+                    cb_Filter.Items.Add("*");
+                    cb_Filter.Items.AddRange(lodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray<object>());
                 }
 
-                cb_Filter.Items.Clear();
-                cb_Filter.Items.Add("*");
-                cb_Filter.Items.AddRange(lodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray<object>());
+
                 tabsMain.Visible = true;
             }
         }
@@ -511,7 +538,7 @@ namespace h3magic
             if (CreatureManager.Loaded)
             {
                 cb_creatures.Items.Clear();
-                cb_creatures.Items.AddRange(CreatureManager.AllCreatures.Where(c => c.CastleIndex == cb_castles.SelectedIndex).Select(cs => cs.Name).ToArray());
+                cb_creatures.Items.AddRange(CreatureManager.OnlyActiveCreatures.Where(c => c.CastleIndex == cb_castles.SelectedIndex).Select(cs => cs.Name).ToArray());
                 cb_creatures.Select();
                 cb_creatures.SelectedIndex = 0;
             }
@@ -525,7 +552,7 @@ namespace h3magic
             }
         }
 
-        private void LoadCreatureInfo(CreatureStats creatureStats)
+        private void LoadCreatureInfo(Creature creatureStats)
         {
             textBox1.Text = creatureStats.Name;
             textBox3.Text = creatureStats.Attack.ToString();
@@ -551,7 +578,7 @@ namespace h3magic
             textBox23.Text = creatureStats.Description;
         }
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void tabsMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (lodFile != null)
             {
@@ -564,23 +591,16 @@ namespace h3magic
                 }
                 else if (tabsMain.SelectedIndex == 1)
                 {
-                    if (!HeroClassManager.Loaded)
-                    {
-                        lbHeroClasses.Items.Clear();
-                        HeroClassManager.LoadInfo(lodFile);
-                        lbHeroClasses.Items.AddRange(HeroClassManager.AllClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
-                    }
+                    lbHeroClasses.Items.Clear();
+                    lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
                     pbSkillTree.Image = SecondarySkill.GetSkillTree(Heroes3Master.Master.H3Sprite);
-
                 }
                 else if (tabsMain.SelectedIndex == 0)
                 {
-                    if (!HeroesManager.Loaded)
-                    {
-                        lbHeroes.Items.Clear();
-                        HeroesManager.LoadInfo(lodFile);
-                        lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
-                    }
+
+                    lbHeroes.Items.Clear();
+                    lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
+
                 }
 
             }
@@ -588,7 +608,7 @@ namespace h3magic
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var cs = CreatureManager.AllCreatures.Where(c => c.CastleIndex == cb_castles.SelectedIndex && c.CreatureCastleRelativeIndex == cb_creatures.SelectedIndex).FirstOrDefault();
+            var cs = CreatureManager.OnlyActiveCreatures.Where(c => c.CastleIndex == cb_castles.SelectedIndex && c.CreatureCastleRelativeIndex == cb_creatures.SelectedIndex).FirstOrDefault();
             cs.Name = textBox1.Text;
             cs.Attack = int.Parse(textBox3.Text);
             cs.Defence = int.Parse(textBox4.Text);
@@ -708,31 +728,33 @@ namespace h3magic
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnSaveHeroClass_Click(object sender, EventArgs e)
         {
-            string path = @"D:\Новая папка1\AboutHeroes3\data\img\skill\";
-            Bitmap canvas = new Bitmap(104 * 4, 44 * 7);
-            Graphics cg = Graphics.FromImage(canvas);
-            for (int i = 0; i < 4; i++)
+            if (lbHeroClasses.SelectedIndex >= 0)
             {
-                Bitmap bmp = new Bitmap(44, 44 * 7);
-                Graphics g = Graphics.FromImage(bmp);
-                for (int j = 0; j < 7; j++)
-                    g.DrawImage(Bitmap.FromFile(path + "skill" + (i * 7 + j) + "a.BMP"), new Rectangle(0, j * 44, 44, 44));
+                var heroClass = HeroClass.AllHeroClasses[lbHeroClasses.SelectedIndex];
+                int index = int.Parse(textBox33.Name.Substring(textBox33.Name.Length - 2));
 
-                cg.DrawImage(bmp, i * 104, 0);
+                heroClass.Stats[0] = tabHeroClass.Controls["textBox" + index].Text;
+                for (int i = 2; i < heroClass.Stats.Length - 9; i++)
+                    heroClass.Stats[i] = tabHeroClass.Controls["textBox" + (index + i)].Text;
             }
-            canvas.Save("canvas.bmp");
-
-            //  HeroClassManager.stats[listBox3.SelectedIndex].Save(h_classTab, textBox33);
         }
 
-        private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
+        private void lbHeroClasses_SelectedIndexChanged(object sender, EventArgs e)
         {
-            HeroClassManager.AllClasses[lbHeroClasses.SelectedIndex].Load(h_classTab, textBox33);
+            if (lbHeroClasses.SelectedIndex >= 0)
+            {
+                var heroClass = HeroClass.AllHeroClasses[lbHeroClasses.SelectedIndex];
+                int index = int.Parse(textBox33.Name.Substring(textBox33.Name.Length - 2));
+                tabHeroClass.Controls["textBox" + index].Text = heroClass.Stats[0];
+                for (int i = 2; i < heroClass.Stats.Length - 9; i++)
+                    tabHeroClass.Controls["textBox" + (index + i)].Text = heroClass.Stats[i];
+            }
+
         }
 
-        private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
+        private void lbFiles_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index >= 0)
             {

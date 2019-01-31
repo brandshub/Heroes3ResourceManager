@@ -5,7 +5,7 @@ using System.Text;
 
 namespace h3magic
 {
-    public class CreatureStats
+    public class Creature
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -44,7 +44,7 @@ namespace h3magic
         public int CreatureIndex { get; set; }
         public int CreatureCastleRelativeIndex { get; set; }
 
-        public CreatureStats(string row)
+        public Creature(string row)
         {
             //		Attack	Defense	Low	High	Shots	Spells	Low	High	Ability Text	Attributes (Reference only, do not change these values)
             string[] stats = row.Split('\t');
@@ -81,7 +81,7 @@ namespace h3magic
 
         public string GetRow()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(Name); sb.Append('\t');
             sb.Append(Plural1); sb.Append('\t');
             sb.Append(Plural2); sb.Append('\t');
@@ -113,7 +113,7 @@ namespace h3magic
 
         public override string ToString()
         {
-            return Name;
+            return Name + " -> "+CreatureIndex;
         }
 
     }

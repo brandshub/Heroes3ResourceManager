@@ -13,7 +13,9 @@ namespace h3magic
         private const string IMG_FNAME = "TwCrPort.def";
 
         public static readonly string[] Castles = { "Замок", "Долина", "Башня", "Инферно", "Некрополис", "Подземелье", "Твердиня", "Болото", "Разное" };
-        public static List<CreatureStats> AllCreatures = new List<CreatureStats>();
+
+        public static List<Creature> OnlyActiveCreatures = new List<Creature>();
+        public static Creature[] AllCreatures2 = null;
 
         private static DefFile creatureDef;
         private static string[] rows;
@@ -37,17 +39,22 @@ namespace h3magic
                 {
                     string text = Encoding.Default.GetString(rec.GetRawData(file.stream));
                     rows = text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                    AllCreatures2 = new Creature[rows.Length];
+
                     int curIndex = 0;
                     for (int i = 0; i < 8; i++)
                     {
                         for (int j = 0; j < 14; j++)
                         {
-                            AllCreatures.Add(new CreatureStats(rows[2 + i * 17 + j]) { CastleIndex = i, CreatureIndex = curIndex++, CreatureCastleRelativeIndex = j });
+                            var stat = new Creature(rows[2 + i * 17 + j]) { CastleIndex = i, CreatureIndex = curIndex++, CreatureCastleRelativeIndex = j };
+
+                            AllCreatures2[stat.CreatureIndex] = stat;
+                            OnlyActiveCreatures.Add(stat);
                         }
                     }
                     int off = 2 + 17 * 8;
 
-                    List<CreatureStats> misc = new List<CreatureStats>();
+                    List<Creature> misc = new List<Creature>();
                     for (int i = off; i < rows.Length - 1; i++)
                     {
                         if (rows[i].Contains("\t\t\t"))
@@ -57,30 +64,34 @@ namespace h3magic
                         else
                         {
                             if (!rows[i].Contains("NOT USED"))
-                                misc.Add(new CreatureStats(rows[i]) { CastleIndex = 8, CreatureIndex = curIndex, CreatureCastleRelativeIndex = i - off });
+                            {
+                                var stat = new Creature(rows[i]) { CastleIndex = 8, CreatureIndex = curIndex, CreatureCastleRelativeIndex = i - off };
+                                AllCreatures2[stat.CreatureIndex] = stat;
+                                misc.Add(stat);
+                            }
                             curIndex++;
                         }
                     }
-                    AllCreatures.AddRange(misc.Where(s => s != null).ToArray());
+                    OnlyActiveCreatures.AddRange(misc.Where(s => s != null).ToArray());
                     Loaded = true;
                 }
             }
 
         }
 
-        public static CreatureStats Get(int castleIndex, int relativeCreatureIndex)
+        public static Creature Get(int castleIndex, int relativeCreatureIndex)
         {
-            return AllCreatures.FirstOrDefault(c => c.CastleIndex == castleIndex && c.CreatureCastleRelativeIndex == relativeCreatureIndex);
+            return OnlyActiveCreatures.FirstOrDefault(c => c.CastleIndex == castleIndex && c.CreatureCastleRelativeIndex == relativeCreatureIndex);
         }
 
-        public static void Save(LodFile lodfile)
+        public static Creature GetByIndex(int index)
         {
-            FatRecord rec = lodfile.GetRecord(FAT_NAME);
-            if (rec != null)
-            {
-                string val = GetAllStats();
-                rec.ApplyChanges(Encoding.Default.GetBytes(val));
-            }
+            return OnlyActiveCreatures?[index];
+        }
+
+        public static Creature GetByCreatureIndex(int index)
+        {
+            return OnlyActiveCreatures.FirstOrDefault(c => c.CreatureIndex == index);
         }
 
         public static string GetAllStats()
@@ -93,7 +104,7 @@ namespace h3magic
                 for (int i = 0; i < 8; i++)
                 {
                     for (int j = 0; j < 14; j++)
-                        sb.AppendLine(AllCreatures[i * 14 + j].GetRow());
+                        sb.AppendLine(OnlyActiveCreatures[i * 14 + j].GetRow());
                     sb.AppendLine(rows[16]);
                     sb.AppendLine(rows[16]);
                     sb.AppendLine(rows[16]);
@@ -103,69 +114,67 @@ namespace h3magic
 
                 for (int i = off; i < rows.Length - 1; i++)
                     if (!rows[i].Contains("\t\t"))
-                        sb.AppendLine(AllCreatures[8 * 14 + k++].GetRow());
+                        sb.AppendLine(OnlyActiveCreatures[8 * 14 + k++].GetRow());
                     else
                         sb.AppendLine(rows[i]);
-
-
                 return sb.ToString();
             }
+
             return "";
         }
 
 
         public static Bitmap GetImage(LodFile h3sprite, int index)
         {
-            if (creatureDef == null)            
-                creatureDef = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite);             
+            if (creatureDef == null)
+                creatureDef = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite);
 
             var bmp = creatureDef.GetByAbsoluteNumber(index + 2);
             return bmp;
         }
 
-        public static Bitmap GetImageByCreatureInnerIndex(LodFile h3sprite, int creatureIndex)
+        public static void Save(LodFile lodfile)
         {
-            if (creatureDef == null)
-                creatureDef = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite);
-
-            var bmp = creatureDef.GetByAbsoluteNumber(AllCreatures[creatureIndex].CreatureIndex + 2);
-            return bmp;
+            FatRecord rec = lodfile.GetRecord(FAT_NAME);
+            if (rec != null)
+            {
+                string val = GetAllStats();
+                rec.ApplyChanges(Encoding.Default.GetBytes(val));
+            }
         }
+
+
 
         private static Bitmap _allCreatures;
         public static Bitmap GetAllCreaturesBitmap(LodFile h3sprite)
         {
             var sw = Stopwatch.StartNew();
-            if (_allCreatures != null)
-                return _allCreatures;
+              if (_allCreatures != null)
+                  return _allCreatures;
+
             if (creatureDef == null)
-                creatureDef = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite);            
+                creatureDef = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite);
 
-            int totalrows = AllCreatures.Count / 14 + (AllCreatures.Count % 14 == 0 ? 0 : 1);
+            int totalrows = OnlyActiveCreatures.Count / 14 + (OnlyActiveCreatures.Count % 14 == 0 ? 0 : 1);
             _allCreatures = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);
-            using (var g = Graphics.FromImage(_allCreatures))
+            var imageData = _allCreatures.LockBits(new Rectangle(0, 0, _allCreatures.Width, _allCreatures.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            
+            for (int i = 0; i < OnlyActiveCreatures.Count; i++)
             {
-                for (int i = 0; i < AllCreatures.Count; i++)
+                int row = i / 14;
+                int col = i % 14;
+                var img = creatureDef.GetByAbsoluteNumber2(OnlyActiveCreatures[i].CreatureIndex + 2);
+                if (img != null)
                 {
-                    int row = i / 14;
-                    int col = i % 14;
-                    var img = creatureDef.GetByAbsoluteNumber(AllCreatures[i].CreatureIndex + 2);
-                    if (img != null)
-                    {
-                        g.DrawImage(img, col * (58 + 1), row * (64 + 1));
-                    }
-                    else
-                    {
+                    imageData.DrawImage24(col * (58 + 1), row * (64 + 1), 176, img);
+                }
+                else
+                {
 
-                    }
                 }
             }
-            Debug.WriteLine("allcrbmp: " + sw.ElapsedMilliseconds);
+            _allCreatures.UnlockBits(imageData);
             return _allCreatures;
         }
-
-
-
-
     }
 }
