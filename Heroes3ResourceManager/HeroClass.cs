@@ -56,7 +56,7 @@ namespace h3magic
 
         public static HeroClass GetByIndex(int index)
         {
-            return AllHeroClasses?[index];
+            return AllHeroClasses[index];
         }
 
         public override string ToString()

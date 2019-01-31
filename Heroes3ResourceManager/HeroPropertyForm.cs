@@ -96,7 +96,9 @@ namespace h3magic
         private int currentHover = -1;
         private void pbMain_MouseMove(object sender, MouseEventArgs e)
         {
-            GetDimensionsForPropertyType(propertyType, out int cellWidth, out int cellHeight, out int itemsPerRow);
+            int cellWidth, cellHeight, itemsPerRow;
+
+            GetDimensionsForPropertyType(propertyType, out cellWidth, out cellHeight, out itemsPerRow);
 
             int row = e.Y / cellHeight;
             int col = e.X / cellWidth;
@@ -131,7 +133,8 @@ namespace h3magic
 
         private void pbMain_Paint(object sender, PaintEventArgs e)
         {
-            GetDimensionsForPropertyType(propertyType, out int cellWidth, out int cellHeight, out int itemsPerRow);
+            int cellWidth, cellHeight, itemsPerRow;
+            GetDimensionsForPropertyType(propertyType, out cellWidth, out cellHeight, out itemsPerRow);
 
             if (currentHover >= 0)
             {

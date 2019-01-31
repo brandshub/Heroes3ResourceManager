@@ -39,7 +39,7 @@ namespace h3magic
 
         public Bitmap GetImage(LodFile lodFile, int level)
         {
-            var def = lodFile?.GetRecord(IMG_FNAME)?.GetDefFile(lodFile);
+            var def = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
             return def.GetByAbsoluteNumber(Index * 3 + level + 2);
         }
 
@@ -57,7 +57,7 @@ namespace h3magic
             if (skillTree != null)
                 return skillTree;
 
-            var def = h3sprite?.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite.stream);
+            var def = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
             var bmp = new Bitmap((44 + 60) * 4, 44 * 7);
             using (var g = Graphics.FromImage(bmp))
             {
@@ -77,7 +77,7 @@ namespace h3magic
             if (skillTree2 != null)
                 return skillTree2;
 
-            var def = h3sprite?.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite.stream);
+            var def = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
             var sw = Stopwatch.StartNew();
             var bmp = new Bitmap((44 + 1) * 12, (44 + 1) * 7);
             using (var g = Graphics.FromImage(bmp))

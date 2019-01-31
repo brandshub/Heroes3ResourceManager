@@ -64,14 +64,14 @@ namespace h3magic
 
         public static SpellStat GetSpellByIndex(int index)
         {
-            return AllSpells?.FirstOrDefault(s => s.Index == index);
+            return AllSpells.FirstOrDefault(s => s.Index == index);
         }
 
         public Bitmap GetImage(LodFile h3sprite)
         {
             var rec = h3sprite.GetRecord(IMG_FNAME);
-            var def = rec?.GetDefFile(h3sprite.stream);
-            return def?.GetByAbsoluteNumber(Index);
+            var def = rec.GetDefFile(h3sprite.stream);
+            return def.GetByAbsoluteNumber(Index);
         }
 
         private static Bitmap allSpells = null;
@@ -81,7 +81,7 @@ namespace h3magic
             if (allSpells != null)
                 return allSpells;
 
-            var def = h3sprite?.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite.stream);
+            var def = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
             var sw = Stopwatch.StartNew();
             var bmp = new Bitmap((58 + 1) * 10, (64 + 1) * 7);
             using (var g = Graphics.FromImage(bmp))

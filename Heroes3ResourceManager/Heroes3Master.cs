@@ -10,7 +10,7 @@ namespace h3magic
     {
         public static Heroes3Master Master { get; private set; }
 
-        public List<LodFile> ResourceFiles { get; private set; } = new List<LodFile>();
+        public List<LodFile> ResourceFiles { get; private set; } 
         public LodFile H3Bitmap { get { return GetByName("h3bitmap.lod"); } }
         public LodFile H3Sprite { get { return GetByName("h3sprite.lod"); } }
         public ExeFile Executable { get; private set; }
@@ -25,6 +25,7 @@ namespace h3magic
         {
             Master = new Heroes3Master();
             Master.Executable = new ExeFile(executablePath);
+            Master.ResourceFiles = new List<LodFile>();
 
             string dataDirectory = Path.Combine(Path.GetDirectoryName(executablePath), "Data");
             string h3BitmapLod = Path.Combine(dataDirectory, "h3bitmap.lod");

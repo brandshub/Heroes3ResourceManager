@@ -31,8 +31,9 @@ namespace h3magic
             Dictionary<string, List<string>> heroes = new Dictionary<string, List<string>>(types.Length);
             for (int i = index; i < bound; i++)
             {
+                List<string> list = null;
                 string end = h3bitmap[i].FileName.Substring(6, 2);
-                if (!heroes.TryGetValue(end, out List<string> list))
+                if (!heroes.TryGetValue(end, out list))
                 {
                     heroes.Add(end, new List<string> { h3bitmap[i].FileName });
                 }
@@ -92,7 +93,7 @@ namespace h3magic
                 g.DrawImage(f, 192, 261, new RectangleF(196, 19, 93, 65), GraphicsUnit.Pixel);
                 g.DrawImage(f, 0, 327, new RectangleF(14, 85, 288, 4), GraphicsUnit.Pixel);
 
-                var ps = h3sprite?.GetRecord("PSKIL42.def").GetDefFile(h3sprite.stream);
+                var ps = h3sprite.GetRecord("PSKIL42.def").GetDefFile(h3sprite.stream);
                 if (ps != null)
                 {
                     g.DrawImage(ps.GetSprite(0), new Point(18, 97));

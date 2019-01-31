@@ -86,7 +86,7 @@ namespace h3magic
 
         public static Creature GetByIndex(int index)
         {
-            return OnlyActiveCreatures?[index];
+            return OnlyActiveCreatures[index];
         }
 
         public static Creature GetByCreatureIndex(int index)
@@ -127,7 +127,7 @@ namespace h3magic
         public static Bitmap GetImage(LodFile h3sprite, int index)
         {
             if (creatureDef == null)
-                creatureDef = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite);
+                creatureDef = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
 
             var bmp = creatureDef.GetByAbsoluteNumber(index + 2);
             return bmp;
@@ -153,7 +153,7 @@ namespace h3magic
                   return _allCreatures;
 
             if (creatureDef == null)
-                creatureDef = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite);
+                creatureDef = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
 
             int totalrows = OnlyActiveCreatures.Count / 14 + (OnlyActiveCreatures.Count % 14 == 0 ? 0 : 1);
             _allCreatures = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);

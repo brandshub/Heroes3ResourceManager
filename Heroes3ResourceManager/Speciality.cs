@@ -15,7 +15,7 @@ namespace h3magic
         //0 - skill, 1 - creature, 2 - +350, 3 - spell , 4 - specific elems/devils/etc
         public int TypeId { get; private set; }
         public int ObjectId { get; private set; }
-        public byte[] Data { get; private set; } = new byte[32];
+        public byte[] Data { get; private set; }
 
         public SpecialityType Type { get { return (SpecialityType)TypeId; } }
 
@@ -23,8 +23,13 @@ namespace h3magic
         public static Bitmap GetImage(LodFile h3sprite, int index)
         {
             var rec = h3sprite.GetRecord(IMG_FNAME);
-            var def = rec?.GetDefFile(h3sprite.stream);
-            return def?.GetByAbsoluteNumber(index);
+            if (rec != null)
+            {
+                var def = rec.GetDefFile(h3sprite.stream);
+                if (def != null)
+                    return def.GetByAbsoluteNumber(index);
+            }
+            return null;
         }
 
 
@@ -43,6 +48,7 @@ namespace h3magic
                         TypeId = BitConverter.ToInt32(executableBinary, currentOffset),
                         ObjectId = BitConverter.ToInt32(executableBinary, currentOffset + 4)
                     };
+                    spec.Data = new byte[32];
                     Buffer.BlockCopy(executableBinary, currentOffset + 8, spec.Data, 0, spec.Data.Length);
                     currentOffset += BLOCK_SIZE;
                     AllSpecialities.Add(spec);
@@ -52,7 +58,7 @@ namespace h3magic
 
         public static Speciality GetByIndex(int index)
         {
-            return AllSpecialities?[index];
+            return AllSpecialities[index];
         }
 
         private static Bitmap allSpecs = null;
@@ -63,17 +69,22 @@ namespace h3magic
                 return allSpecs;
 
             var bmp = new Bitmap(16 * 44, 44 * 9);
-            var def = h3sprite.GetRecord(IMG_FNAME)?.GetDefFile(h3sprite.stream);
-            using (var g = Graphics.FromImage(bmp))
+            var rec = h3sprite.GetRecord(IMG_FNAME);
+            if (rec != null)
             {
-                for (int i = 0; i < 9; i++)
-                    for (int j = 0; j < 16; j++)
-                    {
-                        g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 44, 44 * i);
-                    }
+                var def = rec.GetDefFile(h3sprite.stream);
+                using (var g = Graphics.FromImage(bmp))
+                {
+                    for (int i = 0; i < 9; i++)
+                        for (int j = 0; j < 16; j++)
+                        {
+                            g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 44, 44 * i);
+                        }
+                }
+                allSpecs = bmp;
+                return allSpecs;
             }
-            allSpecs = bmp;
-            return allSpecs;
+            return null;
         }
 
         public string GetDescription()
