@@ -20,7 +20,7 @@ namespace h3magic
             set { PictureBox.Image = value; }
         }
 
-        public event Action<string, int, int> PropertyClicked;
+        public event Action<ProfilePropertyType, int, int> PropertyClicked;
 
         private float ratio = 1;
         private int lastRectIndex = -1;
@@ -33,7 +33,7 @@ namespace h3magic
 
         public HeroProfileControl()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         //331 288
@@ -53,9 +53,11 @@ namespace h3magic
 
                 var portrait = master.H3Bitmap[HeroesManager.HeroesOrder[hs.ImageIndex]].GetBitmap(master.H3Bitmap.stream);
                 g.DrawImage(portrait, new Point(4, 3));
-                var z = Speciality.GetImage(master.H3Sprite, heroIndex);
-                g.DrawImage(z, new Point(4, 166));
+
                 var heroData = HeroExeData.Data[heroIndex];
+                var z = Speciality.GetImage(master.H3Sprite, heroData.SpecIndex);
+                g.DrawImage(z, new Point(4, 166));
+
                 Hero = heroData;
 
                 if (heroData.Skill1 != null)
@@ -171,38 +173,38 @@ namespace h3magic
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    string type = "";
+                    ProfilePropertyType type = ProfilePropertyType.Other;
                     int index = 0;
                     int currentValue = 0;
 
                     if (lastRectIndex == 0)
                     {
-                        type = "Portrait";
+                        //type = "Portrait";
                     }
                     else if (lastRectIndex == 1)
                     {
-                        type = "Name";
+                        //type = "Name";
                     }
                     else if (lastRectIndex == 2)
                     {
-                        type = "Spec";
+                        type = ProfilePropertyType.Speciality;
                         currentValue = Hero.Index;
                     }
                     else if (lastRectIndex <= 4)
                     {
-                        type = "SecondarySkill";
+                        type = ProfilePropertyType.SecondarySkill;
                         index = lastRectIndex - 3;
                         currentValue = (index == 0 ? (3 * Hero.FirstSkillIndex + Hero.FirstSkillLevel) : (3 * Hero.SecondSkillIndex + Hero.SecondSkillLevel)) - 1;
                     }
                     else if (lastRectIndex <= 7)
                     {
-                        type = "Creature";
+                        type = ProfilePropertyType.Creature;
                         index = lastRectIndex - 5;
                         currentValue = index == 0 ? Hero.Unit1Index : (index == 1 ? Hero.Unit2Index : Hero.Unit3Index);
                     }
                     else if (lastRectIndex == 8)
                     {
-                        type = "Spell";
+                        type = ProfilePropertyType.Spell;
                         currentValue = Hero.SpellIndex;
                     }
 
@@ -225,7 +227,7 @@ namespace h3magic
                     else if (lastRectIndex <= 4)
                     {
                         if (lastRectIndex == 3)
-                        {                            
+                        {
                             if (Hero.SecondSkillIndex != -1)
                             {
                                 Hero.FirstSkillIndex = Hero.SecondSkillIndex;

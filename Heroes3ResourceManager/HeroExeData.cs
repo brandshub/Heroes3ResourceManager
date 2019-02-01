@@ -29,6 +29,8 @@ namespace h3magic
         public int Unit2Index;
         public int Unit3Index;
 
+        public int SpecIndex;
+
         public int Index { get; private set; }
 
         public HeroStats Hero { get { if (HeroesManager.Loaded) return HeroesManager.AllHeroes[Index]; return null; } }
@@ -43,7 +45,7 @@ namespace h3magic
 
         public SpellStat Spell { get { return SpellStat.GetSpellByIndex(SpellIndex); } }
 
-        public Speciality Spec { get { return Speciality.GetByIndex(Index); } }
+        public Speciality Spec { get { return Speciality.GetByIndex(SpecIndex); } }
 
 
         public static void LoadInfo(byte[] executableBinary)
@@ -59,6 +61,7 @@ namespace h3magic
                     var hero = new HeroExeData
                     {
                         Index = i,
+                        SpecIndex = i,
                         GenderInt = BitConverter.ToInt32(executableBinary, currentOffset),
                         Race = BitConverter.ToInt32(executableBinary, currentOffset + 4),
                         ClassIndex = BitConverter.ToInt32(executableBinary, currentOffset + 8),
@@ -78,12 +81,13 @@ namespace h3magic
             }
         }
 
-        public unsafe static void SaveData()
+        public unsafe static void UpdateDataInMemory()
         {
-            long offset = HeroesSection.HeroOffset1;
+            long offset = HeroesSection.HeroOffset1;            
+
             var exe = Heroes3Master.Master.Executable;
             string file = exe.Path;
-            System.IO.File.WriteAllBytes(exe.Path + ".bak", exe.Data);
+            System.IO.File.WriteAllBytes(exe.Path + ".bak." + DateTime.Now.ToString("hhmmss"), exe.Data);
 
             for (int i = 0; i < Data.Count; i++)
             {
@@ -104,11 +108,14 @@ namespace h3magic
                         *iptr++ = current.SpellIndex;
                         *iptr++ = current.Unit1Index;
                         *iptr++ = current.Unit2Index;
-                        *iptr++ = current.Unit3Index;
+                        *iptr = current.Unit3Index;
+
+
+                        if (current.SpecIndex != current.Index)
+                            Speciality.Update(ptr, current.Index, current.SpecIndex);
                     }
                 }
-            }
-            System.IO.File.WriteAllBytes(file, exe.Data);
+            }            
         }
         public override string ToString()
         {

@@ -14,7 +14,7 @@ namespace h3magic
         {
             return stopwatch.ElapsedTicks * 1000.0f / Stopwatch.Frequency;
         }
-
+        
         public static void DrawImage24(this BitmapData data, int x, int y, int stride, byte[] image)
         {
             int h = image.Length / stride;

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace h3magic
 {
@@ -10,7 +12,7 @@ namespace h3magic
     {
         public static Heroes3Master Master { get; private set; }
 
-        public List<LodFile> ResourceFiles { get; private set; } 
+        public List<LodFile> ResourceFiles { get; private set; }
         public LodFile H3Bitmap { get { return GetByName("h3bitmap.lod"); } }
         public LodFile H3Sprite { get { return GetByName("h3sprite.lod"); } }
         public ExeFile Executable { get; private set; }
@@ -31,7 +33,6 @@ namespace h3magic
             string h3BitmapLod = Path.Combine(dataDirectory, "h3bitmap.lod");
             string h3SpriteLod = Path.Combine(dataDirectory, "h3sprite.lod");
 
-
             foreach (var file in Directory.GetFiles(dataDirectory, "*.lod"))
             {
                 FileStream fs = null;
@@ -42,7 +43,7 @@ namespace h3magic
                     lod.LoadFAT();
                     Master.ResourceFiles.Add(lod);
                 }
-                catch
+                catch (Exception ex)
                 {
                     fs.Close();
                 }
@@ -53,11 +54,18 @@ namespace h3magic
             CreatureManager.LoadInfo(Master.H3Bitmap);
             SpellStat.LoadInfo(Master.H3Bitmap);
             SecondarySkill.LoadInfo(Master.H3Bitmap);
-
             Speciality.LoadInfo(Master.Executable.Data);
             HeroExeData.LoadInfo(Master.Executable.Data);
 
             return Master;
+        }
+
+        public void SaveHeroExeData()
+        {
+            File.WriteAllBytes(Executable.Path + ".bak." + DateTime.Now.ToString("hhmmss"), Executable.Data);
+            HeroExeData.UpdateDataInMemory();
+            File.WriteAllBytes(Executable.Path, Executable.Data);
+
         }
     }
 }

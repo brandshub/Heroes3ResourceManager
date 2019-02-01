@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace h3magic
 {
@@ -44,9 +45,11 @@ namespace h3magic
             for (int i = 0; i < types.Length; i++)
                 stringList.AddRange(heroes[types[i]]);
             HeroesOrder = stringList.ToArray();
+            
             bio_rows = Encoding.Default.GetString(h3bitmap.GetRawData(TXT_BIOGRAPHIES_FNAME)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             spec_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             hero_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            
             AllHeroes = new List<HeroStats>(HeroesOrder.Length);
             for (int i = 0; i < HeroesOrder.Length; i++)
             {
@@ -141,11 +144,11 @@ namespace h3magic
                 traits.AppendLine("cr3");
                 if (AllHeroes[i].Large != null)
                 {
-                    lodfile[HeroesOrder[AllHeroes[i].ImageIndex]].ApplyChanges(PCXFile.FromBitmap(AllHeroes[i].Large).GetBytes);
+                    lodfile[HeroesOrder[AllHeroes[i].ImageIndex]].ApplyChanges(PcxFile.FromBitmap(AllHeroes[i].Large).GetBytes);
                 }
                 if (AllHeroes[i].Small != null)
                 {
-                    lodfile[HeroesOrder[AllHeroes[i].ImageIndex].Replace("HPL", "HPS")].ApplyChanges(PCXFile.FromBitmap(AllHeroes[i].Small).GetBytes);
+                    lodfile[HeroesOrder[AllHeroes[i].ImageIndex].Replace("HPL", "HPS")].ApplyChanges(PcxFile.FromBitmap(AllHeroes[i].Small).GetBytes);
                 }
             }
             for (int i = HeroesOrder.Length; i < bio_rows.Length; i++)

@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Creature.cs" />
     <Compile Include="CreatureManager.cs" />
@@ -95,7 +96,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LodFile.cs" />
-    <Compile Include="PCXFile.cs" />
+    <Compile Include="PcxFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="HeroProfileControl.resx">

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace h3magic
 {
@@ -31,7 +34,6 @@ namespace h3magic
                 fs.Close();
                 throw new ArgumentException("not a .LOD file");
             }
-
             fs.Position = 8;
             fs.Read(temp, 0, 4);
             stream = fs;
@@ -42,6 +44,7 @@ namespace h3magic
         public void LoadFAT(int count)
         {
             stream.Position = FAT_OFFSET;
+            
             byte[] record = new byte[32];
             for (int i = 0; i < count; i++)
             {

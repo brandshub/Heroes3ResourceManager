@@ -12,10 +12,10 @@ namespace h3magic
 {
     public partial class HeroPropertyForm : Form
     {
-        private string propertyType = "";
+        private ProfilePropertyType propertyType;
         private int selectedValue = 0;
 
-        public string PropertyType
+        public ProfilePropertyType PropertyType
         {
             get { return propertyType; }
             set
@@ -29,7 +29,7 @@ namespace h3magic
             get { return selectedValue; }
             set
             {
-                if (propertyType == "Creature")
+                if (propertyType == ProfilePropertyType.Creature)
                 {
                     selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
                 }
@@ -52,24 +52,29 @@ namespace h3magic
         public void InitPropertyType()
         {
             Image background = null;
-            if (propertyType == "Creature")
+            if (propertyType == ProfilePropertyType.Creature)
             {
                 background = new Bitmap(CreatureManager.GetAllCreaturesBitmap(Heroes3Master.Master.H3Sprite));
             }
-            else if (propertyType == "SecondarySkill")
+            else if (propertyType == ProfilePropertyType.SecondarySkill)
             {
                 background = new Bitmap(SecondarySkill.GetSkillTree2(Heroes3Master.Master.H3Sprite));
             }
-            else if (propertyType == "Spell")
+            else if (propertyType == ProfilePropertyType.Spell)
             {
                 background = new Bitmap(SpellStat.GetAllSpells(Heroes3Master.Master.H3Sprite));
             }
+            else if (propertyType == ProfilePropertyType.Speciality)
+            {
+                background = new Bitmap(Speciality.GetAllSpecs(Heroes3Master.Master.H3Sprite));
+            }
+
 
             if (background != null)
             {
 
                 Width = background.Width;
-                Height = background.Height + 25;
+                Height = background.Height;
 
                 using (var g = Graphics.FromImage(background))
                     g.FillRectangle(new SolidBrush(Color.FromArgb(190, Color.Gray)), pbMain.ClientRectangle);
@@ -107,18 +112,22 @@ namespace h3magic
             if (total != currentHover)
             {
                 bool flag = false;
-
-                if (propertyType == "Creature")
+      
+                if (propertyType == ProfilePropertyType.Creature)
                 {
                     flag = total < CreatureManager.OnlyActiveCreatures.Count - 1;
                 }
-                else if (propertyType == "SecondarySkill")
+                else if (propertyType == ProfilePropertyType.SecondarySkill)
                 {
                     flag = total < SecondarySkill.AllSkills.Count * 3;
                 }
-                else if (propertyType == "Spell")
+                else if (propertyType == ProfilePropertyType.Spell)
                 {
                     flag = total < SpellStat.AllSpells.Count;
+                }
+                else if (propertyType == ProfilePropertyType.Speciality)
+                {
+                    flag = total < Speciality.AllSpecialities.Count;
                 }
 
                 if (flag)
@@ -155,25 +164,31 @@ namespace h3magic
 
         }
 
-        private static void GetDimensionsForPropertyType(string propertyType, out int cellWidth, out int cellHeight, out int itemsPerRow)
+        private static void GetDimensionsForPropertyType(ProfilePropertyType propertyType, out int cellWidth, out int cellHeight, out int itemsPerRow)
         {
-            if (propertyType == "Creature")
+            if (propertyType == ProfilePropertyType.Creature)
             {
                 cellWidth = 59;
                 cellHeight = 65;
                 itemsPerRow = 14;
             }
-            else if (propertyType == "SecondarySkill")
+            else if (propertyType == ProfilePropertyType.SecondarySkill)
             {
                 cellWidth = 45;
                 cellHeight = 45;
                 itemsPerRow = 12;
             }
-            else if (propertyType == "Spell")
+            else if (propertyType == ProfilePropertyType.Spell)
             {
                 cellWidth = 59;
                 cellHeight = 65;
                 itemsPerRow = 10;
+            }
+            else if (propertyType == ProfilePropertyType.Speciality)
+            {
+                cellWidth = 45;
+                cellHeight = 45;
+                itemsPerRow = 16;
             }
             else
             {
@@ -183,17 +198,21 @@ namespace h3magic
             }
         }
 
-        private static Bitmap GetImageForPropertyType(string propertyType, int index)
+        private static Bitmap GetImageForPropertyType(ProfilePropertyType propertyType, int index)
         {
-            if (propertyType == "Creature")
+            if (propertyType == ProfilePropertyType.Creature)
             {
                 int realIndex = CreatureManager.OnlyActiveCreatures[index].CreatureIndex;
                 return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, realIndex);
             }
-            if (propertyType == "SecondarySkill")
+            if (propertyType == ProfilePropertyType.SecondarySkill)
                 return SecondarySkill.AllSkills[index / 3].GetImage(Heroes3Master.Master.H3Sprite, 1 + index % 3);
-            if (propertyType == "Spell")
+
+            if (propertyType == ProfilePropertyType.Spell)
                 return SpellStat.AllSpells[index].GetImage(Heroes3Master.Master.H3Sprite);
+
+            if (propertyType == ProfilePropertyType.Speciality)
+                return Speciality.GetImage(Heroes3Master.Master.H3Sprite, index);
 
             return null;
         }

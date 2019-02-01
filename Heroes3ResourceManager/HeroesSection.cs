@@ -43,7 +43,7 @@ namespace h3magic
             {
                 int* fb = (int*)fh;               
 
-                for (int i = 0; i < ub; i++)
+                for (int i = 0x270000; i < ub; i++)
                 {
                     int* ip = (int*)(bts + i);
                     if (*ip == *fb)

@@ -61,7 +61,7 @@ namespace h3magic
                 {
                     array = newVal;
                 }
-                var file = new PCXFile(array);
+                var file = new PcxFile(array);
                 try
                 {
                     return file.GetBitmap();

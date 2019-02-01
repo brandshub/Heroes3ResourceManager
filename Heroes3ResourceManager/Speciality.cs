@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace h3magic
@@ -68,7 +69,7 @@ namespace h3magic
             if (allSpecs != null)
                 return allSpecs;
 
-            var bmp = new Bitmap(16 * 44, 44 * 9);
+            var bmp = new Bitmap(16 * (44 + 1), (44 + 1) * 9);
             var rec = h3sprite.GetRecord(IMG_FNAME);
             if (rec != null)
             {
@@ -78,7 +79,7 @@ namespace h3magic
                     for (int i = 0; i < 9; i++)
                         for (int j = 0; j < 16; j++)
                         {
-                            g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 44, 44 * i);
+                            g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 45, 45 * i);
                         }
                 }
                 allSpecs = bmp;
@@ -154,29 +155,17 @@ namespace h3magic
 
         }
 
-        public enum SpecialityType
+        public static unsafe void Update(byte* ptr, int oldIndex, int newIndex)
         {
-            Skill = 0,
-            Creature = 1,
-            Resource = 2,
-            Spell = 3,
-            Custom = 4,
-            Speed = 5,
-            CreaturesUpgrade = 6,
-            Mutara = 7,
-            Adrianna = -1
+            var spec = AllSpecialities[newIndex];
 
-        };
+            long offset = HeroesSection.HeroOffset2 + oldIndex * BLOCK_SIZE;
+            int* iptr = (int*)(ptr + offset);
 
-        public enum ResourceSpeciality
-        {
-            Mercury = 1,
-            Sulphur = 3,
-            Crystals = 4,
-            Gems = 5,
-            Gold350 = 6
-        };
+            *iptr++ = spec.TypeId;
+            *iptr++ = spec.ObjectId;
+            Marshal.Copy(spec.Data, 0, new IntPtr((void*)iptr), 32);
 
-
+        }
     }
 }

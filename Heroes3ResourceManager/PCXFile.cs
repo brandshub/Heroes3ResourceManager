@@ -9,7 +9,7 @@ using System.IO;
 
 namespace h3magic
 {
-    class PCXFile
+    class PcxFile
     {
         int width;
         int heigth;
@@ -21,7 +21,7 @@ namespace h3magic
             get { return bts; }
         }
 
-        public PCXFile(byte[] bytes)
+        public PcxFile(byte[] bytes)
         {
             bts = bytes;
             palletteOffset = BitConverter.ToInt32(bytes, 0) + 12;
@@ -71,9 +71,9 @@ namespace h3magic
             return bmp;
         }
 
-        public static PCXFile FromBitmap(Bitmap bmp)
+        public static PcxFile FromBitmap(Bitmap bmp)
         {
-            PCXFile pcf = new PCXFile(new byte[16]);
+            PcxFile pcf = new PcxFile(new byte[16]);
             pcf.LoadBitmap(bmp, false);
             return pcf;
         }

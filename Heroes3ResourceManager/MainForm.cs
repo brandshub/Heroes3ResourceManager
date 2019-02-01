@@ -104,10 +104,10 @@ namespace h3magic
 
         private void HeroPropertyForm_ItemSelected(int selIndex)
         {
-            string type = heroPropertyForm.PropertyType;
+            ProfilePropertyType type = heroPropertyForm.PropertyType;
             var hero = hpcHeroProfile.Hero;
 
-            if (type == "Creature")
+            if (type == ProfilePropertyType.Creature)
             {
                 int realIndex = CreatureManager.OnlyActiveCreatures[selIndex].CreatureIndex;
                 hero.HasChanged = true;
@@ -119,7 +119,7 @@ namespace h3magic
                 }
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
             }
-            else if (type == "SecondarySkill")
+            else if (type == ProfilePropertyType.SecondarySkill)
             {
                 int skill = selIndex / 3;
                 int level = 1 + selIndex % 3;
@@ -138,16 +138,22 @@ namespace h3magic
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
 
             }
-            else if (type == "Spell")
+            else if (type == ProfilePropertyType.Spell)
             {
                 hero.HasChanged = true;
                 hero.SpellBook = 1;
                 hero.SpellIndex = selIndex;
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
             }
+            else if (type == ProfilePropertyType.Speciality)
+            {
+                hero.HasChanged = true;
+                hero.SpecIndex = selIndex;                
+                hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
+            }
         }
 
-        private void HpcHeroProfile_PropertyDoubleClicked(string type, int relativeIndex, int currentValue)
+        private void HpcHeroProfile_PropertyDoubleClicked(ProfilePropertyType type, int relativeIndex, int currentValue)
         {
             heroPropertyForm.PropertyType = type;
             heroPropertyForm.CurrentIndex = relativeIndex;
@@ -156,7 +162,7 @@ namespace h3magic
             heroPropertyForm.ShowDialog(this);
         }
 
-        public void LoadMaster(string executablPath)
+        public async void LoadMaster(string executablPath)
         {
             var sw = Stopwatch.StartNew();
 
@@ -184,7 +190,7 @@ namespace h3magic
             else
             {
                 tabsMain.TabPages.Add(tabHeroes);
-                tabsMain.TabPages.Add(tabHeroClass);           
+                tabsMain.TabPages.Add(tabHeroClass);
                 tabsMain.TabPages.Add(tabCreatures);
                 tabsMain.TabPages.Add(tabSpells);
                 tabsMain.TabPages.Add(tabMain);
@@ -424,7 +430,7 @@ namespace h3magic
                     lodFile.stream.Close();
 
                 if (Path.GetExtension(ofd.FileName) == ".exe")
-                {                   
+                {
                     LoadMaster(ofd.FileName);
                 }
                 else
@@ -443,7 +449,7 @@ namespace h3magic
 
                     tabsMain.TabPages.Clear();
                     if (lodFile["HCTRAITS.TXT"] == null)
-                    {                       
+                    {
                         tabsMain.TabPages.Add(tabMain);
                     }
                     else
@@ -526,7 +532,7 @@ namespace h3magic
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 var rec = lodFile.GetRecord(lbFiles.SelectedItem.ToString());
-                var pcx = PCXFile.FromBitmap((Bitmap)Image.FromFile(ofd.FileName));
+                var pcx = PcxFile.FromBitmap((Bitmap)Image.FromFile(ofd.FileName));
                 rec.ApplyChanges(pcx.GetBytes);
             }
             ofd.Filter = filt;
@@ -677,7 +683,7 @@ namespace h3magic
                 HeroesManager.AllHeroes[lbHeroes.SelectedIndex] = hs;
             }
 
-            HeroExeData.SaveData();
+            Heroes3Master.Master.SaveHeroExeData();
 
         }
 

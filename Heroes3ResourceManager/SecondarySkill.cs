@@ -72,25 +72,28 @@ namespace h3magic
         }
 
 
+
+
         public static Bitmap GetSkillTree2(LodFile h3sprite)
         {
             if (skillTree2 != null)
                 return skillTree2;
 
             var def = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
-            var sw = Stopwatch.StartNew();
-            var bmp = new Bitmap((44 + 1) * 12, (44 + 1) * 7);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                for (int i = 0; i < 7; i++)
-                    for (int j = 0; j < 12; j++)
-                    {
-                        var img = def.GetByAbsoluteNumber(3 + i * 12 + j);
-                        g.DrawImage(img, j * (44 + 1), i * (44 + 1));
-                    }
-            }
+
+            var bmp = new Bitmap((44 + 1) * 12, (44 + 1) * 7, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            for (int i = 0; i < 7; i++)
+                for (int j = 0; j < 12; j++)
+                {
+                    var img = def.GetByAbsoluteNumber2(3 + i * 12 + j);
+                    imageData.DrawImage24(j * (44 + 1), i * (44 + 1), 132, img);
+                }
+
+            bmp.UnlockBits(imageData);
             skillTree2 = bmp;
-            float ms = sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency;
+
             return skillTree2;
         }
     }
