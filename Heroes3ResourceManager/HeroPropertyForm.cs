@@ -54,7 +54,7 @@ namespace h3magic
             Image background = null;
             if (propertyType == ProfilePropertyType.Creature)
             {
-                background = new Bitmap(CreatureManager.GetAllBasicCreatures(Heroes3Master.Master.H3Sprite));
+                background = new Bitmap(CreatureManager.GetAllCreaturesBitmapParallel(Heroes3Master.Master.H3Sprite));
             }
             else if (propertyType == ProfilePropertyType.SecondarySkill)
             {
