@@ -119,6 +119,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SpecialityBuilder.resx">
+      <DependentUpon>SpecialityBuilder.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -131,6 +134,12 @@
     </Compile>
     <Compile Include="SecondarySkill.cs" />
     <Compile Include="Speciality.cs" />
+    <Compile Include="SpecialityBuilder.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SpecialityBuilder.Designer.cs">
+      <DependentUpon>SpecialityBuilder.cs</DependentUpon>
+    </Compile>
     <Compile Include="SpellStat.cs" />
     <Compile Include="SpriteBlockHeader.cs" />
     <Compile Include="SpriteHeader.cs" />

@@ -57,8 +57,8 @@ namespace h3magic
             hpcHeroProfile.PropertyClicked += HpcHeroProfile_PropertyDoubleClicked;
             heroPropertyForm.ItemSelected += HeroPropertyForm_ItemSelected;
             heroPropertyForm.Owner = this;
-            LoadMaster(@"d:\Games\h3\Heroes3.exe");
-            //  Measure();
+          //  LoadMaster(@"d:\Games\h3\Heroes3.exe");
+            //    Measure();
         }
 
 
@@ -66,25 +66,19 @@ namespace h3magic
         {
 
             var spr = Heroes3Master.Master.H3Sprite;
-            //var bmp = CreatureManager.GetAllCreaturesBitmap(spr);
-            // bmp = CreatureManager.GetAllCreaturesBitmap2(spr);
+            var bmp = CreatureManager.GetAllCreaturesBitmap(spr);
+            bmp = CreatureManager.GetAllCreaturesBitmapParallel(spr);
 
 
-            int n = 100;
+            int n = 50;
             long z = 0;
 
-            /* var bytes = Heroes3Master.Master.Executable.Data;
-             if (HeroesSection.FindHeroOffset2(bytes) != HeroesSection.FindOffset3X(bytes))
-             {
-                 Text = "false";
-                 return;
-             }*/
 
             var sw = Stopwatch.StartNew();
             for (int i = 0; i < n; i++)
             {
-                /* var offset = HeroesSection.FindHeroOffset2(bytes);
-                 z = offset;*/
+                bmp = CreatureManager.GetAllCreaturesBitmap(spr);
+                z = bmp.Width;
             }
             sw.Stop();
             float ms1 = sw.ElapsedMs();
@@ -92,12 +86,23 @@ namespace h3magic
 
             for (int i = 0; i < n; i++)
             {
-                /*  var offset = HeroesSection.FindOffset3X(bytes);
-                  z = offset;*/
+                bmp = CreatureManager.GetAllCreaturesBitmapParallel(spr);
+                z = bmp.Width;
             }
             sw.Stop();
             float ms2 = sw.ElapsedMs();
-            Text = ms1 + " " + ms2;
+
+            sw.Restart();
+
+            /* for (int i = 0; i < n; i++)
+             {
+                 bmp = CreatureManager.GetAllCreaturesBitmapParallel2(spr);
+                 z = bmp.Width;
+             }
+             sw.Stop();*/
+            float ms3 = sw.ElapsedMs();
+
+            Text = ms1 + " " + ms2 + " " + ms3;
 
         }
 
@@ -148,7 +153,7 @@ namespace h3magic
             else if (type == ProfilePropertyType.Speciality)
             {
                 hero.HasChanged = true;
-                hero.SpecIndex = selIndex;                
+                hero.SpecIndex = selIndex;
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
             }
         }
@@ -162,7 +167,7 @@ namespace h3magic
             heroPropertyForm.ShowDialog(this);
         }
 
-        public async void LoadMaster(string executablPath)
+        public void LoadMaster(string executablPath)
         {
             var sw = Stopwatch.StartNew();
 

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace h3magic
 {
@@ -149,8 +150,8 @@ namespace h3magic
         public static Bitmap GetAllCreaturesBitmap(LodFile h3sprite)
         {
             var sw = Stopwatch.StartNew();
-              if (_allCreatures != null)
-                  return _allCreatures;
+            if (_allCreatures != null)
+                return _allCreatures;
 
             if (creatureDef == null)
                 creatureDef = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
@@ -158,7 +159,7 @@ namespace h3magic
             int totalrows = OnlyActiveCreatures.Count / 14 + (OnlyActiveCreatures.Count % 14 == 0 ? 0 : 1);
             _allCreatures = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);
             var imageData = _allCreatures.LockBits(new Rectangle(0, 0, _allCreatures.Width, _allCreatures.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            
+
             for (int i = 0; i < OnlyActiveCreatures.Count; i++)
             {
                 int row = i / 14;
@@ -176,5 +177,80 @@ namespace h3magic
             _allCreatures.UnlockBits(imageData);
             return _allCreatures;
         }
+
+
+        public static Bitmap GetAllCreaturesBitmapParallel(LodFile h3sprite)
+        {
+            var sw = Stopwatch.StartNew();
+            if (_allCreatures != null)
+                return _allCreatures;
+
+            if (creatureDef == null)
+                creatureDef = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
+
+            int totalrows = OnlyActiveCreatures.Count / 14 + (OnlyActiveCreatures.Count % 14 == 0 ? 0 : 1);
+            _allCreatures = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);
+            var imageData = _allCreatures.LockBits(new Rectangle(0, 0, _allCreatures.Width, _allCreatures.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            Parallel.For(0, OnlyActiveCreatures.Count, i =>
+                {
+
+                    int row = i / 14;
+                    int col = i % 14;
+                    var img = creatureDef.GetByAbsoluteNumber2(OnlyActiveCreatures[i].CreatureIndex + 2);
+                    if (img != null)
+                    {
+                        imageData.DrawImage24(col * (58 + 1), row * (64 + 1), 176, img);
+                    }
+                    else
+                    {
+
+                    }
+                });
+
+            _allCreatures.UnlockBits(imageData);
+            return _allCreatures;
+        }
+
+        private static Bitmap _allUnUpgradedCreatures;
+        public static Bitmap GetAllBasicCreatures(LodFile h3sprite)
+        {
+            var indexes = new List<int>(100);
+            var sw = Stopwatch.StartNew();
+            if (_allUnUpgradedCreatures != null)
+                return _allUnUpgradedCreatures;
+
+            for (int i = 0; i < OnlyActiveCreatures.Count; i++)
+            {
+                if (i < 112 && i % 2 == 1)
+                {
+                    continue;
+                }
+                if (i == 119 || (i >= 121 && i <= 125) || i == 127)
+                {
+                    continue;
+                }
+                indexes.Add(OnlyActiveCreatures[i].CreatureIndex);
+            }
+
+            int totalrows = indexes.Count / 14 + (indexes.Count % 14 == 0 ? 0 : 1);
+            _allUnUpgradedCreatures = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);
+            var imageData = _allUnUpgradedCreatures.LockBits(new Rectangle(0, 0, _allUnUpgradedCreatures.Width, _allUnUpgradedCreatures.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            Parallel.For((int)0, indexes.Count, i =>
+            {
+                int row = i / 14;
+                int col = i % 14;
+                var img = creatureDef.GetByAbsoluteNumber2(indexes[i] + 2);
+                if (img != null)
+                {
+                    imageData.DrawImage24(col * (58 + 1), row * (64 + 1), 176, img);
+                }                
+            });
+            _allUnUpgradedCreatures.UnlockBits(imageData);
+            return _allUnUpgradedCreatures;
+        }
+
+        //
     }
 }

@@ -14,10 +14,10 @@ namespace h3magic
     public enum SpecialityType
     {
         Skill = 0,
-        Creature = 1,
+        CreatureLevelBonus = 1,
         Resource = 2,
         Spell = 3,
-        Custom = 4,
+        CreatureStaticBonus = 4,
         Speed = 5,
         CreaturesUpgrade = 6,
         Mutara = 7,
@@ -27,7 +27,9 @@ namespace h3magic
 
     public enum ResourceSpeciality
     {
+        Lumber = 0,
         Mercury = 1,
+        Stone = 2,
         Sulphur = 3,
         Crystals = 4,
         Gems = 5,

@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace h3magic
 {
@@ -118,9 +119,9 @@ namespace h3magic
 
             var bmp = new Bitmap(sh.FullWidth, sh.FullHeight, PixelFormat.Format24bppRgb);
             var color = Color.FromArgb(palette[0, 0], palette[0, 1], palette[0, 2]);
-            using (var g = Graphics.FromImage(bmp))            
+            using (var g = Graphics.FromImage(bmp))
                 g.FillRectangle(new SolidBrush(color), 0, 0, sh.FullWidth, sh.FullHeight);
-            
+
             var imageData = bmp.LockBits(new Rectangle(0, 0, sh.FullWidth, sh.FullHeight), ImageLockMode.ReadWrite, bmp.PixelFormat);
 
             offset += 32;
@@ -160,6 +161,7 @@ namespace h3magic
 
             throw new Exception("wrong type");
         }
+
 
         private unsafe void LoadSpriteType0(SpriteHeader sh, BitmapData data, int offset)
         {
@@ -372,7 +374,7 @@ namespace h3magic
                 }
             }
             return imageBytes;
-        }
+        }        
 
         private unsafe void LoadSpriteType2(SpriteHeader sh, BitmapData data, int offset)
         {

@@ -13,7 +13,7 @@ namespace h3magic
         private const string IMG_FNAME_SMALL = "UN32.def";
         private const int BLOCK_SIZE = 40;
 
-        //0 - skill, 1 - creature, 2 - +350, 3 - spell , 4 - specific elems/devils/etc
+        //0 - skill, 1 - creature, 2 - +350, 3 - spell , 4 - constant creature
         public int TypeId { get; private set; }
         public int ObjectId { get; private set; }
         public byte[] Data { get; private set; }
