@@ -180,15 +180,17 @@ namespace h3magic
                     if (lastRectIndex == 0)
                     {
                         //type = "Portrait";
+                        return;
                     }
                     else if (lastRectIndex == 1)
                     {
                         //type = "Name";
+                        return;
                     }
                     else if (lastRectIndex == 2)
                     {
-                        type = ProfilePropertyType.Speciality;
-                        currentValue = Hero.Index;
+                        type = Speciality.GetProfilePropertyType(Hero.Spec.Type);
+                        currentValue = Hero.Spec.ObjectId;
                     }
                     else if (lastRectIndex <= 4)
                     {

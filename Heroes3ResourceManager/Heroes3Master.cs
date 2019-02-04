@@ -52,7 +52,7 @@ namespace h3magic
             HeroesManager.LoadInfo(Master.H3Bitmap);
             HeroClass.LoadInfo(Master.H3Bitmap);
             CreatureManager.LoadInfo(Master.H3Bitmap);
-            SpellStat.LoadInfo(Master.H3Bitmap);
+            Spell.LoadInfo(Master.H3Bitmap);
             SecondarySkill.LoadInfo(Master.H3Bitmap);
             Speciality.LoadInfo(Master.Executable.Data);
             HeroExeData.LoadInfo(Master.Executable.Data);

@@ -54,7 +54,7 @@ namespace h3magic
                     currentOffset += BLOCK_SIZE;
                     AllSpecialities.Add(spec);
                 }
-            }
+            }            
         }
 
         public static Speciality GetByIndex(int index)
@@ -107,7 +107,7 @@ namespace h3magic
             }
             else if (TypeId == 3)
             {
-                s += SpellStat.GetSpellByIndex(ObjectId);
+                s += Spell.GetSpellByIndex(ObjectId);
             }
             else if (TypeId == 4)
             {
@@ -149,10 +149,9 @@ namespace h3magic
             return s;
         }
 
-        public override string ToString()
+        public static ProfilePropertyType GetProfilePropertyType(SpecialityType specType)
         {
-            return GetDescription();
-
+            return (ProfilePropertyType)((int)specType + 4);
         }
 
         public static unsafe void Update(byte* ptr, int oldIndex, int newIndex)
@@ -166,6 +165,16 @@ namespace h3magic
             *iptr++ = spec.ObjectId;
             Marshal.Copy(spec.Data, 0, new IntPtr((void*)iptr), 32);
 
+        }
+        public override string ToString()
+        {
+            return GetDescription();
+
+        }
+
+        internal static Bitmap GetResourcesForSpeciality(LodFile lodFile)
+        {
+            throw new NotImplementedException();
         }
     }
 }

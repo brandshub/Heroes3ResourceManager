@@ -168,6 +168,7 @@
             this.trbDefSprites = new System.Windows.Forms.TrackBar();
             this.lbDecomposed = new System.Windows.Forms.ListBox();
             this.pbResourceView = new System.Windows.Forms.PictureBox();
+            this.specialityBuilder1 = new h3magic.ImageGridControl();
             this.menuStrip1.SuspendLayout();
             this.tabsMain.SuspendLayout();
             this.tabHeroes.SuspendLayout();
@@ -179,6 +180,7 @@
             this.tabCreatures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.tabSpells.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbResourceView)).BeginInit();
@@ -341,7 +343,7 @@
             this.tabsMain.Visible = false;
             this.tabsMain.SelectedIndexChanged += new System.EventHandler(this.tabsMain_SelectedIndexChanged);
             // 
-            // heroesTab
+            // tabHeroes
             // 
             this.tabHeroes.Controls.Add(this.button2);
             this.tabHeroes.Controls.Add(this.textBox29);
@@ -362,7 +364,7 @@
             this.tabHeroes.Controls.Add(this.lbHeroes);
             this.tabHeroes.Controls.Add(this.hpcHeroProfile);
             this.tabHeroes.Location = new System.Drawing.Point(4, 25);
-            this.tabHeroes.Name = "heroesTab";
+            this.tabHeroes.Name = "tabHeroes";
             this.tabHeroes.Padding = new System.Windows.Forms.Padding(3);
             this.tabHeroes.Size = new System.Drawing.Size(908, 512);
             this.tabHeroes.TabIndex = 4;
@@ -555,7 +557,7 @@
             this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
             this.hpcHeroProfile.TabIndex = 22;
             // 
-            // h_classTab
+            // tabHeroClass
             // 
             this.tabHeroClass.Controls.Add(this.textBox68);
             this.tabHeroClass.Controls.Add(this.textBox69);
@@ -610,7 +612,7 @@
             this.tabHeroClass.Controls.Add(this.button3);
             this.tabHeroClass.Controls.Add(this.pbSkillTree);
             this.tabHeroClass.Location = new System.Drawing.Point(4, 25);
-            this.tabHeroClass.Name = "h_classTab";
+            this.tabHeroClass.Name = "tabHeroClass";
             this.tabHeroClass.Padding = new System.Windows.Forms.Padding(3);
             this.tabHeroClass.Size = new System.Drawing.Size(908, 512);
             this.tabHeroClass.TabIndex = 3;
@@ -1093,7 +1095,7 @@
             this.pbSkillTree.TabIndex = 32;
             this.pbSkillTree.TabStop = false;
             // 
-            // creaturesTab
+            // tabCreatures
             // 
             this.tabCreatures.Controls.Add(this.button1);
             this.tabCreatures.Controls.Add(this.textBox23);
@@ -1136,7 +1138,7 @@
             this.tabCreatures.Controls.Add(this.pictureBox1);
             this.tabCreatures.Controls.Add(this.pictureBox2);
             this.tabCreatures.Location = new System.Drawing.Point(4, 25);
-            this.tabCreatures.Name = "creaturesTab";
+            this.tabCreatures.Name = "tabCreatures";
             this.tabCreatures.Padding = new System.Windows.Forms.Padding(3);
             this.tabCreatures.Size = new System.Drawing.Size(908, 512);
             this.tabCreatures.TabIndex = 1;
@@ -1514,16 +1516,16 @@
             this.pictureBox2.TabIndex = 23;
             this.pictureBox2.TabStop = false;
             // 
-            // spellsTab
-            // 
+            // tabSpells
+            //             
             this.tabSpells.Location = new System.Drawing.Point(4, 25);
-            this.tabSpells.Name = "spellsTab";
+            this.tabSpells.Name = "tabSpells";
             this.tabSpells.Size = new System.Drawing.Size(908, 512);
             this.tabSpells.TabIndex = 5;
             this.tabSpells.Text = "Spells";
             this.tabSpells.UseVisualStyleBackColor = true;
             // 
-            // mainTab
+            // tabMain
             // 
             this.tabMain.Controls.Add(this.chbTimerEnabled);
             this.tabMain.Controls.Add(this.trbDefSprites);
@@ -1537,7 +1539,7 @@
             this.tabMain.Controls.Add(this.lbFiles);
             this.tabMain.Controls.Add(this.button4);
             this.tabMain.Location = new System.Drawing.Point(4, 25);
-            this.tabMain.Name = "mainTab";
+            this.tabMain.Name = "tabMain";
             this.tabMain.Padding = new System.Windows.Forms.Padding(3);
             this.tabMain.Size = new System.Drawing.Size(908, 512);
             this.tabMain.TabIndex = 0;
@@ -1612,6 +1614,7 @@
             this.tabCreatures.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.tabSpells.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).EndInit();
@@ -1761,6 +1764,7 @@
         private System.Windows.Forms.TrackBar trbDefSprites;
         private System.Windows.Forms.CheckBox chbTimerEnabled;
         private HeroProfileControl hpcHeroProfile;
+        private ImageGridControl specialityBuilder1;
     }
 }
 

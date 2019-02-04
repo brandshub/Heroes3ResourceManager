@@ -54,10 +54,10 @@ namespace h3magic
             icons.Add("PCX", Properties.Resources.PCX);
             icons.Add("ANY", Properties.Resources.ANY);
 
-            hpcHeroProfile.PropertyClicked += HpcHeroProfile_PropertyDoubleClicked;
+            hpcHeroProfile.PropertyClicked += HpcHeroProfile_PropertyClicked;
             heroPropertyForm.ItemSelected += HeroPropertyForm_ItemSelected;
             heroPropertyForm.Owner = this;
-          //  LoadMaster(@"d:\Games\h3\Heroes3.exe");
+            LoadMaster(@"d:\Games\h3\Heroes3.exe");
             //    Measure();
         }
 
@@ -66,8 +66,8 @@ namespace h3magic
         {
 
             var spr = Heroes3Master.Master.H3Sprite;
-            var bmp = CreatureManager.GetAllCreaturesBitmap(spr);
-            bmp = CreatureManager.GetAllCreaturesBitmapParallel(spr);
+            var bmp = Spell.GetAllSpells(spr);
+            bmp = Spell.GetAllSpellsParallel(spr);
 
 
             int n = 50;
@@ -77,7 +77,7 @@ namespace h3magic
             var sw = Stopwatch.StartNew();
             for (int i = 0; i < n; i++)
             {
-                bmp = CreatureManager.GetAllCreaturesBitmap(spr);
+                bmp = Spell.GetAllSpells(spr);
                 z = bmp.Width;
             }
             sw.Stop();
@@ -86,7 +86,7 @@ namespace h3magic
 
             for (int i = 0; i < n; i++)
             {
-                bmp = CreatureManager.GetAllCreaturesBitmapParallel(spr);
+                bmp = Spell.GetAllSpellsParallel(spr);
                 z = bmp.Width;
             }
             sw.Stop();
@@ -149,16 +149,16 @@ namespace h3magic
                 hero.SpellBook = 1;
                 hero.SpellIndex = selIndex;
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
-            }
-            else if (type == ProfilePropertyType.Speciality)
-            {
-                hero.HasChanged = true;
-                hero.SpecIndex = selIndex;
-                hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
-            }
+            }            
+            /* else if (type == ProfilePropertyType.Speciality)
+             {
+                 hero.HasChanged = true;
+                 hero.SpecIndex = selIndex;
+                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
+             }*/
         }
 
-        private void HpcHeroProfile_PropertyDoubleClicked(ProfilePropertyType type, int relativeIndex, int currentValue)
+        private void HpcHeroProfile_PropertyClicked(ProfilePropertyType type, int relativeIndex, int currentValue)
         {
             heroPropertyForm.PropertyType = type;
             heroPropertyForm.CurrentIndex = relativeIndex;
@@ -604,7 +604,7 @@ namespace h3magic
                 {
                     lbHeroClasses.Items.Clear();
                     lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
-                    pbSkillTree.Image = SecondarySkill.GetSkillTree(Heroes3Master.Master.H3Sprite);
+                    pbSkillTree.Image = SecondarySkill.GetSkillTreeForHeroClass(Heroes3Master.Master.H3Sprite);
                 }
                 else if (tabsMain.SelectedIndex == 0)
                 {

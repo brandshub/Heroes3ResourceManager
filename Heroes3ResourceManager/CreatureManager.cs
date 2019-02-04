@@ -17,6 +17,7 @@ namespace h3magic
 
         public static List<Creature> OnlyActiveCreatures = new List<Creature>();
         public static Creature[] AllCreatures2 = null;
+        public static int[] IndexesOfFirstLevelCreatures;
 
         private static DefFile creatureDef;
         private static string[] rows;
@@ -33,50 +34,63 @@ namespace h3magic
             else
                 lastLodName = file.Name;
 
-            if (!Loaded)
+
+            var rec = file.GetRecord(FAT_NAME);
+            if (rec != null)
             {
-                var rec = file.GetRecord(FAT_NAME);
-                if (rec != null)
+                string text = Encoding.Default.GetString(rec.GetRawData(file.stream));
+                rows = text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                AllCreatures2 = new Creature[rows.Length];
+
+                int curIndex = 0;
+                for (int i = 0; i < 8; i++)
                 {
-                    string text = Encoding.Default.GetString(rec.GetRawData(file.stream));
-                    rows = text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
-                    AllCreatures2 = new Creature[rows.Length];
-
-                    int curIndex = 0;
-                    for (int i = 0; i < 8; i++)
+                    for (int j = 0; j < 14; j++)
                     {
-                        for (int j = 0; j < 14; j++)
-                        {
-                            var stat = new Creature(rows[2 + i * 17 + j]) { CastleIndex = i, CreatureIndex = curIndex++, CreatureCastleRelativeIndex = j };
+                        var stat = new Creature(rows[2 + i * 17 + j]) { CastleIndex = i, CreatureIndex = curIndex++, CreatureCastleRelativeIndex = j };
 
-                            AllCreatures2[stat.CreatureIndex] = stat;
-                            OnlyActiveCreatures.Add(stat);
-                        }
+                        AllCreatures2[stat.CreatureIndex] = stat;
+                        OnlyActiveCreatures.Add(stat);
                     }
-                    int off = 2 + 17 * 8;
-
-                    List<Creature> misc = new List<Creature>();
-                    for (int i = off; i < rows.Length - 1; i++)
-                    {
-                        if (rows[i].Contains("\t\t\t"))
-                        {
-                            misc.Add(null);
-                        }
-                        else
-                        {
-                            if (!rows[i].Contains("NOT USED"))
-                            {
-                                var stat = new Creature(rows[i]) { CastleIndex = 8, CreatureIndex = curIndex, CreatureCastleRelativeIndex = i - off };
-                                AllCreatures2[stat.CreatureIndex] = stat;
-                                misc.Add(stat);
-                            }
-                            curIndex++;
-                        }
-                    }
-                    OnlyActiveCreatures.AddRange(misc.Where(s => s != null).ToArray());
-                    Loaded = true;
                 }
+                int off = 2 + 17 * 8;
+
+                List<Creature> misc = new List<Creature>();
+                for (int i = off; i < rows.Length - 1; i++)
+                {
+                    if (rows[i].Contains("\t\t\t"))
+                    {
+                        misc.Add(null);
+                    }
+                    else
+                    {
+                        if (!rows[i].Contains("NOT USED"))
+                        {
+                            var stat = new Creature(rows[i]) { CastleIndex = 8, CreatureIndex = curIndex, CreatureCastleRelativeIndex = i - off };
+                            AllCreatures2[stat.CreatureIndex] = stat;
+                            misc.Add(stat);
+                        }
+                        curIndex++;
+                    }
+                }
+                OnlyActiveCreatures.AddRange(misc.Where(s => s != null).ToArray());
+
+                var indexes = new List<int>(100);
+                for (int i = 0; i < OnlyActiveCreatures.Count; i++)
+                {
+                    if (i < 112 && i % 2 == 1)
+                    {
+                        continue;
+                    }
+                    if (i == 119 || (i >= 121 && i <= 125) || i == 127)
+                    {
+                        continue;
+                    }
+                    indexes.Add(OnlyActiveCreatures[i].CreatureIndex);
+                }
+                IndexesOfFirstLevelCreatures = indexes.ToArray();
             }
+
 
         }
 
@@ -215,37 +229,22 @@ namespace h3magic
         private static Bitmap _allUnUpgradedCreatures;
         public static Bitmap GetAllBasicCreatures(LodFile h3sprite)
         {
-            var indexes = new List<int>(100);
-            var sw = Stopwatch.StartNew();
             if (_allUnUpgradedCreatures != null)
                 return _allUnUpgradedCreatures;
 
-            for (int i = 0; i < OnlyActiveCreatures.Count; i++)
-            {
-                if (i < 112 && i % 2 == 1)
-                {
-                    continue;
-                }
-                if (i == 119 || (i >= 121 && i <= 125) || i == 127)
-                {
-                    continue;
-                }
-                indexes.Add(OnlyActiveCreatures[i].CreatureIndex);
-            }
-
-            int totalrows = indexes.Count / 14 + (indexes.Count % 14 == 0 ? 0 : 1);
+            int totalrows = IndexesOfFirstLevelCreatures.Length / 14 + (IndexesOfFirstLevelCreatures.Length % 14 == 0 ? 0 : 1);
             _allUnUpgradedCreatures = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);
             var imageData = _allUnUpgradedCreatures.LockBits(new Rectangle(0, 0, _allUnUpgradedCreatures.Width, _allUnUpgradedCreatures.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            Parallel.For((int)0, indexes.Count, i =>
+            Parallel.For((int)0, IndexesOfFirstLevelCreatures.Length, i =>
             {
                 int row = i / 14;
                 int col = i % 14;
-                var img = creatureDef.GetByAbsoluteNumber2(indexes[i] + 2);
+                var img = creatureDef.GetByAbsoluteNumber2(IndexesOfFirstLevelCreatures[i] + 2);
                 if (img != null)
                 {
                     imageData.DrawImage24(col * (58 + 1), row * (64 + 1), 176, img);
-                }                
+                }
             });
             _allUnUpgradedCreatures.UnlockBits(imageData);
             return _allUnUpgradedCreatures;

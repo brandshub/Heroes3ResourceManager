@@ -4,17 +4,27 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace h3magic
 {
     public class SecondarySkill
     {
+        public const int SPEC_COLNUMBER = 6;
+        public const int ALL_COLNUMBER = 12;
+
         private const string TXT_FNAME = "SSTRAITS.TXT";
         private const string IMG_FNAME = "Secskill.def";
 
         public static bool Loaded { get; private set; }
 
         public static List<SecondarySkill> AllSkills = new List<SecondarySkill>();
+        public static int[] IndexesOfAllSpecSkills;
+
+        private static DefFile _defFile = null;
+        private static Bitmap _skillTree = null;
+        private static Bitmap _skillTree2 = null;
+        private static Bitmap _specImage = null;
 
         public int Index { get; private set; }
         public string Name { get; private set; }
@@ -29,7 +39,10 @@ namespace h3magic
                 string name = rows[i].Split('\t')[0];
                 AllSkills.Add(new SecondarySkill { Index = i - 2, Name = name });
             }
-            Loaded = true;
+            _defFile = null;
+            _specImage = null;
+            _skillTree = null;
+            _skillTree2 = null;
         }
 
         public static Bitmap GetImage(LodFile lodFile, int skillIndex, int level)
@@ -39,8 +52,9 @@ namespace h3magic
 
         public Bitmap GetImage(LodFile lodFile, int level)
         {
-            var def = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
-            return def.GetByAbsoluteNumber(Index * 3 + level + 2);
+            if (_defFile == null)
+                _defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
+            return _defFile.GetByAbsoluteNumber(Index * 3 + level + 2);
         }
 
         public override string ToString()
@@ -48,53 +62,87 @@ namespace h3magic
             return Name;
         }
 
-        private static Bitmap skillTree = null;
-        private static Bitmap skillTree2 = null;
 
-        public static Bitmap GetSkillTree(LodFile h3sprite)
+
+        public static Bitmap GetSkillTreeForHeroClass(LodFile h3sprite)
         {
-            var sw = Stopwatch.StartNew();
-            if (skillTree != null)
-                return skillTree;
 
-            var def = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
+            if (_skillTree != null)
+                return _skillTree;
+
+            if (_defFile == null)
+                _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
+
             var bmp = new Bitmap((44 + 60) * 4, 44 * 7);
             using (var g = Graphics.FromImage(bmp))
             {
                 for (int i = 0; i < 4; i++)
                     for (int j = 0; j < 7; j++)
-                        g.DrawImage(def.GetByAbsoluteNumber(3 + (i * 7 + j) * 3), i * 104, 44 * j);
+                        g.DrawImage(_defFile.GetByAbsoluteNumber(3 + (i * 7 + j) * 3), i * 104, 44 * j);
             }
-            skillTree = bmp;
-            float ms = sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency;
-            Debug.WriteLine("skilltree: " + ms);
-            return skillTree;
+            _skillTree = bmp;
+            return _skillTree;
         }
 
-
-
-
-        public static Bitmap GetSkillTree2(LodFile h3sprite)
+        public static Bitmap GetSkillTree(LodFile h3sprite)
         {
-            if (skillTree2 != null)
-                return skillTree2;
+            if (_skillTree2 != null)
+                return _skillTree2;
 
-            var def = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
+            if (_defFile == null)
+                _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
 
-            var bmp = new Bitmap((44 + 1) * 12, (44 + 1) * 7, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            int rowCount = 3 * AllSkills.Count / ALL_COLNUMBER;
+
+            var bmp = new Bitmap((44 + 1) * ALL_COLNUMBER, (44 + 1) * rowCount, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            for (int i = 0; i < 7; i++)
-                for (int j = 0; j < 12; j++)
+            Parallel.For(0, AllSkills.Count * 3, i =>
                 {
-                    var img = def.GetByAbsoluteNumber2(3 + i * 12 + j);
-                    imageData.DrawImage24(j * (44 + 1), i * (44 + 1), 132, img);
-                }
+                    int row = i / ALL_COLNUMBER;
+                    int col = i % ALL_COLNUMBER;
+
+                    var img = _defFile.GetByAbsoluteNumber2(3 + row * ALL_COLNUMBER + col);
+                    imageData.DrawImage24(col * (44 + 1), row * (44 + 1), 132, img);
+                });
 
             bmp.UnlockBits(imageData);
-            skillTree2 = bmp;
+            _skillTree2 = bmp;
 
-            return skillTree2;
+            return _skillTree2;
         }
+
+
+
+        public static Bitmap GetSkillsForSpeciality(LodFile h3sprite)
+        {
+            if (_specImage != null)
+                return _specImage;
+
+            if (_defFile == null)
+                _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
+
+            if (IndexesOfAllSpecSkills == null || IndexesOfAllSpecSkills.Length == 0)
+                IndexesOfAllSpecSkills = Speciality.AllSpecialities.Where(s => s.Type == SpecialityType.Skill).Select(z => z.ObjectId).Distinct().OrderBy(f => f).ToArray();
+            int rowNum = IndexesOfAllSpecSkills.Length / SPEC_COLNUMBER;
+
+            var bmp = new Bitmap((44 + 1) * SPEC_COLNUMBER, (44 + 1) * rowNum, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            Parallel.For(0, IndexesOfAllSpecSkills.Length, i =>
+            {
+                int row = i / SPEC_COLNUMBER;
+                int col = i % SPEC_COLNUMBER;
+
+                var img = _defFile.GetByAbsoluteNumber2(3 + IndexesOfAllSpecSkills[i] * 3);
+                imageData.DrawImage24(col * (44 + 1), row * (44 + 1), 132, img);
+            });
+
+            bmp.UnlockBits(imageData);
+            _specImage = bmp;
+
+            return _specImage;
+        }
+
     }
 }

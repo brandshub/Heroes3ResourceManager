@@ -40,10 +40,10 @@ namespace h3magic
         public Creature Creature2 { get { return CreatureManager.GetByIndex(Unit2Index); } }
         public Creature Creature3 { get { return CreatureManager.GetByIndex(Unit3Index); } }
 
-        public SecondarySkill Skill1 { get { if (SecondarySkill.Loaded) return SecondarySkill.AllSkills[FirstSkillIndex]; return null; } }
-        public SecondarySkill Skill2 { get { if (SecondarySkill.Loaded && SecondSkillIndex != -1) return SecondarySkill.AllSkills[SecondSkillIndex]; return null; } }
+        public SecondarySkill Skill1 { get { return SecondarySkill.AllSkills[FirstSkillIndex]; } }
+        public SecondarySkill Skill2 { get { if (SecondSkillIndex != -1) return SecondarySkill.AllSkills[SecondSkillIndex]; return null; } }
 
-        public SpellStat Spell { get { return SpellStat.GetSpellByIndex(SpellIndex); } }
+        public Spell Spell { get { return Spell.GetSpellByIndex(SpellIndex); } }
 
         public Speciality Spec { get { return Speciality.GetByIndex(SpecIndex); } }
 
