@@ -33,6 +33,11 @@ namespace h3magic
             return null;
         }
 
+        public Speciality() { }
+        public Speciality(byte[] bytes)
+        {
+
+        }
 
         public static void LoadInfo(byte[] executableBinary)
         {
@@ -149,9 +154,19 @@ namespace h3magic
             return s;
         }
 
-        public static ProfilePropertyType GetProfilePropertyType(SpecialityType specType)
+        public static ProfilePropertyType ToProfilePropertyType(SpecialityType specType)
         {
             return (ProfilePropertyType)((int)specType + 4);
+        }
+
+        public static SpecialityType FromProfileProperty(ProfilePropertyType type)
+        {
+            int val = (int)type;
+            if (val >= 4 && val <= 10)
+                return (SpecialityType)(val - 4);
+
+            return SpecialityType.Invalid;
+            
         }
 
         public static unsafe void Update(byte* ptr, int oldIndex, int newIndex)
@@ -166,15 +181,23 @@ namespace h3magic
             Marshal.Copy(spec.Data, 0, new IntPtr((void*)iptr), 32);
 
         }
+
+
+        public static byte[] GenerateSpecialityData(SpecialityType type, int objectId, int arg1, int arg2, int arg3)
+        {
+            //TODO
+            return null;
+        }
+        
+
+        
+
+        
+
         public override string ToString()
         {
             return GetDescription();
 
-        }
-
-        internal static Bitmap GetResourcesForSpeciality(LodFile lodFile)
-        {
-            throw new NotImplementedException();
         }
     }
 }

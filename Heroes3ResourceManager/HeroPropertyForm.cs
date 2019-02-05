@@ -49,12 +49,12 @@ namespace h3magic
         {
             if (this.ItemSelected != null)
             {
-                this.ItemSelected(value);
+                this.ItemSelected(value, 0, 0, 0);
                 Close();
             }
         }
 
-        public event Action<int> ItemSelected;
+        public event Action<int, int, int, int> ItemSelected;
 
 
         // anonimous class works weirdly
@@ -125,11 +125,6 @@ namespace h3magic
                 PropertyType = (ProfilePropertyType)(int)cbSpecialityType.SelectedValue;
                 this.SelectedValue = -1;
             }
-        }
-
-        private void HeroPropertyForm_Load(object sender, EventArgs e)
-        {
-
         }
 
     }

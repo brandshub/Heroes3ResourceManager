@@ -132,6 +132,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Resource.cs" />
     <Compile Include="SecondarySkill.cs" />
     <Compile Include="Speciality.cs" />
     <Compile Include="ImageGridControl.cs">

@@ -107,7 +107,7 @@ namespace h3magic
         }
 
 
-        private void HeroPropertyForm_ItemSelected(int selIndex)
+        private void HeroPropertyForm_ItemSelected(int selIndex, int arg1,int arg2, int arg3)
         {
             ProfilePropertyType type = heroPropertyForm.PropertyType;
             var hero = hpcHeroProfile.Hero;
@@ -150,6 +150,19 @@ namespace h3magic
                 hero.SpellIndex = selIndex;
                 hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
             }            
+            else 
+            {
+                var specType = Speciality.FromProfileProperty(type);
+                if (specType != SpecialityType.Invalid)
+                {
+                    var spec = new Speciality(Speciality.GenerateSpecialityData(specType, selIndex, arg1, arg2, arg3));
+                    hero.HasChanged = true;
+                    //TODO
+                }
+
+                //hpcHeroProfile
+            }
+
             /* else if (type == ProfilePropertyType.Speciality)
              {
                  hero.HasChanged = true;

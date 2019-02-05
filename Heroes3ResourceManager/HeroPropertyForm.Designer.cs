@@ -81,7 +81,7 @@
             this.Name = "HeroPropertyForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Load += new System.EventHandler(this.HeroPropertyForm_Load);
+            this.Text = "Select Value";
             this.ResumeLayout(false);
             this.PerformLayout();
 

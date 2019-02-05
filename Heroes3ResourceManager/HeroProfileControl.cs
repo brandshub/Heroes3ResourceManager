@@ -189,7 +189,7 @@ namespace h3magic
                     }
                     else if (lastRectIndex == 2)
                     {
-                        type = Speciality.GetProfilePropertyType(Hero.Spec.Type);
+                        type = Speciality.ToProfilePropertyType(Hero.Spec.Type);
                         currentValue = Hero.Spec.ObjectId;
                     }
                     else if (lastRectIndex <= 4)

@@ -31,7 +31,8 @@ namespace h3magic
         [Description("Creature Upgrade")]
         CreaturesUpgrade = 6,
         Mutara = 7,
-        Adrianna = -1
+        Adrianna = -1,
+        Invalid = 100
     };
 
     public enum ResourceSpeciality

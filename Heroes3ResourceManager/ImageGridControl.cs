@@ -145,6 +145,10 @@ namespace h3magic
                 {
                     flag = total < Spell.specSpellIndexes.Length;
                 }
+                else if(propertyType == ProfilePropertyType.SpecResource)
+                {
+                    flag = total < 7;
+                }
 
 
                 if (flag)
@@ -215,6 +219,12 @@ namespace h3magic
                 cellHeight = 65;
                 itemsPerRow = 6;
             }
+            else if(propertyType == ProfilePropertyType.SpecResource)
+            {
+                cellWidth = 83;
+                cellHeight = 93;
+                itemsPerRow = 7;
+            }
             else
             {
                 cellWidth = 1;
@@ -247,6 +257,9 @@ namespace h3magic
             if (propertyType == ProfilePropertyType.SpecSecondarySkill)
                 return SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, SecondarySkill.IndexesOfAllSpecSkills[index], 1);
 
+            if (propertyType == ProfilePropertyType.SpecResource)
+                return Resource.GetImage(Heroes3Master.Master.H3Sprite, index);
+
             return null;
         }
 
@@ -274,8 +287,7 @@ namespace h3magic
                     return Spell.GetAvailableSpellsForSpeciality(Heroes3Master.Master.H3Sprite);
 
                 if (propertyType == ProfilePropertyType.SpecResource)
-                    return Speciality.GetResourcesForSpeciality(Heroes3Master.Master.H3Sprite);
-
+                    return Resource.GetAllResources(Heroes3Master.Master.H3Sprite);
             }
             return null;
         }
