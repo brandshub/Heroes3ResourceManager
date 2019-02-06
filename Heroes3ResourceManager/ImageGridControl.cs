@@ -15,8 +15,9 @@ namespace h3magic
         private int selectedIndex;
         private int hoverIndex;
 
-
+        public int HeroIndex { get; set; }
         public int CurrentIndex { get; set; }
+        public bool ForceAllCreatures { get; set; }
 
         private ProfilePropertyType propertyType;
         private int selectedValue = 0;
@@ -42,27 +43,41 @@ namespace h3magic
             get { return selectedValue; }
             set
             {
-                if (propertyType == ProfilePropertyType.Creature)
+                if (value >= 0)
                 {
-                    selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
+                    if (propertyType == ProfilePropertyType.Creature)
+                    {
+                        selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
+                    }
+                    else if (propertyType == ProfilePropertyType.SpecCreature)
+                    {
+                        selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
+                    }
+                    else if (propertyType == ProfilePropertyType.SpecCreatureStatic)
+                    {
+                        selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
+                    }
+                    else if (propertyType == ProfilePropertyType.SpecSecondarySkill)
+                    {
+                        selectedValue = Array.IndexOf<int>(SecondarySkill.IndexesOfAllSpecSkills, value);
+                    }
+                    else if (propertyType == ProfilePropertyType.SpecSpell)
+                    {
+                        selectedValue = Array.IndexOf<int>(Spell.specSpellIndexes, value);
+                    }
+                    else if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
+                    {
+                        if (ForceAllCreatures)
+                            selectedValue = selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
+                        else
+                            selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
+                    }
+                    else
+                    {
+                        selectedValue = value;
+                    }
+                    currentHover = selectedValue;
                 }
-                else if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic || propertyType == ProfilePropertyType.SpecCreatureUpgrade)
-                {
-                    selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
-                }
-                else if (propertyType == ProfilePropertyType.SpecSecondarySkill)
-                {
-                    selectedValue = Array.IndexOf<int>(SecondarySkill.IndexesOfAllSpecSkills, value);
-                }
-                else if (propertyType == ProfilePropertyType.SpecSpell)
-                {
-                    selectedValue = Array.IndexOf<int>(Spell.specSpellIndexes, value);
-                }
-                else
-                {
-                    selectedValue = value;
-                }
-                currentHover = selectedValue;
             }
         }
 
@@ -72,7 +87,7 @@ namespace h3magic
 
         public void InitPropertyType()
         {
-            var temp = GetBackgroundImageForPropertyType(propertyType);
+            var temp = GetBackgroundImageForPropertyType(propertyType, ForceAllCreatures);
             if (temp != null)
             {
                 Image background = new Bitmap(temp);
@@ -98,6 +113,7 @@ namespace h3magic
             {
                 selectedValue = currentHover;
 
+                pbMain.Invalidate();
                 if (ItemSelected != null)
                     ItemSelected(currentHover);
             }
@@ -133,9 +149,16 @@ namespace h3magic
                 {
                     flag = total < Spell.AllSpells.Count;
                 }
-                else if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic || propertyType == ProfilePropertyType.SpecCreatureUpgrade)
+                else if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic)
                 {
                     flag = total < CreatureManager.IndexesOfFirstLevelCreatures.Length;
+                }
+                else if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
+                {
+                    if (ForceAllCreatures)
+                        flag = total < CreatureManager.OnlyActiveCreatures.Count - 1;
+                    else
+                        flag = total < CreatureManager.IndexesOfFirstLevelCreatures.Length;
                 }
                 else if (propertyType == ProfilePropertyType.SpecSecondarySkill)
                 {
@@ -145,7 +168,7 @@ namespace h3magic
                 {
                     flag = total < Spell.specSpellIndexes.Length;
                 }
-                else if(propertyType == ProfilePropertyType.SpecResource)
+                else if (propertyType == ProfilePropertyType.SpecResource)
                 {
                     flag = total < 7;
                 }
@@ -168,14 +191,14 @@ namespace h3magic
 
             if (currentHover >= 0)
             {
-                var hoverImage = GetImageForPropertyType(propertyType, currentHover);
+                var hoverImage = GetImageForPropertyType(propertyType, currentHover,ForceAllCreatures);
                 if (hoverImage != null)
                     e.Graphics.DrawImage(hoverImage, (currentHover % itemsPerRow) * cellWidth, (currentHover / itemsPerRow) * cellHeight, cellWidth - 1, cellHeight - 1);
             }
 
             if (selectedValue >= 0)
             {
-                var realImage = GetImageForPropertyType(propertyType, selectedValue);
+                var realImage = GetImageForPropertyType(propertyType, selectedValue, ForceAllCreatures);
                 if (realImage != null)
                 {
                     e.Graphics.DrawImage(realImage, (selectedValue % itemsPerRow) * cellWidth, (selectedValue / itemsPerRow) * cellHeight, cellWidth - 1, cellHeight - 1);
@@ -219,7 +242,7 @@ namespace h3magic
                 cellHeight = 65;
                 itemsPerRow = 6;
             }
-            else if(propertyType == ProfilePropertyType.SpecResource)
+            else if (propertyType == ProfilePropertyType.SpecResource)
             {
                 cellWidth = 83;
                 cellHeight = 93;
@@ -235,36 +258,47 @@ namespace h3magic
 
 
         //                     
-        private static Bitmap GetImageForPropertyType(ProfilePropertyType propertyType, int index)
+        private static Bitmap GetImageForPropertyType(ProfilePropertyType propertyType, int index, bool forceAllCreatures)
         {
-            if (propertyType == ProfilePropertyType.Creature)
+            if (index >= 0)
             {
-                int realIndex = CreatureManager.OnlyActiveCreatures[index].CreatureIndex;
-                return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, realIndex);
+                if (propertyType == ProfilePropertyType.Creature)
+                {
+                    int realIndex = CreatureManager.OnlyActiveCreatures[index].CreatureIndex;
+                    return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, realIndex);
+                }
+                if (propertyType == ProfilePropertyType.SecondarySkill)
+                    return SecondarySkill.AllSkills[index / 3].GetImage(Heroes3Master.Master.H3Sprite, 1 + index % 3);
+
+                if (propertyType == ProfilePropertyType.Spell)
+                    return Spell.AllSpells[index].GetImage(Heroes3Master.Master.H3Sprite);
+
+                if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic)
+                    return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, CreatureManager.IndexesOfFirstLevelCreatures[index]);
+
+                if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
+                {
+                    if (!forceAllCreatures)
+                        return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, CreatureManager.IndexesOfFirstLevelCreatures[index]);
+
+                    int realIndex = CreatureManager.OnlyActiveCreatures[index].CreatureIndex;
+                    return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, realIndex);
+                }
+
+                if (propertyType == ProfilePropertyType.SpecSpell)
+                    return Spell.GetSpellByIndex(Spell.specSpellIndexes[index]).GetImage(Heroes3Master.Master.H3Sprite);
+
+                if (propertyType == ProfilePropertyType.SpecSecondarySkill)
+                    return SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, SecondarySkill.IndexesOfAllSpecSkills[index], 1);
+
+                if (propertyType == ProfilePropertyType.SpecResource)
+                    return Resource.GetImage(Heroes3Master.Master.H3Sprite, index);
             }
-            if (propertyType == ProfilePropertyType.SecondarySkill)
-                return SecondarySkill.AllSkills[index / 3].GetImage(Heroes3Master.Master.H3Sprite, 1 + index % 3);
-
-            if (propertyType == ProfilePropertyType.Spell)
-                return Spell.AllSpells[index].GetImage(Heroes3Master.Master.H3Sprite);
-
-            if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic || propertyType == ProfilePropertyType.SpecCreatureUpgrade)
-                return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, CreatureManager.IndexesOfFirstLevelCreatures[index]);
-
-            if (propertyType == ProfilePropertyType.SpecSpell)
-                return Spell.GetSpellByIndex(Spell.specSpellIndexes[index]).GetImage(Heroes3Master.Master.H3Sprite);
-
-            if (propertyType == ProfilePropertyType.SpecSecondarySkill)
-                return SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, SecondarySkill.IndexesOfAllSpecSkills[index], 1);
-
-            if (propertyType == ProfilePropertyType.SpecResource)
-                return Resource.GetImage(Heroes3Master.Master.H3Sprite, index);
-
             return null;
         }
 
 
-        private static Bitmap GetBackgroundImageForPropertyType(ProfilePropertyType propertyType)
+        private static Bitmap GetBackgroundImageForPropertyType(ProfilePropertyType propertyType, bool forceAllCreatures)
         {
             if (Heroes3Master.Master != null)
             {
@@ -277,9 +311,14 @@ namespace h3magic
                 if (propertyType == ProfilePropertyType.Spell)
                     return new Bitmap(Spell.GetAllSpellsParallel(Heroes3Master.Master.H3Sprite));
 
-                if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic || propertyType == ProfilePropertyType.SpecCreatureUpgrade)
+                if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic)
                     return CreatureManager.GetAllBasicCreatures(Heroes3Master.Master.H3Sprite);
-
+                if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
+                {
+                    if (forceAllCreatures)
+                        return new Bitmap(CreatureManager.GetAllCreaturesBitmapParallel(Heroes3Master.Master.H3Sprite));
+                    return CreatureManager.GetAllBasicCreatures(Heroes3Master.Master.H3Sprite);
+                }
                 if (propertyType == ProfilePropertyType.SpecSecondarySkill)
                     return SecondarySkill.GetSkillsForSpeciality(Heroes3Master.Master.H3Sprite);
 

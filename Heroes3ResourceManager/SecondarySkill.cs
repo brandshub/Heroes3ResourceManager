@@ -124,7 +124,7 @@ namespace h3magic
 
             if (IndexesOfAllSpecSkills == null || IndexesOfAllSpecSkills.Length == 0)
                 IndexesOfAllSpecSkills = Speciality.AllSpecialities.Where(s => s.Type == SpecialityType.Skill).Select(z => z.ObjectId).Distinct().OrderBy(f => f).ToArray();
-            int rowNum = IndexesOfAllSpecSkills.Length / SPEC_COLNUMBER;
+            int rowNum = IndexesOfAllSpecSkills.Length / SPEC_COLNUMBER + (IndexesOfAllSpecSkills.Length % SPEC_COLNUMBER == 0 ? 0 : 1);
 
             var bmp = new Bitmap((44 + 1) * SPEC_COLNUMBER, (44 + 1) * rowNum, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);

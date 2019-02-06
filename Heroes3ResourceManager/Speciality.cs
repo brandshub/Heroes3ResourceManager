@@ -18,6 +18,7 @@ namespace h3magic
         public int ObjectId { get; private set; }
         public byte[] Data { get; private set; }
 
+        public int Index { get; private set; }
         public SpecialityType Type { get { return (SpecialityType)TypeId; } }
 
         public static List<Speciality> AllSpecialities = new List<Speciality>();
@@ -51,6 +52,7 @@ namespace h3magic
                 {
                     var spec = new Speciality
                     {
+                        Index = i,
                         TypeId = BitConverter.ToInt32(executableBinary, currentOffset),
                         ObjectId = BitConverter.ToInt32(executableBinary, currentOffset + 4)
                     };
@@ -59,7 +61,7 @@ namespace h3magic
                     currentOffset += BLOCK_SIZE;
                     AllSpecialities.Add(spec);
                 }
-            }            
+            }
         }
 
         public static Speciality GetByIndex(int index)
@@ -119,9 +121,9 @@ namespace h3magic
 
                 s += CreatureManager.GetByCreatureIndex(ObjectId);
 
-                int attack = BitConverter.ToInt32(Data, 0);
-                int defense = BitConverter.ToInt32(Data, 4);
-                int damage = BitConverter.ToInt32(Data, 8);
+                int attack, defense, damage;
+
+                TryGetCreatureStaticBonuses(out attack, out defense, out damage);
 
                 if (attack != 0)
                     s += " A: +" + attack;
@@ -166,14 +168,45 @@ namespace h3magic
                 return (SpecialityType)(val - 4);
 
             return SpecialityType.Invalid;
-            
+
         }
 
-        public static unsafe void Update(byte* ptr, int oldIndex, int newIndex)
+        public bool TryGetCreatureStaticBonuses(out int attack, out int defense, out int damage)
         {
-            var spec = AllSpecialities[newIndex];
+            attack = 0;
+            defense = 0;
+            damage = 0;
+            if (Type == SpecialityType.CreatureStaticBonus)
+            {
+                attack = BitConverter.ToInt32(Data, 0);
+                defense = BitConverter.ToInt32(Data, 4);
+                damage = BitConverter.ToInt32(Data, 8);
+                return true;
+            }
+            return false;
+        }
 
-            long offset = HeroesSection.HeroOffset2 + oldIndex * BLOCK_SIZE;
+        public bool TryGetCreatureUpgrade(out int creature1, out int creature2, out int targetCreature)
+        {
+            creature1 = -1;
+            creature2 = -1;
+            targetCreature = -1;
+
+            if(Type == SpecialityType.CreaturesUpgrade)
+            {
+                creature1 = ObjectId;
+                creature2 = BitConverter.ToInt32(Data, 12);
+                targetCreature = BitConverter.ToInt32(Data, 16);
+                return true;
+            }
+            return false;
+        }
+
+        public static unsafe void Update(byte* ptr, int index)
+        {
+            var spec = AllSpecialities[index];
+
+            long offset = HeroesSection.HeroOffset2 + index * BLOCK_SIZE;
             int* iptr = (int*)(ptr + offset);
 
             *iptr++ = spec.TypeId;
@@ -183,21 +216,44 @@ namespace h3magic
         }
 
 
-        public static byte[] GenerateSpecialityData(SpecialityType type, int objectId, int arg1, int arg2, int arg3)
+        public static void UpdateSpecialityData(SpecialityType type, int index, int arg0, int arg1, int arg2, int arg3)
         {
-            //TODO
-            return null;
+
+            var spec = new Speciality();
+            spec.Index = index;
+            spec.Data = new byte[32];
+            spec.TypeId = (int)type;
+
+            int[] temp = new int[8];
+
+            if(type == SpecialityType.Skill || type == SpecialityType.Spell || type == SpecialityType.Resource || type == SpecialityType.CreatureLevelBonus)
+            {                                
+                spec.ObjectId = arg0;                
+            }
+            else if (type == SpecialityType.CreaturesUpgrade)
+            {
+                spec.ObjectId = arg1;
+                temp[3] = arg2;
+                temp[4] = arg3;
+                Buffer.BlockCopy(temp, 0, spec.Data, 0, 32);
+            }
+            else if(type == SpecialityType.CreatureStaticBonus)
+            {
+                spec.ObjectId = CreatureManager.IndexesOfFirstLevelCreatures[arg0];
+                temp[0] = arg1;
+                temp[1] = arg2;
+                temp[2] = arg3;
+                Buffer.BlockCopy(temp, 0, spec.Data, 0, 32);
+            }
+
+            AllSpecialities[index] = spec;          
         }
-        
 
-        
 
-        
 
         public override string ToString()
         {
             return GetDescription();
-
         }
     }
 }

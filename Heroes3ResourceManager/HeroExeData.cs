@@ -29,7 +29,7 @@ namespace h3magic
         public int Unit2Index;
         public int Unit3Index;
 
-        public int SpecIndex;
+        
 
         public int Index { get; private set; }
 
@@ -45,7 +45,7 @@ namespace h3magic
 
         public Spell Spell { get { return Spell.GetSpellByIndex(SpellIndex); } }
 
-        public Speciality Spec { get { return Speciality.GetByIndex(SpecIndex); } }
+        public Speciality Spec { get { return Speciality.GetByIndex(Index); } }
 
 
         public static void LoadInfo(byte[] executableBinary)
@@ -60,8 +60,7 @@ namespace h3magic
                 {
                     var hero = new HeroExeData
                     {
-                        Index = i,
-                        SpecIndex = i,
+                        Index = i,                        
                         GenderInt = BitConverter.ToInt32(executableBinary, currentOffset),
                         Race = BitConverter.ToInt32(executableBinary, currentOffset + 4),
                         ClassIndex = BitConverter.ToInt32(executableBinary, currentOffset + 8),
@@ -83,7 +82,7 @@ namespace h3magic
 
         public unsafe static void UpdateDataInMemory()
         {
-            long offset = HeroesSection.HeroOffset1;            
+            long offset = HeroesSection.HeroOffset1;
 
             var exe = Heroes3Master.Master.Executable;
             string file = exe.Path;
@@ -111,11 +110,11 @@ namespace h3magic
                         *iptr = current.Unit3Index;
 
 
-                        if (current.SpecIndex != current.Index)
-                            Speciality.Update(ptr, current.Index, current.SpecIndex);
+                        //if (current.SpecIndex != current.Index)
+                        Speciality.Update(ptr, current.Index);
                     }
                 }
-            }            
+            }
         }
         public override string ToString()
         {

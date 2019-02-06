@@ -20,7 +20,7 @@ namespace h3magic
             set { PictureBox.Image = value; }
         }
 
-        public event Action<ProfilePropertyType, int, int> PropertyClicked;
+        public event Action<int, ProfilePropertyType, int, int> PropertyClicked;
 
         private float ratio = 1;
         private int lastRectIndex = -1;
@@ -55,7 +55,7 @@ namespace h3magic
                 g.DrawImage(portrait, new Point(4, 3));
 
                 var heroData = HeroExeData.Data[heroIndex];
-                var z = Speciality.GetImage(master.H3Sprite, heroData.SpecIndex);
+                var z = Speciality.GetImage(master.H3Sprite, heroData.Index);
                 g.DrawImage(z, new Point(4, 166));
 
                 Hero = heroData;
@@ -189,7 +189,7 @@ namespace h3magic
                     }
                     else if (lastRectIndex == 2)
                     {
-                        type = Speciality.ToProfilePropertyType(Hero.Spec.Type);
+                        type = Speciality.ToProfilePropertyType(Hero.Spec.Type);                               
                         currentValue = Hero.Spec.ObjectId;
                     }
                     else if (lastRectIndex <= 4)
@@ -210,7 +210,7 @@ namespace h3magic
                         currentValue = Hero.SpellIndex;
                     }
 
-                    PropertyClicked(type, index, currentValue);
+                    PropertyClicked(Hero.Index, type, index, currentValue);
                 }
                 else if (e.Button == MouseButtons.Right)
                 {
