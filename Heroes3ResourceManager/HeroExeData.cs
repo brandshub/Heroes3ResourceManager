@@ -29,11 +29,11 @@ namespace h3magic
         public int Unit2Index;
         public int Unit3Index;
 
-        
+
 
         public int Index { get; private set; }
 
-        public HeroStats Hero { get { if (HeroesManager.Loaded) return HeroesManager.AllHeroes[Index]; return null; } }
+        public HeroStats Hero { get { return HeroesManager.AllHeroes[Index]; } }
         public HeroClass Class { get { return HeroClass.GetByIndex(ClassIndex); } }
 
         public Creature Creature1 { get { return CreatureManager.GetByIndex(Unit1Index); } }
@@ -60,7 +60,7 @@ namespace h3magic
                 {
                     var hero = new HeroExeData
                     {
-                        Index = i,                        
+                        Index = i,
                         GenderInt = BitConverter.ToInt32(executableBinary, currentOffset),
                         Race = BitConverter.ToInt32(executableBinary, currentOffset + 4),
                         ClassIndex = BitConverter.ToInt32(executableBinary, currentOffset + 8),

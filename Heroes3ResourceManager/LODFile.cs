@@ -44,7 +44,7 @@ namespace h3magic
         public void LoadFAT(int count)
         {
             stream.Position = FAT_OFFSET;
-            
+
             byte[] record = new byte[32];
             for (int i = 0; i < count; i++)
             {
@@ -132,29 +132,33 @@ namespace h3magic
 
             if (CreatureManager.HasChanges)
                 CreatureManager.Save(this);
-            if (HeroesManager.Loaded)
+
+            if (HeroesManager.HasChanges)
                 HeroesManager.Save(this);
-            //TODO
-            HeroClass.Save(this);
 
-            FileStream fs = new FileStream(fileName, FileMode.Create);
-            byte[] buffer = new byte[4096];
+            if (HeroClass.HasChanges)
+                HeroClass.Save(this);
 
-            fs.Position = FilesTable[0].Offset;
-            for (int i = 0; i < FileCount; i++)
-                FilesTable[i].SaveToStream(stream, fs);
+            using (var fs = new FileStream(fileName, FileMode.Create))
+            {
+                byte[] buffer = new byte[4096];
 
-
-            stream.Position = 0;
-            stream.Read(buffer, 0, FAT_OFFSET);
-            fs.Position = 0;
-            fs.Write(buffer, 0, FAT_OFFSET);
-            for (int i = 0; i < FileCount; i++)
-                fs.Write(FilesTable[i].GetHeader(), 0, 32);
+                fs.Position = FilesTable[0].Offset;
+                for (int i = 0; i < FileCount; i++)
+                    FilesTable[i].SaveToStream(stream, fs);
 
 
-            fs.Flush();
-            fs.Close();
+                stream.Position = 0;
+                stream.Read(buffer, 0, FAT_OFFSET);
+
+                fs.Position = 0;
+                fs.Write(buffer, 0, FAT_OFFSET);
+                for (int i = 0; i < FileCount; i++)
+                    fs.Write(FilesTable[i].GetHeader(), 0, 32);
+
+
+                fs.Flush();
+            }
 
         }
 

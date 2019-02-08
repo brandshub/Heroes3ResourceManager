@@ -22,11 +22,11 @@ namespace h3magic
         public static List<HeroStats> AllHeroes = new List<HeroStats>();
 
         public static string[] HeroesOrder;
-        public static bool Loaded { get; private set; }
+        public static bool HasChanges { get; set; }
 
         public static void LoadInfo(LodFile h3bitmap)
         {
-
+            HasChanges = false;
             int index = h3bitmap.IndexOf("HPL000EL.pcx");
             int bound = h3bitmap.FilesTable.FindLastIndex(index + types.Length * 22, fat => fat.FileName.Contains("HPL"));
             Dictionary<string, List<string>> heroes = new Dictionary<string, List<string>>(types.Length);

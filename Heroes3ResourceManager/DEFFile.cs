@@ -132,8 +132,9 @@ namespace h3magic
             }
             else if (sh.Type == 1)
             {
-                var d = LoadSpriteType12(sh, bytes, offset);
-                Marshal.Copy(d, 0, imageData.Scan0, d.Length);
+                /*  var d = LoadSpriteType12(sh, bytes, offset);
+                  Marshal.Copy(d, 0, imageData.Scan0, d.Length);*/
+                LoadSpriteType1(sh, imageData, offset);
             }
             else if (sh.Type == 2)
             {
@@ -232,12 +233,13 @@ namespace h3magic
                 len = sh.FullHeight;
                 tm = 0;
                 lm = 0;
-                sw = 0;
+                sw = sh.FullWidth;
                 offset -= 16;
             }
-            int[] ffsets = new int[len];
+
+            int[] offB = new int[len];
             for (int i = 0; i < len; i++)
-                ffsets[i] = BitConverter.ToInt32(bytes, offset + i * 4);
+                offB[i] = BitConverter.ToInt32(bytes, offset + i * 4);
 
             byte* ptr = (byte*)data.Scan0.ToPointer();
             byte* currentRow;
@@ -246,16 +248,11 @@ namespace h3magic
 
             for (int i = 0; i < len; i++)
             {
-                int pos = ffsets[i] + offset;
+                int pos = offB[i] + offset;
                 currentRow = ptr + (tm + i) * data.Stride + lm * 3;
 
-                int bound;
-                if (i < len - 1)
-                    bound = offset + ffsets[i + 1];
-                else
-                    bound = Math.Min(offset + ffsets[i] + sw, bytes.Length);
-
-                while (pos < bound)
+                int currentWidth = 0;
+                while (currentWidth < sw)
                 {
                     type = bytes[pos++];
                     blength = (bytes[pos++] + 1);
@@ -286,6 +283,7 @@ namespace h3magic
                         }
 
                     }
+                    currentWidth += blength;
                 }
             }
             double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
@@ -374,7 +372,7 @@ namespace h3magic
                 }
             }
             return imageBytes;
-        }        
+        }
 
         private unsafe void LoadSpriteType2(SpriteHeader sh, BitmapData data, int offset)
         {
@@ -524,7 +522,7 @@ namespace h3magic
                         int pIndex = 0;
                         if (type == 1)
                             pIndex = 1;
-                        else if (type == 4)
+                        else if (type == 4 || type==2)
                             pIndex = 2;
                         else if (type == 5)
                             pIndex = 5;

@@ -41,6 +41,7 @@ namespace h3magic
                 string text = Encoding.Default.GetString(rec.GetRawData(file.stream));
                 rows = text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
                 AllCreatures2 = new Creature[rows.Length];
+                OnlyActiveCreatures.Clear();
 
                 int curIndex = 0;
                 for (int i = 0; i < 8; i++)
@@ -182,10 +183,6 @@ namespace h3magic
                 if (img != null)
                 {
                     imageData.DrawImage24(col * (58 + 1), row * (64 + 1), 176, img);
-                }
-                else
-                {
-
                 }
             }
             _allCreatures.UnlockBits(imageData);

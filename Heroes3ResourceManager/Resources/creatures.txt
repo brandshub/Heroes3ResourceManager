@@ -1,0 +1,149 @@
+﻿0;Pikeman;cpkman;avwpike
+1;Halberdier;chalbd;avwpikx0
+2;Archer;clcbow;avwlcrs
+3;Marksman;chcbow;avwhcrs
+4;Griffin;cgriff;avwgrif
+5;Royal Griffin;crgrif;avwgrix0
+6;Swordsman;csword;avwswrd0
+7;Crusader;ccrusd;avwswrx0
+8;Monk;cmonkk;avwmonk
+9;Zealot;czealt;avwmonx0
+10;Cavalier;ccavlr;avwcvlr0
+11;Champion;cchamp;avwcvlx0
+12;Angel;cangel;avwangl
+13;Archangel;crangl;avwarch
+14;Centaur;ccentr;avwcent0
+15;Centaur Captain;cecent;avwcenx0
+16;Dwarf;cdwarf;avwdwrf0
+17;Battle Dwarf;cbdwar;avwdwrx0
+18;Wood Elf;celf;avwelfw0
+19;Grand Elf;cgrelf;avwelfx0
+20;Pegasus;cpegas;avwpega0
+21;Silver Pegasus;capegs;avwpegx0
+22;Dendroid Guard;ctree;avwtree0
+23;Dendroid Soldier;cbtree;avwtrex0
+24;Unicorn;cunico;avwunic0
+25;War Unicorn;cwunic;avwunix0
+26;Green Dragon;cgdrag;avwdrag0
+27;Gold Dragon;cddrag;avwdrax0
+28;Gremlin;cgrema;avwgrem0
+29;Master Gremlin;cgremm;avwgrex0
+30;Stone Gargoyle;cgargo;avwgarg0
+31;Obsidian Gargoyle;cogarg;avwgarx0
+32;Stone Golem;csgole;avwgolm0
+33;Iron Golem;cigole;avwgolx0
+34;Mage;cmage;avwmage0
+35;Arch Mage;camage;avwmagx0
+36;Genie;cgenie;avwgeni0
+37;Master Genie;csulta;avwgenx0
+38;Naga;cnaga;avwnaga0
+39;Naga Queen;cnagag;avwnagx0
+40;Giant;cltita;avwtitn0
+41;Titan;cgtita;avwtitx0
+42;Imp;cimp;avwimp0
+43;Familiar;cfamil;avwimpx0
+44;Gog;cgog;avwgog0
+45;Magog;cmagog;avwgogx0
+46;Hell Hound;chhoun;avwhoun0
+47;Cerberus;ccerbu;avwhoux0
+48;Demon;cohdem;avwdemn0
+49;Horned Demon;cthdem;avwdemx0
+50;Pit Fiend;cpfien;avwpitf0
+51;Pit Lord;cpfoe;avwpitx0
+52;Efreeti;cefree;avwefre0
+53;Efreet Sultan;cefres;avwefrx0
+54;Devil;cdevil;avwdevl0
+55;Arch Devil;cadevl;avwdevx0
+56;Skeleton;cskele;avwskel0
+57;Skeleton Warrior;cwskel;avwskex0
+58;Walking Dead;czombi;avwzomb0
+59;Zombie;czomlo;avwzomx0
+60;Wight;cwight;avwwigh
+61;Wraith;cwrait;avwwigx0
+62;Vampire;cvamp;avwvamp0
+63;Vampire Lord;cnosfe;avwvamx0
+64;Lich;clich;avwlich0
+65;Power Lich;cplich;avwlicx0
+66;Black Knight;cbknig;avwbkni0
+67;Dread Knight;cblord;avwbknx0
+68;Bone Dragon;cndrgn;avwbone0
+69;Ghost Dragon;chdrgn;avwbonx0
+70;Troglodyte;ctrogl;avwtrog0
+71;Infernal Troglodyte;citrog;avwinfr
+72;Harpy;charpy;avwharp0
+73;Harpy Hag;charph;avwharx0
+74;Beholder;cbehol;avwbehl0
+75;Evil Eye;ceveye;avwbehx0
+76;Medusa;cmedus;avwmeds
+77;Medusa Queen;cmeduq;avwmedx0
+78;Minotaur;cminot;avwmino
+79;Minotaur King;cminok;avwminx0
+80;Manticore;cmcore;avwmant0
+81;Scorpicore;ccmcor;avwmanx0
+82;Red Dragon;crdrgn;avwrdrg
+83;Black Dragon;cbdrgn;avwddrx0
+84;Goblin;cgobli;avwgobl0
+85;Hobgoblin;chgobl;avwgobx0
+86;Wolf Rider;cbwlfr;avwwolf0
+87;Wolf Raider;cuwlfr;avwwolx0
+88;Orc;corc;avworc0
+89;Orc Chieftain;corcch;avworcx0
+90;Ogre;cogre;avwogre0
+91;Ogre Mage;cogmag;avwogrx0
+92;Roc;croc;avwroc0
+93;Thunderbird;ctbird;avwrocx0
+94;Cyclops;ccyclr;avwcycl0
+95;Cyclops King;ccycllor;avwcycx0
+96;Behemoth;cybehe;avwbhmt0
+97;Ancient Behemoth;cabehe;avwbhmx0
+98;Gnoll;cgnoll;avwgnll0
+99;Gnoll Marauder;cgnolm;avwgnlx0
+100;Lizardman;cpliza;avwlizr
+101;Lizard Warrior;caliza;avwlizx0
+102;Gorgon;ccgorg;avwgorg
+103;Mighty Gorgon;cbgog;avwgorx0
+104;Serpent Fly;cdrfly;avwdfly
+105;Dragon Fly;cdrfir;avwdfir
+106;Basilisk;cbasil;avwbasl
+107;Greater Basilisk;cgbasi;avwgbas
+108;Wyvern;cwyver;avwwyvr
+109;Wyvern Monarch;cwyvmn;avwwyvx0
+110;Hydra;chydra;avwhydr
+111;Chaos Hydra;cchydr;avwhydx0
+112;Air Elemental;caelem;avwelma0
+113;Earth Elemental;ceelem;avwelme0
+114;Fire Elemental;cfelem;avwelmf0
+115;Water Elemental;cwelem;avwelmw0
+116;Gold Golem;cggole;avwglmg0
+117;Diamond Golem;cdgole;avwglmd0
+118;Pixie;cpixie;avwpixie
+119;Sprite;csprite;avwsprit
+120;Psychic Elemental;cpsyel;avwpsye
+121;Magic Elemental;cmagel;avwmagel
+122;NOTUSED;notused;notused
+123;Ice Elemental;cicee;avwicee
+124;NOTUSED;notused;notused
+125;Magma Elemental;cstone;avwstone
+126;NOTUSED;notused;notused
+127;Storm Elemental;cstorm;avwstorm
+128;NOTUSED;notused;notused
+129;Energy Elemental;cnrg;avwnrg
+130;Firebird;cfbird;avwfbird
+131;Phoenix;cphx;avwphx
+132;Azure Dragon;cadrgn;avwazure
+133;Crystal Dragon;ccdrgn;avwcdrg
+134;Faerie Dragon;cfdrgn;avwfdrg
+135;Rust Dragon;crsdgn;avwrust
+136;Enchanter;cench;avwench
+137;Sharpshooter;csharp;avwsharp
+138;Halfling;chalf;avwhalf
+139;Peasant;cpeas;avwpeas
+140;Boar;cboar;avwboar
+141;Mummy;cmummy;avwmumy
+142;Nomad;cnomad;avwnomd
+143;Rogue;crogue;avwrog
+144;Troll;ctroll;avwtrll
+145;Catapult;smcata;ava0003
+146;Ballista;smbal;ava0004
+147;First Aid Tent;smtent;ava0006
+148;Ammo Cart;smcart;ava0005

@@ -11,6 +11,8 @@ namespace h3magic
         private const string TXT_FNAME = "HCTRAITS.TXT";
         private static string[] rows;
 
+        public static bool HasChanges { get; set; }
+
         public static List<HeroClass> AllHeroClasses;
 
         public string[] Stats;

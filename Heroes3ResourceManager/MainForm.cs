@@ -509,7 +509,7 @@ namespace h3magic
                     var watch = Stopwatch.StartNew();
 
                     lodFile.SaveToDisk(sfd.FileName);
-
+                    Heroes3Master.Master.SaveHeroExeData();
                     double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
                     Text = "Збережено за " + result.ToString("F3");
                 }
@@ -525,6 +525,7 @@ namespace h3magic
                 Stopwatch watch = Stopwatch.StartNew();
 
                 lodFile.SaveToDisk();
+                Heroes3Master.Master.SaveHeroExeData();
                 double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
                 Text = "Збережено за " + result.ToString("F3");
             }
@@ -694,11 +695,12 @@ namespace h3magic
                 hs.LowStack3 = int.Parse(textBox29.Text);
                 hs.HighStack3 = int.Parse(textBox30.Text);
                 HeroesManager.AllHeroes[lbHeroes.SelectedIndex] = hs;
+                HeroesManager.HasChanges = true;
             }
 
-            Heroes3Master.Master.SaveHeroExeData();
+           // Heroes3Master.Master.SaveHeroExeData();
 
-            MessageBox.Show("Success!");
+          //  MessageBox.Show("Success!");
 
         }
 

@@ -60,7 +60,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Downloads\zlib.NET_104\source\bin\Debug\zlib.net.dll</HintPath>
+      <HintPath>..\libs\zlib.net.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +179,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\TXT.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\creatures.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
