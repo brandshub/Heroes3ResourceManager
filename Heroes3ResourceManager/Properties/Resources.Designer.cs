@@ -71,6 +71,16 @@ namespace h3magic.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] allspecs {
+            get {
+                object obj = ResourceManager.GetObject("allspecs", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap ANY {
@@ -117,6 +127,26 @@ namespace h3magic.Properties {
             get {
                 object obj = ResourceManager.GetObject("TXT", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] UN32 {
+            get {
+                object obj = ResourceManager.GetObject("UN32", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] UN44 {
+            get {
+                object obj = ResourceManager.GetObject("UN44", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

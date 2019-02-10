@@ -40,28 +40,35 @@ namespace h3magic
 
         }
 
-        public static void LoadInfo(byte[] executableBinary)
+        public static List<Speciality> LoadInfo(byte[] executableBinary, int offset)
         {
-            AllSpecialities = new List<Speciality>();
+            var list = new List<Speciality>();
+            int currentOffset = offset;
+            int bound = HeroesManager.AllHeroes.Count;
+            for (int i = 0; i < 156; i++)
+            {
+                var spec = new Speciality
+                {
+                    Index = i,
+                    TypeId = BitConverter.ToInt32(executableBinary, currentOffset),
+                    ObjectId = BitConverter.ToInt32(executableBinary, currentOffset + 4)
+                };
+                spec.Data = new byte[32];
+                Buffer.BlockCopy(executableBinary, currentOffset + 8, spec.Data, 0, spec.Data.Length);
+                currentOffset += BLOCK_SIZE;
+                list.Add(spec);
+            }
+            return list;
+        }
+
+        public static void LoadInfo(byte[] executableBinary)
+        {          
             int startOffset = (int)HeroesSection.FindHeroOffset2(executableBinary);
             if (startOffset >= 0)
-            {
-                int currentOffset = startOffset;
-                int bound = HeroesManager.AllHeroes.Count;
-                for (int i = 0; i < 156; i++)
-                {
-                    var spec = new Speciality
-                    {
-                        Index = i,
-                        TypeId = BitConverter.ToInt32(executableBinary, currentOffset),
-                        ObjectId = BitConverter.ToInt32(executableBinary, currentOffset + 4)
-                    };
-                    spec.Data = new byte[32];
-                    Buffer.BlockCopy(executableBinary, currentOffset + 8, spec.Data, 0, spec.Data.Length);
-                    currentOffset += BLOCK_SIZE;
-                    AllSpecialities.Add(spec);
-                }
-            }
+                AllSpecialities = LoadInfo(executableBinary, startOffset);            
+            /*var byt2 = new byte[156 * BLOCK_SIZE];
+            Buffer.BlockCopy(executableBinary, startOffset, byt2, 0, byt2.Length);
+            System.IO.File.WriteAllBytes(@"D:\allspecs.bin", byt2);*/
         }
 
         public static Speciality GetByIndex(int index)

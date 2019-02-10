@@ -136,4 +136,13 @@
   <data name="TXT" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TXT.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="allspecs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\allspecs.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="UN32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UN32.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="UN44" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\UN44.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

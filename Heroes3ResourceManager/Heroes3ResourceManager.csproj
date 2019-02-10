@@ -112,14 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="ImageGridControl.resx">
       <DependentUpon>ImageGridControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -128,6 +123,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -142,10 +142,14 @@
     <Compile Include="ImageGridControl.Designer.cs">
       <DependentUpon>ImageGridControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="SpecialityDefBuilder.cs" />
     <Compile Include="Spell.cs" />
     <Compile Include="SpriteBlockHeader.cs" />
     <Compile Include="SpriteHeader.cs" />
     <Compile Include="ZlibWrapper.cs" />
+    <None Include="Resources\allspecs.bin" />
+    <None Include="Resources\UN32.gz" />
+    <None Include="Resources\UN44.gz" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\1TResBar.bmp" />

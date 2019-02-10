@@ -549,6 +549,5 @@ namespace h3magic
             double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
             //Debug.WriteLine("t3: " + result);
         }
-
     }
 }

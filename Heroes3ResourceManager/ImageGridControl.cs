@@ -45,36 +45,44 @@ namespace h3magic
             {
                 if (value >= 0)
                 {
-                    if (propertyType == ProfilePropertyType.Creature)
+                    try
                     {
-                        selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
-                    }
-                    else if (propertyType == ProfilePropertyType.SpecCreature)
-                    {
-                        selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
-                    }
-                    else if (propertyType == ProfilePropertyType.SpecCreatureStatic)
-                    {
-                        selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
-                    }
-                    else if (propertyType == ProfilePropertyType.SpecSecondarySkill)
-                    {
-                        selectedValue = Array.IndexOf<int>(SecondarySkill.IndexesOfAllSpecSkills, value);
-                    }
-                    else if (propertyType == ProfilePropertyType.SpecSpell)
-                    {
-                        selectedValue = Array.IndexOf<int>(Spell.specSpellIndexes, value);
-                    }
-                    else if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
-                    {
-                        if (ForceAllCreatures)
-                            selectedValue = selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
-                        else
+                        if (propertyType == ProfilePropertyType.Creature)
+                        {
+                            selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
+                        }
+                        else if (propertyType == ProfilePropertyType.SpecCreature)
+                        {
                             selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
+                        }
+                        else if (propertyType == ProfilePropertyType.SpecCreatureStatic)
+                        {
+                            selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
+                        }
+                        else if (propertyType == ProfilePropertyType.SpecSecondarySkill)
+                        {
+                            selectedValue = Array.IndexOf<int>(SecondarySkill.IndexesOfAllSpecSkills, value);
+                        }
+                        else if (propertyType == ProfilePropertyType.SpecSpell)
+                        {
+                            selectedValue = Array.IndexOf<int>(Spell.specSpellIndexes, value);
+                        }
+                        else if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
+                        {
+                            if (ForceAllCreatures)
+                                selectedValue = selectedValue = CreatureManager.OnlyActiveCreatures.FindIndex(c => c.CreatureIndex == value);
+                            else
+                                selectedValue = Array.IndexOf<int>(CreatureManager.IndexesOfFirstLevelCreatures, value);
+                        }
+                        else
+                        {
+                            selectedValue = value;
+                        }
                     }
-                    else
+
+                    catch
                     {
-                        selectedValue = value;
+
                     }
                     currentHover = selectedValue;
                 }

@@ -57,10 +57,10 @@ namespace h3magic
             hpcHeroProfile.PropertyClicked += HpcHeroProfile_PropertyClicked;
             heroPropertyForm.ItemSelected += HeroPropertyForm_ItemSelected;
             heroPropertyForm.Owner = this;
+
             //   LoadMaster(@"d:\Games\h3\Heroes3.exe");
             //    Measure();
         }
-
 
         private void Measure()
         {
