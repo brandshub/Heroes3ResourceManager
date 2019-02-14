@@ -135,7 +135,7 @@ namespace h3magic
         }
 
         private static Bitmap _allSpecSpells;
-        public static int[] specSpellIndexes = { 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 37, 38, 39, 41, 43, 44, 45, 46, 47, 48, 51, 53, 55 };
+        public static int[] SpecSpellIndexes = { 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 37, 38, 39, 41, 43, 44, 45, 46, 47, 48, 51, 53, 55 };
         public static Bitmap GetAvailableSpellsForSpeciality(LodFile h3sprite)
         {
             if (_allSpecSpells != null)
@@ -148,12 +148,12 @@ namespace h3magic
             var bmp = new Bitmap((58 + 1) * 6, (64 + 1) * 5);
             var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
-            Parallel.For(0, specSpellIndexes.Length, i =>
+            Parallel.For(0, SpecSpellIndexes.Length, i =>
             {
                 int row = i / 6;
                 int col = i % 6;
 
-                var img = defFile.GetByAbsoluteNumber2(AllSpells[specSpellIndexes[i]].Index);
+                var img = defFile.GetByAbsoluteNumber2(AllSpells[SpecSpellIndexes[i]].Index);
                 if (img != null)
                 {
                     imageData.DrawImage24(col * (58 + 1), row * (64 + 1), 176, img);

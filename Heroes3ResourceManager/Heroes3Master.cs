@@ -10,11 +10,11 @@ namespace h3magic
 {
     public class Heroes3Master
     {
-        public static Heroes3Master Master { get; private set; }
+        public static Heroes3Master Master { get; set; }
 
         public List<LodFile> ResourceFiles { get; private set; }
-        public LodFile H3Bitmap { get { return GetByName("h3bitmap.lod"); } }
-        public LodFile H3Sprite { get { return GetByName("h3sprite.lod"); } }
+        public H3Bitmap H3Bitmap { get { return GetByName("h3bitmap.lod") as H3Bitmap; } }
+        public H3Sprite H3Sprite { get { return GetByName("h3sprite.lod") as H3Sprite; } }
         public ExeFile Executable { get; private set; }
 
         public LodFile GetByName(string name)
@@ -39,7 +39,15 @@ namespace h3magic
                 try
                 {
                     fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    var lod = new LodFile(fs);
+                    string lcfileName = Path.GetFileName(file).ToLower();
+                    LodFile lod = null;
+                    if (lcfileName == "h3bitmap.lod")
+                        lod = new H3Bitmap(fs);
+                    else if (lcfileName == "h3sprite.lod")
+                        lod = new H3Sprite(fs);
+                    else
+                        lod = new LodFile(fs);
+
                     lod.LoadFAT();
                     Master.ResourceFiles.Add(lod);
                 }
@@ -62,10 +70,16 @@ namespace h3magic
 
         public void SaveHeroExeData()
         {
-            File.WriteAllBytes(Executable.Path + ".bak." + DateTime.Now.ToString("hhmmss"), Executable.Data);
-            HeroExeData.UpdateDataInMemory();
-            File.WriteAllBytes(Executable.Path, Executable.Data);
+            if (HeroExeData.UpdateDataInMemory())
+                File.WriteAllBytes(Executable.Path, Executable.Data);
 
+        }
+
+        public void Save()
+        {
+            SaveHeroExeData();
+            H3Bitmap.SaveToDisk(H3Bitmap.Path + "new");
+            H3Sprite.SaveToDisk(H3Sprite.Path + "new");
         }
     }
 }

@@ -10,7 +10,7 @@ namespace h3magic
 {
     public class SecondarySkill
     {
-        public const int SPEC_COLNUMBER = 6;
+        public const int SPEC_COLNUMBER = 7;
         public const int ALL_COLNUMBER = 12;
 
         private const string TXT_FNAME = "SSTRAITS.TXT";
@@ -19,7 +19,7 @@ namespace h3magic
         public static bool Loaded { get; private set; }
 
         public static List<SecondarySkill> AllSkills = new List<SecondarySkill>();
-        public static int[] IndexesOfAllSpecSkills;
+        public static int[] IndexesOfAllSpecSkills = { 1, 2, 5, 8, 11, 12, 13, 22, 23, 24, 25, 26, 27 };
 
         private static DefFile _defFile = null;
         private static Bitmap _skillTree = null;
@@ -120,10 +120,8 @@ namespace h3magic
                 return _specImage;
 
             if (_defFile == null)
-                _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
-
-            if (IndexesOfAllSpecSkills == null || IndexesOfAllSpecSkills.Length == 0)
-                IndexesOfAllSpecSkills = Speciality.AllSpecialities.Where(s => s.Type == SpecialityType.Skill).Select(z => z.ObjectId).Distinct().OrderBy(f => f).ToArray();
+                _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);           
+            
             int rowNum = IndexesOfAllSpecSkills.Length / SPEC_COLNUMBER + (IndexesOfAllSpecSkills.Length % SPEC_COLNUMBER == 0 ? 0 : 1);
 
             var bmp = new Bitmap((44 + 1) * SPEC_COLNUMBER, (44 + 1) * rowNum, System.Drawing.Imaging.PixelFormat.Format24bppRgb);

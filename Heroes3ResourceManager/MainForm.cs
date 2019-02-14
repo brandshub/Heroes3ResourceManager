@@ -58,8 +58,16 @@ namespace h3magic
             heroPropertyForm.ItemSelected += HeroPropertyForm_ItemSelected;
             heroPropertyForm.Owner = this;
 
+            LoadOrginalSpecs();
             //   LoadMaster(@"d:\Games\h3\Heroes3.exe");
             //    Measure();
+        }
+
+
+        private void LoadOrginalSpecs()
+        {
+            SpecialityDefBuilder.LoadOriginalSpecs(Properties.Resources.allspecs);
+            SpecialityDefBuilder.LoadDefs(Properties.Resources.UN32, Properties.Resources.UN44);
         }
 
         private void Measure()
@@ -106,7 +114,7 @@ namespace h3magic
 
         }
 
-         
+
         private void HeroPropertyForm_ItemSelected(int selIndex, int arg1, int arg2, int arg3)
         {
             ProfilePropertyType type = heroPropertyForm.PropertyType;
@@ -157,6 +165,16 @@ namespace h3magic
                 {
                     Speciality.UpdateSpecialityData(specType, hero.Index, selIndex, arg1, arg2, arg3);
                     hero.HasChanged = true;
+
+                    int originalSpecIndex = SpecialityDefBuilder.TryUpdateSpecImage(hero, Heroes3Master.Master.H3Sprite.Un32Def, Heroes3Master.Master.H3Sprite.Un44Def);
+                    string originalSpec = HeroesManager.GetSpecDescription(originalSpecIndex);
+                    var hs = HeroesManager.AllHeroes[hero.Index];
+                    hs.Speciality = originalSpec;
+                    tbHeroSpecDesc.Text = originalSpec;
+                    
+                    HeroesManager.HasChanges = true;
+
+                    hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
                     //TODO
                 }
 
@@ -180,7 +198,6 @@ namespace h3magic
             var sw = Stopwatch.StartNew();
 
             var master = Heroes3Master.LoadInfo(executablPath);
-
             lodFile = master.H3Bitmap;
             h3bitmapLod = lodFile;
             h3spriteLod = master.H3Sprite;
@@ -445,9 +462,12 @@ namespace h3magic
                 if (Path.GetExtension(ofd.FileName) == ".exe")
                 {
                     LoadMaster(ofd.FileName);
+                    
                 }
                 else
                 {
+                    Heroes3Master.Master = null;
+
                     var fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     lodFile = new LodFile(fs);
                     lbFiles.Items.Clear();
@@ -507,9 +527,8 @@ namespace h3magic
                     }
 
                     var watch = Stopwatch.StartNew();
+                    Heroes3Master.Master.Save();
 
-                    lodFile.SaveToDisk(sfd.FileName);
-                    Heroes3Master.Master.SaveHeroExeData();
                     double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
                     Text = "Збережено за " + result.ToString("F3");
                 }
@@ -523,9 +542,8 @@ namespace h3magic
             if (lodFile != null)
             {
                 Stopwatch watch = Stopwatch.StartNew();
+                Heroes3Master.Master.Save();
 
-                lodFile.SaveToDisk();
-                Heroes3Master.Master.SaveHeroExeData();
                 double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
                 Text = "Збережено за " + result.ToString("F3");
             }
@@ -660,7 +678,7 @@ namespace h3magic
         {
             var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
 
-            pictureBox4.Image = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(lodFile.stream);
+            pbPortraitSmall.Image = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(lodFile.stream);
 
             if (lbHeroes.SelectedIndex > -1 && Heroes3Master.Master != null)
             {
@@ -668,15 +686,15 @@ namespace h3magic
                 Text = lbHeroes.SelectedIndex.ToString();
             }
 
-            textBox24.Text = hs.Name;
-            textBox31.Text = hs.Biography;
-            textBox32.Text = hs.Speciality;
-            textBox25.Text = hs.LowStack1.ToString();
-            textBox26.Text = hs.HighStack1.ToString();
-            textBox27.Text = hs.LowStack2.ToString();
-            textBox28.Text = hs.HighStack2.ToString();
-            textBox29.Text = hs.LowStack3.ToString();
-            textBox30.Text = hs.HighStack3.ToString();
+            tbHeroName.Text = hs.Name;
+            tbHeroBio.Text = hs.Biography;
+            tbHeroSpecDesc.Text = hs.Speciality;
+            tbHeroLS1.Text = hs.LowStack1.ToString();
+            tbHeroHS1.Text = hs.HighStack1.ToString();
+            tbHeroLS2.Text = hs.LowStack2.ToString();
+            tbHeroHS2.Text = hs.HighStack2.ToString();
+            tbHeroLS3.Text = hs.LowStack3.ToString();
+            tbHeroHS3.Text = hs.HighStack3.ToString();
 
         }
 
@@ -684,23 +702,23 @@ namespace h3magic
         {
             if (lbHeroes.SelectedIndex != -1)
             {
-                HeroStats hs = new HeroStats();
-                hs.Name = textBox24.Text;
-                hs.Biography = textBox31.Text;
-                hs.Speciality = textBox32.Text;
-                hs.LowStack1 = int.Parse(textBox25.Text);
-                hs.HighStack1 = int.Parse(textBox26.Text);
-                hs.LowStack2 = int.Parse(textBox27.Text);
-                hs.HighStack2 = int.Parse(textBox28.Text);
-                hs.LowStack3 = int.Parse(textBox29.Text);
-                hs.HighStack3 = int.Parse(textBox30.Text);
+                var hs = new HeroStats();
+                hs.Name = tbHeroName.Text;
+                hs.Biography = tbHeroBio.Text;
+                hs.Speciality = tbHeroSpecDesc.Text;
+                hs.LowStack1 = int.Parse(tbHeroLS1.Text);
+                hs.HighStack1 = int.Parse(tbHeroHS1.Text);
+                hs.LowStack2 = int.Parse(tbHeroLS2.Text);
+                hs.HighStack2 = int.Parse(tbHeroHS2.Text);
+                hs.LowStack3 = int.Parse(tbHeroLS3.Text);
+                hs.HighStack3 = int.Parse(tbHeroHS3.Text);
                 HeroesManager.AllHeroes[lbHeroes.SelectedIndex] = hs;
                 HeroesManager.HasChanges = true;
             }
 
-           // Heroes3Master.Master.SaveHeroExeData();
+            // Heroes3Master.Master.SaveHeroExeData();
 
-          //  MessageBox.Show("Success!");
+            //  MessageBox.Show("Success!");
 
         }
 

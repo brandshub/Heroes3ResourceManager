@@ -12,8 +12,8 @@ namespace h3magic
 {
     public class LodFile
     {
-        private const uint HEADER = 0x00444f4c;
-        private const int FAT_OFFSET = 0x5c;
+        protected const uint HEADER = 0x00444f4c;
+        protected const int FAT_OFFSET = 0x5c;
 
         public Stream stream;
 
@@ -127,45 +127,37 @@ namespace h3magic
             return FilesTable.Where(fat => fat.Extension == local).ToList();
         }
 
-        public void SaveToDisk(string fileName)
+
+        public virtual void SaveToDisk(string fileName)
         {
-
-            if (CreatureManager.HasChanges)
-                CreatureManager.Save(this);
-
-            if (HeroesManager.HasChanges)
-                HeroesManager.Save(this);
-
-            if (HeroClass.HasChanges)
-                HeroClass.Save(this);
-
-            using (var fs = new FileStream(fileName, FileMode.Create))
+            using (var destination = new FileStream(fileName, FileMode.Create))
             {
                 byte[] buffer = new byte[4096];
 
-                fs.Position = FilesTable[0].Offset;
+                destination.Position = FilesTable[0].Offset;
                 for (int i = 0; i < FileCount; i++)
-                    FilesTable[i].SaveToStream(stream, fs);
+                {
+                    string fn = FilesTable[i].FileName;
+                    if(fn == "UN44.def")
+                    {
+
+                    }
+                    FilesTable[i].SaveToStream(stream, destination);
+                }
 
 
                 stream.Position = 0;
                 stream.Read(buffer, 0, FAT_OFFSET);
 
-                fs.Position = 0;
-                fs.Write(buffer, 0, FAT_OFFSET);
+                destination.Position = 0;
+                destination.Write(buffer, 0, FAT_OFFSET);
                 for (int i = 0; i < FileCount; i++)
-                    fs.Write(FilesTable[i].GetHeader(), 0, 32);
+                    destination.Write(FilesTable[i].GetHeader(), 0, 32);
 
-
-                fs.Flush();
+                destination.Flush();
             }
-
         }
 
-        public void SaveToDisk()
-        {
-            SaveToDisk(Path + "new");
-        }
 
         public override string ToString()
         {

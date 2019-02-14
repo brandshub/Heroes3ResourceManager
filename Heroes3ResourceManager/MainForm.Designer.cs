@@ -48,21 +48,21 @@
             this.tabsMain = new System.Windows.Forms.TabControl();
             this.tabHeroes = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
-            this.textBox29 = new System.Windows.Forms.TextBox();
-            this.textBox30 = new System.Windows.Forms.TextBox();
-            this.textBox31 = new System.Windows.Forms.TextBox();
-            this.textBox32 = new System.Windows.Forms.TextBox();
-            this.textBox28 = new System.Windows.Forms.TextBox();
-            this.textBox27 = new System.Windows.Forms.TextBox();
-            this.textBox26 = new System.Windows.Forms.TextBox();
-            this.textBox25 = new System.Windows.Forms.TextBox();
+            this.tbHeroLS3 = new System.Windows.Forms.TextBox();
+            this.tbHeroHS3 = new System.Windows.Forms.TextBox();
+            this.tbHeroBio = new System.Windows.Forms.TextBox();
+            this.tbHeroSpecDesc = new System.Windows.Forms.TextBox();
+            this.tbHeroHS2 = new System.Windows.Forms.TextBox();
+            this.tbHeroLS2 = new System.Windows.Forms.TextBox();
+            this.tbHeroHS1 = new System.Windows.Forms.TextBox();
+            this.tbHeroLS1 = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox24 = new System.Windows.Forms.TextBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.tbHeroName = new System.Windows.Forms.TextBox();
+            this.pbPortraitSmall = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -172,7 +172,7 @@
             this.menuStrip1.SuspendLayout();
             this.tabsMain.SuspendLayout();
             this.tabHeroes.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPortraitSmall)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.tabHeroClass.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
@@ -346,21 +346,21 @@
             // tabHeroes
             // 
             this.tabHeroes.Controls.Add(this.button2);
-            this.tabHeroes.Controls.Add(this.textBox29);
-            this.tabHeroes.Controls.Add(this.textBox30);
-            this.tabHeroes.Controls.Add(this.textBox31);
-            this.tabHeroes.Controls.Add(this.textBox32);
-            this.tabHeroes.Controls.Add(this.textBox28);
-            this.tabHeroes.Controls.Add(this.textBox27);
-            this.tabHeroes.Controls.Add(this.textBox26);
-            this.tabHeroes.Controls.Add(this.textBox25);
+            this.tabHeroes.Controls.Add(this.tbHeroLS3);
+            this.tabHeroes.Controls.Add(this.tbHeroHS3);
+            this.tabHeroes.Controls.Add(this.tbHeroBio);
+            this.tabHeroes.Controls.Add(this.tbHeroSpecDesc);
+            this.tabHeroes.Controls.Add(this.tbHeroHS2);
+            this.tabHeroes.Controls.Add(this.tbHeroLS2);
+            this.tabHeroes.Controls.Add(this.tbHeroHS1);
+            this.tabHeroes.Controls.Add(this.tbHeroLS1);
             this.tabHeroes.Controls.Add(this.label18);
             this.tabHeroes.Controls.Add(this.label17);
             this.tabHeroes.Controls.Add(this.label16);
             this.tabHeroes.Controls.Add(this.label15);
             this.tabHeroes.Controls.Add(this.label14);
-            this.tabHeroes.Controls.Add(this.textBox24);
-            this.tabHeroes.Controls.Add(this.pictureBox4);
+            this.tabHeroes.Controls.Add(this.tbHeroName);
+            this.tabHeroes.Controls.Add(this.pbPortraitSmall);
             this.tabHeroes.Controls.Add(this.lbHeroes);
             this.tabHeroes.Controls.Add(this.hpcHeroProfile);
             this.tabHeroes.Location = new System.Drawing.Point(4, 25);
@@ -383,73 +383,73 @@
             // 
             // textBox29
             // 
-            this.textBox29.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox29.Location = new System.Drawing.Point(804, 317);
-            this.textBox29.Name = "textBox29";
-            this.textBox29.Size = new System.Drawing.Size(40, 20);
-            this.textBox29.TabIndex = 18;
-            this.textBox29.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHeroLS3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbHeroLS3.Location = new System.Drawing.Point(804, 317);
+            this.tbHeroLS3.Name = "textBox29";
+            this.tbHeroLS3.Size = new System.Drawing.Size(40, 20);
+            this.tbHeroLS3.TabIndex = 18;
+            this.tbHeroLS3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox30
             // 
-            this.textBox30.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox30.Location = new System.Drawing.Point(850, 317);
-            this.textBox30.Name = "textBox30";
-            this.textBox30.Size = new System.Drawing.Size(40, 20);
-            this.textBox30.TabIndex = 17;
-            this.textBox30.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHeroHS3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbHeroHS3.Location = new System.Drawing.Point(850, 317);
+            this.tbHeroHS3.Name = "textBox30";
+            this.tbHeroHS3.Size = new System.Drawing.Size(40, 20);
+            this.tbHeroHS3.TabIndex = 17;
+            this.tbHeroHS3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox31
             // 
-            this.textBox31.Location = new System.Drawing.Point(580, 74);
-            this.textBox31.Multiline = true;
-            this.textBox31.Name = "textBox31";
-            this.textBox31.Size = new System.Drawing.Size(310, 123);
-            this.textBox31.TabIndex = 16;
+            this.tbHeroBio.Location = new System.Drawing.Point(580, 74);
+            this.tbHeroBio.Multiline = true;
+            this.tbHeroBio.Name = "textBox31";
+            this.tbHeroBio.Size = new System.Drawing.Size(310, 123);
+            this.tbHeroBio.TabIndex = 16;
             // 
             // textBox32
             // 
-            this.textBox32.Location = new System.Drawing.Point(580, 216);
-            this.textBox32.Multiline = true;
-            this.textBox32.Name = "textBox32";
-            this.textBox32.Size = new System.Drawing.Size(310, 66);
-            this.textBox32.TabIndex = 15;
+            this.tbHeroSpecDesc.Location = new System.Drawing.Point(580, 216);
+            this.tbHeroSpecDesc.Multiline = true;
+            this.tbHeroSpecDesc.Name = "textBox32";
+            this.tbHeroSpecDesc.Size = new System.Drawing.Size(310, 66);
+            this.tbHeroSpecDesc.TabIndex = 15;
             // 
             // textBox28
             // 
-            this.textBox28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox28.Location = new System.Drawing.Point(850, 343);
-            this.textBox28.Name = "textBox28";
-            this.textBox28.Size = new System.Drawing.Size(40, 20);
-            this.textBox28.TabIndex = 14;
-            this.textBox28.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHeroHS2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbHeroHS2.Location = new System.Drawing.Point(850, 343);
+            this.tbHeroHS2.Name = "textBox28";
+            this.tbHeroHS2.Size = new System.Drawing.Size(40, 20);
+            this.tbHeroHS2.TabIndex = 14;
+            this.tbHeroHS2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox27
             // 
-            this.textBox27.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox27.Location = new System.Drawing.Point(804, 343);
-            this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new System.Drawing.Size(40, 20);
-            this.textBox27.TabIndex = 13;
-            this.textBox27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHeroLS2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbHeroLS2.Location = new System.Drawing.Point(804, 343);
+            this.tbHeroLS2.Name = "textBox27";
+            this.tbHeroLS2.Size = new System.Drawing.Size(40, 20);
+            this.tbHeroLS2.TabIndex = 13;
+            this.tbHeroLS2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox26
             // 
-            this.textBox26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox26.Location = new System.Drawing.Point(850, 291);
-            this.textBox26.Name = "textBox26";
-            this.textBox26.Size = new System.Drawing.Size(40, 20);
-            this.textBox26.TabIndex = 12;
-            this.textBox26.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHeroHS1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbHeroHS1.Location = new System.Drawing.Point(850, 291);
+            this.tbHeroHS1.Name = "textBox26";
+            this.tbHeroHS1.Size = new System.Drawing.Size(40, 20);
+            this.tbHeroHS1.TabIndex = 12;
+            this.tbHeroHS1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox25
             // 
-            this.textBox25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox25.Location = new System.Drawing.Point(804, 291);
-            this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(40, 20);
-            this.textBox25.TabIndex = 11;
-            this.textBox25.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHeroLS1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbHeroLS1.Location = new System.Drawing.Point(804, 291);
+            this.tbHeroLS1.Name = "textBox25";
+            this.tbHeroLS1.Size = new System.Drawing.Size(40, 20);
+            this.tbHeroLS1.TabIndex = 11;
+            this.tbHeroLS1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label18
             // 
@@ -498,21 +498,21 @@
             // 
             // textBox24
             // 
-            this.textBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox24.Location = new System.Drawing.Point(580, 12);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.Size = new System.Drawing.Size(227, 29);
-            this.textBox24.TabIndex = 3;
-            this.textBox24.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tbHeroName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.tbHeroName.Location = new System.Drawing.Point(580, 12);
+            this.tbHeroName.Name = "textBox24";
+            this.tbHeroName.Size = new System.Drawing.Size(227, 29);
+            this.tbHeroName.TabIndex = 3;
+            this.tbHeroName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // pictureBox4
             // 
-            this.pictureBox4.ContextMenuStrip = this.contextMenuStrip1;
-            this.pictureBox4.Location = new System.Drawing.Point(826, 10);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(64, 37);
-            this.pictureBox4.TabIndex = 2;
-            this.pictureBox4.TabStop = false;
+            this.pbPortraitSmall.ContextMenuStrip = this.contextMenuStrip1;
+            this.pbPortraitSmall.Location = new System.Drawing.Point(826, 10);
+            this.pbPortraitSmall.Name = "pictureBox4";
+            this.pbPortraitSmall.Size = new System.Drawing.Size(64, 37);
+            this.pbPortraitSmall.TabIndex = 2;
+            this.pbPortraitSmall.TabStop = false;
             // 
             // contextMenuStrip1
             // 
@@ -1604,7 +1604,7 @@
             this.tabsMain.ResumeLayout(false);
             this.tabHeroes.ResumeLayout(false);
             this.tabHeroes.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPortraitSmall)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabHeroClass.ResumeLayout(false);
             this.tabHeroClass.PerformLayout();
@@ -1741,22 +1741,22 @@
         private System.Windows.Forms.TextBox textBox73;
         private System.Windows.Forms.TextBox textBox74;
         private System.Windows.Forms.TabPage tabHeroes;
-        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pbPortraitSmall;
         private System.Windows.Forms.ListBox lbHeroes;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.TextBox textBox24;
-        private System.Windows.Forms.TextBox textBox28;
-        private System.Windows.Forms.TextBox textBox27;
-        private System.Windows.Forms.TextBox textBox26;
-        private System.Windows.Forms.TextBox textBox25;
-        private System.Windows.Forms.TextBox textBox29;
-        private System.Windows.Forms.TextBox textBox30;
-        private System.Windows.Forms.TextBox textBox31;
-        private System.Windows.Forms.TextBox textBox32;
+        private System.Windows.Forms.TextBox tbHeroName;
+        private System.Windows.Forms.TextBox tbHeroHS2;
+        private System.Windows.Forms.TextBox tbHeroLS2;
+        private System.Windows.Forms.TextBox tbHeroHS1;
+        private System.Windows.Forms.TextBox tbHeroLS1;
+        private System.Windows.Forms.TextBox tbHeroLS3;
+        private System.Windows.Forms.TextBox tbHeroHS3;
+        private System.Windows.Forms.TextBox tbHeroBio;
+        private System.Windows.Forms.TextBox tbHeroSpecDesc;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage tabSpells;
         private System.Windows.Forms.ListBox lbDecomposed;

@@ -75,7 +75,10 @@ namespace h3magic
 
 
         }
-
+        public static string GetSpecDescription(int index)
+        {
+            return spec_rows[2+index];
+        }
 
         private static Bitmap backg = null;
         public static Bitmap GetBackground(LodFile h3bitmap, LodFile h3sprite)

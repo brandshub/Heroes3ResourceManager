@@ -65,7 +65,7 @@ namespace h3magic
                         }
                         else if (propertyType == ProfilePropertyType.SpecSpell)
                         {
-                            selectedValue = Array.IndexOf<int>(Spell.specSpellIndexes, value);
+                            selectedValue = Array.IndexOf<int>(Spell.SpecSpellIndexes, value);
                         }
                         else if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
                         {
@@ -174,7 +174,7 @@ namespace h3magic
                 }
                 else if (propertyType == ProfilePropertyType.SpecSpell)
                 {
-                    flag = total < Spell.specSpellIndexes.Length;
+                    flag = total < Spell.SpecSpellIndexes.Length;
                 }
                 else if (propertyType == ProfilePropertyType.SpecResource)
                 {
@@ -236,7 +236,7 @@ namespace h3magic
             {
                 cellWidth = 45;
                 cellHeight = 45;
-                itemsPerRow = 6;
+                itemsPerRow = 7;
             }
             else if (propertyType == ProfilePropertyType.Spell)
             {
@@ -294,7 +294,7 @@ namespace h3magic
                 }
 
                 if (propertyType == ProfilePropertyType.SpecSpell)
-                    return Spell.GetSpellByIndex(Spell.specSpellIndexes[index]).GetImage(Heroes3Master.Master.H3Sprite);
+                    return Spell.GetSpellByIndex(Spell.SpecSpellIndexes[index]).GetImage(Heroes3Master.Master.H3Sprite);
 
                 if (propertyType == ProfilePropertyType.SpecSecondarySkill)
                     return SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, SecondarySkill.IndexesOfAllSpecSkills[index], 1);

@@ -27,9 +27,13 @@ namespace h3magic
         private int[] palette2 = new int[256];
         private byte[] bytes;
 
+        public bool HasChanged { get; set; }
+
 
         public DefFile(byte[] block)
         {
+            HasChanged = false;
+
             ID = BitConverter.ToInt32(block, 0);
             Width = BitConverter.ToInt32(block, 4);
             Height = BitConverter.ToInt32(block, 8);
@@ -522,7 +526,7 @@ namespace h3magic
                         int pIndex = 0;
                         if (type == 1)
                             pIndex = 1;
-                        else if (type == 4 || type==2)
+                        else if (type == 4 || type == 2)
                             pIndex = 2;
                         else if (type == 5)
                             pIndex = 5;
@@ -549,5 +553,35 @@ namespace h3magic
             double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
             //Debug.WriteLine("t3: " + result);
         }
+
+
+        public void RetargetSprite(int blockIndex, int oldSpriteIndex, int newSpriteIndex)
+        {
+            RetargetSprite(this, blockIndex, oldSpriteIndex, newSpriteIndex);
+
+        }
+
+        public void RetargetSprite(DefFile original, int blockIndex, int oldSpriteIndex, int newSpriteIndex)
+        {
+            HasChanged = true;
+
+            int offset = BLOCK_HEADER_OFFSET;
+            for (int i = 0; i < blockIndex; i++)
+                offset += headers[i].HeaderLength;
+
+            offset += 16;
+            offset += 13 * headers[blockIndex].SpritesCount;
+            offset += 4 * oldSpriteIndex;
+
+
+            int newOffset = original.headers[blockIndex].Offsets[newSpriteIndex];
+            var newBytes = BitConverter.GetBytes(newOffset);
+
+            headers[blockIndex].Offsets[oldSpriteIndex] = newOffset;
+            Buffer.BlockCopy(newBytes, 0, bytes, offset, 4);
+
+        }
+
+
     }
 }

@@ -30,6 +30,7 @@ namespace h3magic
             Offsets = new int[SpritesCount];
             for (int i = 0; i < SpritesCount; i++)
                 Names[i] = Encoding.ASCII.GetString(bytes, off + i * 13, Array.IndexOf<byte>(bytes, 0, off + i * 13) - (off + i * 13));
+            
             off += 13 * SpritesCount;
             for (int i = 0; i < SpritesCount; i++)
                 Offsets[i] = BitConverter.ToInt32(bytes, off + i * 4);

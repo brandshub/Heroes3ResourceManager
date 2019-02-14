@@ -80,41 +80,46 @@ namespace h3magic
             }
         }
 
-        public unsafe static void UpdateDataInMemory()
+        public unsafe static bool UpdateDataInMemory()
         {
             long offset = HeroesSection.HeroOffset1;
 
             var exe = Heroes3Master.Master.Executable;
             string file = exe.Path;
-            System.IO.File.WriteAllBytes(exe.Path + ".bak." + DateTime.Now.ToString("hhmmss"), exe.Data);
-
-            for (int i = 0; i < Data.Count; i++)
+            bool anyChanges = Data.Any(d => d.HasChanged);
+            if (anyChanges)
             {
-                var current = Data[i];
-                if (current.HasChanged)
+                System.IO.File.WriteAllBytes(exe.Path + ".bak." + DateTime.Now.ToString("hhmmss"), exe.Data);
+                for (int i = 0; i < Data.Count; i++)
                 {
-                    fixed (byte* ptr = exe.Data)
+                    var current = Data[i];
+                    if (current.HasChanged)
                     {
-                        int* iptr = (int*)(ptr + offset + i * BLOCK_SIZE_A);
-                        *iptr++ = current.GenderInt;
-                        *iptr++ = current.Race;
-                        *iptr++ = current.ClassIndex;
-                        *iptr++ = current.FirstSkillIndex;
-                        *iptr++ = current.FirstSkillLevel;
-                        *iptr++ = current.SecondSkillIndex;
-                        *iptr++ = current.SecondSkillLevel;
-                        *iptr++ = current.SpellBook;
-                        *iptr++ = current.SpellIndex;
-                        *iptr++ = current.Unit1Index;
-                        *iptr++ = current.Unit2Index;
-                        *iptr = current.Unit3Index;
+                        fixed (byte* ptr = exe.Data)
+                        {
+                            int* iptr = (int*)(ptr + offset + i * BLOCK_SIZE_A);
+                            *iptr++ = current.GenderInt;
+                            *iptr++ = current.Race;
+                            *iptr++ = current.ClassIndex;
+                            *iptr++ = current.FirstSkillIndex;
+                            *iptr++ = current.FirstSkillLevel;
+                            *iptr++ = current.SecondSkillIndex;
+                            *iptr++ = current.SecondSkillLevel;
+                            *iptr++ = current.SpellBook;
+                            *iptr++ = current.SpellIndex;
+                            *iptr++ = current.Unit1Index;
+                            *iptr++ = current.Unit2Index;
+                            *iptr = current.Unit3Index;
 
 
-                        //if (current.SpecIndex != current.Index)
-                        Speciality.Update(ptr, current.Index);
+                            //if (current.SpecIndex != current.Index)
+                            Speciality.Update(ptr, current.Index);
+                        }
                     }
                 }
             }
+
+            return anyChanges;
         }
         public override string ToString()
         {

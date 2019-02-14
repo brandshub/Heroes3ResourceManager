@@ -22,16 +22,10 @@ namespace h3magic
         public SpecialityType Type { get { return (SpecialityType)TypeId; } }
 
         public static List<Speciality> AllSpecialities = new List<Speciality>();
-        public static Bitmap GetImage(LodFile h3sprite, int index)
+
+        public static Bitmap GetImage(H3Sprite h3sprite, int index)
         {
-            var rec = h3sprite.GetRecord(IMG_FNAME);
-            if (rec != null)
-            {
-                var def = rec.GetDefFile(h3sprite.stream);
-                if (def != null)
-                    return def.GetByAbsoluteNumber(index);
-            }
-            return null;
+            return h3sprite.Un44Def.GetByAbsoluteNumber(index);
         }
 
         public Speciality() { }
@@ -62,10 +56,10 @@ namespace h3magic
         }
 
         public static void LoadInfo(byte[] executableBinary)
-        {          
+        {
             int startOffset = (int)HeroesSection.FindHeroOffset2(executableBinary);
             if (startOffset >= 0)
-                AllSpecialities = LoadInfo(executableBinary, startOffset);            
+                AllSpecialities = LoadInfo(executableBinary, startOffset);
             /*var byt2 = new byte[156 * BLOCK_SIZE];
             Buffer.BlockCopy(executableBinary, startOffset, byt2, 0, byt2.Length);
             System.IO.File.WriteAllBytes(@"D:\allspecs.bin", byt2);*/
@@ -78,28 +72,24 @@ namespace h3magic
 
         private static Bitmap allSpecs = null;
 
-        public static Bitmap GetAllSpecs(LodFile h3sprite)
+        public static Bitmap GetAllSpecs(H3Sprite h3sprite)
         {
             if (allSpecs != null)
                 return allSpecs;
 
             var bmp = new Bitmap(16 * (44 + 1), (44 + 1) * 9);
-            var rec = h3sprite.GetRecord(IMG_FNAME);
-            if (rec != null)
+            using (var g = Graphics.FromImage(bmp))
             {
-                var def = rec.GetDefFile(h3sprite.stream);
-                using (var g = Graphics.FromImage(bmp))
-                {
-                    for (int i = 0; i < 9; i++)
-                        for (int j = 0; j < 16; j++)
-                        {
-                            g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 45, 45 * i);
-                        }
-                }
-                allSpecs = bmp;
-                return allSpecs;
+                for (int i = 0; i < 9; i++)
+                    for (int j = 0; j < 16; j++)
+                    {
+                        g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 45, 45 * i);
+                    }
             }
-            return null;
+            allSpecs = bmp;
+            return allSpecs;
+
+
         }
 
         public string GetDescription()
@@ -199,7 +189,7 @@ namespace h3magic
             creature2 = -1;
             targetCreature = -1;
 
-            if(Type == SpecialityType.CreaturesUpgrade)
+            if (Type == SpecialityType.CreaturesUpgrade)
             {
                 creature1 = ObjectId;
                 creature2 = BitConverter.ToInt32(Data, 12);
@@ -233,9 +223,9 @@ namespace h3magic
 
             int[] temp = new int[8];
 
-            if(type == SpecialityType.Skill || type == SpecialityType.Spell || type == SpecialityType.Resource || type == SpecialityType.CreatureLevelBonus)
-            {                                
-                spec.ObjectId = arg0;                
+            if (type == SpecialityType.Skill || type == SpecialityType.Spell || type == SpecialityType.Resource || type == SpecialityType.CreatureLevelBonus)
+            {
+                spec.ObjectId = arg0;
             }
             else if (type == SpecialityType.CreaturesUpgrade)
             {
@@ -244,7 +234,7 @@ namespace h3magic
                 temp[4] = arg3;
                 Buffer.BlockCopy(temp, 0, spec.Data, 0, 32);
             }
-            else if(type == SpecialityType.CreatureStaticBonus)
+            else if (type == SpecialityType.CreatureStaticBonus)
             {
                 spec.ObjectId = CreatureManager.IndexesOfFirstLevelCreatures[arg0];
                 temp[0] = arg1;
@@ -253,7 +243,7 @@ namespace h3magic
                 Buffer.BlockCopy(temp, 0, spec.Data, 0, 32);
             }
 
-            AllSpecialities[index] = spec;          
+            AllSpecialities[index] = spec;
         }
 
 
@@ -261,6 +251,19 @@ namespace h3magic
         public override string ToString()
         {
             return GetDescription();
+        }
+
+        public bool Equals(Speciality other)
+        {
+            if (other == null)
+                return false;
+
+            if (TypeId != other.TypeId)
+                return false;
+            if (ObjectId != other.ObjectId)
+                return false;
+
+            return Data.SequenceEqual(other.Data);
         }
     }
 }

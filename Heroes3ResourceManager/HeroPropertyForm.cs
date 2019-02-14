@@ -86,6 +86,7 @@ namespace h3magic
 
         private void gridImages_ItemSelected(int value)
         {
+            
             if (PropertyType == ProfilePropertyType.SpecCreatureStatic)
             {
                 btnSave.Focus();
@@ -110,9 +111,23 @@ namespace h3magic
             }
             else
             {
+                int objId = value;
+                if (PropertyType == ProfilePropertyType.SpecCreature)
+                {                    
+                    objId = CreatureManager.IndexesOfFirstLevelCreatures[value];
+                }
+                else if (PropertyType == ProfilePropertyType.SpecSpell)
+                {
+                    objId = Spell.SpecSpellIndexes[value];
+                }
+                else if (PropertyType == ProfilePropertyType.SpecSecondarySkill)
+                {
+                    objId = SecondarySkill.IndexesOfAllSpecSkills[value];
+                }
+
                 if (this.ItemSelected != null)
                 {
-                    this.ItemSelected(value, 0, 0, 0);
+                    this.ItemSelected(objId, 0, 0, 0);
                     Close();
                 }
             }
@@ -243,11 +258,10 @@ namespace h3magic
                 bool flag = false;
                 int arg0 = -1, arg1 = -1, arg2 = -1, arg3 = -1;
 
-
                 if (PropertyType == ProfilePropertyType.SpecCreatureStatic)
                 {
                     flag = true;
-                    arg0 = gridImages.SelectedValue;
+                    arg0 = CreatureManager.IndexesOfFirstLevelCreatures[gridImages.SelectedValue];
                     arg1 = (int)tbAttack.Value;
                     arg2 = (int)tbDefense.Value;
                     arg3 = (int)tbDamage.Value;

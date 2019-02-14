@@ -182,7 +182,7 @@ namespace h3magic
             return buffer;
         }
 
-        public void SaveToStream(Stream input, Stream stream)
+        public void SaveToStream(Stream input, Stream output)
         {
             if (newVal == null)
             {
@@ -190,13 +190,16 @@ namespace h3magic
                 byte[] bytes = new byte[len];
                 input.Position = Offset;
                 input.Read(bytes, 0, len);
-                Offset = (int)stream.Position;
-                stream.Write(bytes, 0, len);
+                Offset = (int)output.Position;
+                output.Write(bytes, 0, len);
             }
             else
             {
-                Offset = (int)stream.Position;
-                stream.Write(newVal, 0, newVal.Length);
+                if (!changed)
+                    ApplyChanges(newVal);
+
+                Offset = (int)output.Position;
+                output.Write(newVal, 0, newVal.Length);
             }
         }
 
@@ -210,17 +213,14 @@ namespace h3magic
         }
 
 
+        private bool changed = false;
 
         public void ApplyChanges(byte[] newValue)
         {
+            changed = true;
             newVal = ZlibWrapper.Zlib(newValue);
             Size = newVal.Length;
             RealSize = newValue.Length;
         }
-
-
-
-
-
     }
 }
