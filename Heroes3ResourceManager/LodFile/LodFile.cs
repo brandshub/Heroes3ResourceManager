@@ -29,11 +29,11 @@ namespace h3magic
 
             byte[] temp = new byte[4];
             fs.Read(temp, 0, 4);
-            if (BitConverter.ToUInt32(temp, 0) != HEADER)
+            /*if (BitConverter.ToUInt32(temp, 0) != HEADER)
             {
                 fs.Close();
                 throw new ArgumentException("not a .LOD file");
-            }
+            }*/
             fs.Position = 8;
             fs.Read(temp, 0, 4);
             stream = fs;

@@ -530,9 +530,9 @@ namespace h3magic
                             pIndex = 2;
                         else if (type == 5)
                             pIndex = 5;
-                        else
+                        else 
                         {
-                            pIndex = 1000;
+                            pIndex = type;
                         }
 
                         for (int j = 0; j < blength; j++)

@@ -59,8 +59,6 @@ namespace h3magic
             heroPropertyForm.Owner = this;
 
             LoadOrginalSpecs();
-            //   LoadMaster(@"d:\Games\h3\Heroes3.exe");
-            //    Measure();
         }
 
 
@@ -171,7 +169,7 @@ namespace h3magic
                     var hs = HeroesManager.AllHeroes[hero.Index];
                     hs.Speciality = originalSpec;
                     tbHeroSpecDesc.Text = originalSpec;
-                    
+
                     HeroesManager.HasChanges = true;
 
                     hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
@@ -195,24 +193,17 @@ namespace h3magic
 
         public void LoadMaster(string executablPath)
         {
-            var sw = Stopwatch.StartNew();
-
             var master = Heroes3Master.LoadInfo(executablPath);
             lodFile = master.H3Bitmap;
             h3bitmapLod = lodFile;
             h3spriteLod = master.H3Sprite;
 
             lbFiles.Items.AddRange(lodFile.GetNames());
-            lbHeroes.Items.Clear();
             lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
-
-            lbHeroClasses.Items.Clear();
             lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
+            cbCastles.Items.AddRange(CreatureManager.Castles);
 
-            cb_castles.Items.Clear();
-            cb_castles.Items.AddRange(CreatureManager.Castles);
 
-            tabsMain.TabPages.Clear();
             if (lodFile["HCTRAITS.TXT"] == null)
             {
                 tabsMain.TabPages.Add(tabMain);
@@ -225,15 +216,6 @@ namespace h3magic
                 tabsMain.TabPages.Add(tabSpells);
                 tabsMain.TabPages.Add(tabMain);
             }
-
-            cb_Filter.Items.Clear();
-            cb_Filter.Items.Add("*");
-            cb_Filter.Items.AddRange(lodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray<object>());
-
-            sw.Stop();
-            Text = sw.ElapsedMilliseconds + " ms";
-
-            tabsMain.Visible = true;
         }
 
 
@@ -271,18 +253,11 @@ namespace h3magic
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            progressBar1.Value = 0;
-            Application.DoEvents();
+        {   
             for (int i = 0; i < lbFiles.SelectedItems.Count; i++)
             {
-
-                lodFile[lbFiles.SelectedItems[i].ToString()].SaveToDisk(lodFile.stream);
-                progressBar1.Value = 100 * i / lbFiles.SelectedIndices.Count;
-                Application.DoEvents();
+                lodFile[lbFiles.SelectedItems[i].ToString()].SaveToDisk(lodFile.stream);                            
             }
-            progressBar1.Value = 100;
-            Application.DoEvents();
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -385,7 +360,7 @@ namespace h3magic
                 lastindex = index;
             }
             sw.Stop();
-            Debug.WriteLine("previewshow: " + (sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency));
+            //Debug.WriteLine("previewshow: " + (sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency));
         }
 
         private string selectedFile = "";
@@ -459,10 +434,20 @@ namespace h3magic
                 if (lodFile != null)
                     lodFile.stream.Close();
 
-                if (Path.GetExtension(ofd.FileName) == ".exe")
+                lbFiles.Items.Clear();
+                tabsMain.TabPages.Clear();
+                lbHeroes.Items.Clear();
+                lbHeroClasses.Items.Clear();
+                cbCastles.Items.Clear();
+                cbFilter.Items.Clear();
+
+                cbFilter.Items.Add("*");
+
+
+                string extension = Path.GetExtension(ofd.FileName).ToLower();
+                if (extension == ".exe")
                 {
                     LoadMaster(ofd.FileName);
-                    
                 }
                 else
                 {
@@ -470,7 +455,6 @@ namespace h3magic
 
                     var fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     lodFile = new LodFile(fs);
-                    lbFiles.Items.Clear();
                     lodFile.LoadFAT();
 
                     lbFiles.Items.AddRange(lodFile.GetNames());
@@ -480,26 +464,11 @@ namespace h3magic
                     else if (fs.Name.ToLower().Contains("h3sprite"))
                         h3spriteLod = lodFile;
 
-                    tabsMain.TabPages.Clear();
-                    if (lodFile["HCTRAITS.TXT"] == null)
-                    {
-                        tabsMain.TabPages.Add(tabMain);
-                    }
-                    else
-                    {
-                        tabsMain.TabPages.Add(tabHeroes);
-                        tabsMain.TabPages.Add(tabHeroClass);
-                        tabsMain.TabPages.Add(tabCreatures);
-                        tabsMain.TabPages.Add(tabSpells);
-                        tabsMain.TabPages.Add(tabMain);
-                    }
+                    tabsMain.TabPages.Add(tabMain);
 
-                    cb_Filter.Items.Clear();
-                    cb_Filter.Items.Add("*");
-                    cb_Filter.Items.AddRange(lodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray<object>());
                 }
 
-
+                cbFilter.Items.AddRange(lodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray<object>());
                 tabsMain.Visible = true;
             }
         }
@@ -508,7 +477,7 @@ namespace h3magic
         {
             if (lodFile != null)
             {
-                string val = cb_Filter.SelectedItem.ToString();
+                string val = cbFilter.SelectedItem.ToString();
                 lbFiles.Items.Clear();
                 lbFiles.Items.AddRange(lodFile.Filter(val).Select(fat => fat.FileName).ToArray());
             }
@@ -522,15 +491,13 @@ namespace h3magic
                 {
                     if (sfd.FileName == lodFile.Name)
                     {
-                        MessageBox.Show("Неможливо зберігати у файл-джерело!");
+                        MessageBox.Show("Cannot save to original file!");
                         return;
                     }
 
                     var watch = Stopwatch.StartNew();
                     Heroes3Master.Master.Save();
-
-                    double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
-                    Text = "Збережено за " + result.ToString("F3");
+                    Text = string.Format("Saved in {0:F2} ms", watch.ElapsedMs());
                 }
         }
 
@@ -541,11 +508,9 @@ namespace h3magic
         {
             if (lodFile != null)
             {
-                Stopwatch watch = Stopwatch.StartNew();
+                var watch = Stopwatch.StartNew();
                 Heroes3Master.Master.Save();
-
-                double result = watch.ElapsedTicks / (double)Stopwatch.Frequency;
-                Text = "Збережено за " + result.ToString("F3");
+                Text = string.Format("Saved in {0:F2} ms", watch.ElapsedMs());
             }
         }
 
@@ -576,7 +541,7 @@ namespace h3magic
             if (CreatureManager.Loaded)
             {
                 cb_creatures.Items.Clear();
-                cb_creatures.Items.AddRange(CreatureManager.OnlyActiveCreatures.Where(c => c.CastleIndex == cb_castles.SelectedIndex).Select(cs => cs.Name).ToArray());
+                cb_creatures.Items.AddRange(CreatureManager.OnlyActiveCreatures.Where(c => c.CastleIndex == cbCastles.SelectedIndex).Select(cs => cs.Name).ToArray());
                 cb_creatures.Select();
                 cb_creatures.SelectedIndex = 0;
             }
@@ -586,7 +551,7 @@ namespace h3magic
         {
             if (CreatureManager.Loaded)
             {
-                LoadCreatureInfo(CreatureManager.Get(cb_castles.SelectedIndex, cb_creatures.SelectedIndex));
+                LoadCreatureInfo(CreatureManager.Get(cbCastles.SelectedIndex, cb_creatures.SelectedIndex));
             }
         }
 
@@ -623,8 +588,8 @@ namespace h3magic
                 if (tabsMain.SelectedIndex == 2)
                 {
                     CreatureManager.LoadInfo(lodFile);
-                    cb_castles.Items.Clear();
-                    cb_castles.Items.AddRange(CreatureManager.Castles);
+                    cbCastles.Items.Clear();
+                    cbCastles.Items.AddRange(CreatureManager.Castles);
 
                 }
                 else if (tabsMain.SelectedIndex == 1)
@@ -646,7 +611,7 @@ namespace h3magic
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var cs = CreatureManager.OnlyActiveCreatures.Where(c => c.CastleIndex == cb_castles.SelectedIndex && c.CreatureCastleRelativeIndex == cb_creatures.SelectedIndex).FirstOrDefault();
+            var cs = CreatureManager.OnlyActiveCreatures.Where(c => c.CastleIndex == cbCastles.SelectedIndex && c.CreatureCastleRelativeIndex == cb_creatures.SelectedIndex).FirstOrDefault();
             cs.Name = textBox1.Text;
             cs.Attack = int.Parse(textBox3.Text);
             cs.Defence = int.Parse(textBox4.Text);
@@ -719,11 +684,6 @@ namespace h3magic
             // Heroes3Master.Master.SaveHeroExeData();
 
             //  MessageBox.Show("Success!");
-
-        }
-
-        private void pictureBox3_DoubleClick(object sender, EventArgs e)
-        {
 
         }
 
@@ -842,11 +802,14 @@ namespace h3magic
         private void trbDefSprites_ValueChanged(object sender, EventArgs e)
         {
             PreviewShow();
+            toolTip1.SetToolTip(trbDefSprites, trbDefSprites.Value.ToString());
         }
 
         private void chbTimerEnabled_CheckedChanged(object sender, EventArgs e)
         {
             timer.Enabled = chbTimerEnabled.Checked;
         }
+
+
     }
 }

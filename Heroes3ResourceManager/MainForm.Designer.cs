@@ -35,7 +35,6 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.rtbMain = new System.Windows.Forms.RichTextBox();
             this.button5 = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button8 = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,7 +42,7 @@
             this.m_saveFile = new System.Windows.Forms.ToolStripMenuItem();
             this.m_saveFileAs = new System.Windows.Forms.ToolStripMenuItem();
             this.m_exit = new System.Windows.Forms.ToolStripMenuItem();
-            this.cb_Filter = new System.Windows.Forms.ComboBox();
+            this.cbFilter = new System.Windows.Forms.ComboBox();
             this.ldBmp = new System.Windows.Forms.Button();
             this.tabsMain = new System.Windows.Forms.TabControl();
             this.tabHeroes = new System.Windows.Forms.TabPage();
@@ -67,7 +66,6 @@
             this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbHeroes = new System.Windows.Forms.ListBox();
-            this.hpcHeroProfile = new h3magic.HeroProfileControl();
             this.tabHeroClass = new System.Windows.Forms.TabPage();
             this.textBox68 = new System.Windows.Forms.TextBox();
             this.textBox69 = new System.Windows.Forms.TextBox();
@@ -138,7 +136,7 @@
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.cb_creatures = new System.Windows.Forms.ComboBox();
-            this.cb_castles = new System.Windows.Forms.ComboBox();
+            this.cbCastles = new System.Windows.Forms.ComboBox();
             this.textBox16 = new System.Windows.Forms.TextBox();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.textBox15 = new System.Windows.Forms.TextBox();
@@ -168,6 +166,8 @@
             this.trbDefSprites = new System.Windows.Forms.TrackBar();
             this.lbDecomposed = new System.Windows.Forms.ListBox();
             this.pbResourceView = new System.Windows.Forms.PictureBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.hpcHeroProfile = new h3magic.HeroProfileControl();
             this.specialityBuilder1 = new h3magic.ImageGridControl();
             this.menuStrip1.SuspendLayout();
             this.tabsMain.SuspendLayout();
@@ -180,7 +180,6 @@
             this.tabCreatures.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.tabSpells.SuspendLayout();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbResourceView)).BeginInit();
@@ -188,14 +187,16 @@
             // 
             // lbFiles
             // 
+            this.lbFiles.ColumnWidth = 118;
             this.lbFiles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbFiles.FormattingEnabled = true;
             this.lbFiles.ItemHeight = 18;
-            this.lbFiles.Location = new System.Drawing.Point(673, 33);
+            this.lbFiles.Location = new System.Drawing.Point(6, 0);
+            this.lbFiles.MultiColumn = true;
             this.lbFiles.Name = "lbFiles";
             this.lbFiles.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lbFiles.Size = new System.Drawing.Size(133, 202);
+            this.lbFiles.Size = new System.Drawing.Size(574, 472);
             this.lbFiles.TabIndex = 4;
             this.lbFiles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbFiles_DrawItem);
             this.lbFiles.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -204,7 +205,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(812, 33);
+            this.button4.Location = new System.Drawing.Point(420, 483);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(77, 23);
             this.button4.TabIndex = 5;
@@ -219,17 +220,17 @@
             // 
             // rtbMain
             // 
-            this.rtbMain.Location = new System.Drawing.Point(7, 6);
+            this.rtbMain.Location = new System.Drawing.Point(605, 0);
             this.rtbMain.MaxLength = 327670;
             this.rtbMain.Name = "rtbMain";
-            this.rtbMain.Size = new System.Drawing.Size(640, 401);
+            this.rtbMain.Size = new System.Drawing.Size(303, 282);
             this.rtbMain.TabIndex = 6;
             this.rtbMain.Text = "";
             this.rtbMain.WordWrap = false;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(812, 62);
+            this.button5.Location = new System.Drawing.Point(503, 485);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(77, 22);
             this.button5.TabIndex = 7;
@@ -237,17 +238,9 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(16, 575);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(890, 23);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 8;
-            // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(572, 428);
+            this.button8.Location = new System.Drawing.Point(247, 485);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(75, 23);
             this.button8.TabIndex = 11;
@@ -307,19 +300,19 @@
             this.m_exit.Text = "Exit";
             this.m_exit.Click += new System.EventHandler(this.m_exit_Click);
             // 
-            // cb_Filter
+            // cbFilter
             // 
-            this.cb_Filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_Filter.FormattingEnabled = true;
-            this.cb_Filter.Location = new System.Drawing.Point(673, 6);
-            this.cb_Filter.Name = "cb_Filter";
-            this.cb_Filter.Size = new System.Drawing.Size(133, 21);
-            this.cb_Filter.TabIndex = 16;
-            this.cb_Filter.SelectedIndexChanged += new System.EventHandler(this.cb_Filter_SelectedIndexChanged);
+            this.cbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbFilter.FormattingEnabled = true;
+            this.cbFilter.Location = new System.Drawing.Point(6, 485);
+            this.cbFilter.Name = "cbFilter";
+            this.cbFilter.Size = new System.Drawing.Size(133, 21);
+            this.cbFilter.TabIndex = 16;
+            this.cbFilter.SelectedIndexChanged += new System.EventHandler(this.cb_Filter_SelectedIndexChanged);
             // 
             // ldBmp
             // 
-            this.ldBmp.Location = new System.Drawing.Point(476, 428);
+            this.ldBmp.Location = new System.Drawing.Point(166, 485);
             this.ldBmp.Name = "ldBmp";
             this.ldBmp.Size = new System.Drawing.Size(75, 23);
             this.ldBmp.TabIndex = 17;
@@ -381,72 +374,72 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // textBox29
+            // tbHeroLS3
             // 
             this.tbHeroLS3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbHeroLS3.Location = new System.Drawing.Point(804, 317);
-            this.tbHeroLS3.Name = "textBox29";
+            this.tbHeroLS3.Name = "tbHeroLS3";
             this.tbHeroLS3.Size = new System.Drawing.Size(40, 20);
             this.tbHeroLS3.TabIndex = 18;
             this.tbHeroLS3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox30
+            // tbHeroHS3
             // 
             this.tbHeroHS3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbHeroHS3.Location = new System.Drawing.Point(850, 317);
-            this.tbHeroHS3.Name = "textBox30";
+            this.tbHeroHS3.Name = "tbHeroHS3";
             this.tbHeroHS3.Size = new System.Drawing.Size(40, 20);
             this.tbHeroHS3.TabIndex = 17;
             this.tbHeroHS3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox31
+            // tbHeroBio
             // 
             this.tbHeroBio.Location = new System.Drawing.Point(580, 74);
             this.tbHeroBio.Multiline = true;
-            this.tbHeroBio.Name = "textBox31";
+            this.tbHeroBio.Name = "tbHeroBio";
             this.tbHeroBio.Size = new System.Drawing.Size(310, 123);
             this.tbHeroBio.TabIndex = 16;
             // 
-            // textBox32
+            // tbHeroSpecDesc
             // 
             this.tbHeroSpecDesc.Location = new System.Drawing.Point(580, 216);
             this.tbHeroSpecDesc.Multiline = true;
-            this.tbHeroSpecDesc.Name = "textBox32";
+            this.tbHeroSpecDesc.Name = "tbHeroSpecDesc";
             this.tbHeroSpecDesc.Size = new System.Drawing.Size(310, 66);
             this.tbHeroSpecDesc.TabIndex = 15;
             // 
-            // textBox28
+            // tbHeroHS2
             // 
             this.tbHeroHS2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbHeroHS2.Location = new System.Drawing.Point(850, 343);
-            this.tbHeroHS2.Name = "textBox28";
+            this.tbHeroHS2.Name = "tbHeroHS2";
             this.tbHeroHS2.Size = new System.Drawing.Size(40, 20);
             this.tbHeroHS2.TabIndex = 14;
             this.tbHeroHS2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox27
+            // tbHeroLS2
             // 
             this.tbHeroLS2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbHeroLS2.Location = new System.Drawing.Point(804, 343);
-            this.tbHeroLS2.Name = "textBox27";
+            this.tbHeroLS2.Name = "tbHeroLS2";
             this.tbHeroLS2.Size = new System.Drawing.Size(40, 20);
             this.tbHeroLS2.TabIndex = 13;
             this.tbHeroLS2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox26
+            // tbHeroHS1
             // 
             this.tbHeroHS1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbHeroHS1.Location = new System.Drawing.Point(850, 291);
-            this.tbHeroHS1.Name = "textBox26";
+            this.tbHeroHS1.Name = "tbHeroHS1";
             this.tbHeroHS1.Size = new System.Drawing.Size(40, 20);
             this.tbHeroHS1.TabIndex = 12;
             this.tbHeroHS1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox25
+            // tbHeroLS1
             // 
             this.tbHeroLS1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbHeroLS1.Location = new System.Drawing.Point(804, 291);
-            this.tbHeroLS1.Name = "textBox25";
+            this.tbHeroLS1.Name = "tbHeroLS1";
             this.tbHeroLS1.Size = new System.Drawing.Size(40, 20);
             this.tbHeroLS1.TabIndex = 11;
             this.tbHeroLS1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -496,20 +489,20 @@
             this.label14.TabIndex = 4;
             this.label14.Text = "Biography";
             // 
-            // textBox24
+            // tbHeroName
             // 
             this.tbHeroName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbHeroName.Location = new System.Drawing.Point(580, 12);
-            this.tbHeroName.Name = "textBox24";
+            this.tbHeroName.Name = "tbHeroName";
             this.tbHeroName.Size = new System.Drawing.Size(227, 29);
             this.tbHeroName.TabIndex = 3;
             this.tbHeroName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // pictureBox4
+            // pbPortraitSmall
             // 
             this.pbPortraitSmall.ContextMenuStrip = this.contextMenuStrip1;
             this.pbPortraitSmall.Location = new System.Drawing.Point(826, 10);
-            this.pbPortraitSmall.Name = "pictureBox4";
+            this.pbPortraitSmall.Name = "pbPortraitSmall";
             this.pbPortraitSmall.Size = new System.Drawing.Size(64, 37);
             this.pbPortraitSmall.TabIndex = 2;
             this.pbPortraitSmall.TabStop = false;
@@ -544,18 +537,6 @@
             this.lbHeroes.Size = new System.Drawing.Size(130, 485);
             this.lbHeroes.TabIndex = 0;
             this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
-            // 
-            // hpcHeroProfile
-            // 
-            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.hpcHeroProfile.Hero = null;
-            this.hpcHeroProfile.HeroIndex = 0;
-            this.hpcHeroProfile.Image = null;
-            this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
-            this.hpcHeroProfile.Name = "hpcHeroProfile";
-            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
-            this.hpcHeroProfile.TabIndex = 22;
             // 
             // tabHeroClass
             // 
@@ -1113,7 +1094,7 @@
             this.tabCreatures.Controls.Add(this.textBox17);
             this.tabCreatures.Controls.Add(this.label7);
             this.tabCreatures.Controls.Add(this.cb_creatures);
-            this.tabCreatures.Controls.Add(this.cb_castles);
+            this.tabCreatures.Controls.Add(this.cbCastles);
             this.tabCreatures.Controls.Add(this.textBox16);
             this.tabCreatures.Controls.Add(this.textBox14);
             this.tabCreatures.Controls.Add(this.textBox15);
@@ -1291,15 +1272,15 @@
             this.cb_creatures.TabIndex = 25;
             this.cb_creatures.SelectedIndexChanged += new System.EventHandler(this.cb_creatures_SelectedIndexChanged);
             // 
-            // cb_castles
+            // cbCastles
             // 
-            this.cb_castles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cb_castles.FormattingEnabled = true;
-            this.cb_castles.Location = new System.Drawing.Point(548, 21);
-            this.cb_castles.Name = "cb_castles";
-            this.cb_castles.Size = new System.Drawing.Size(103, 21);
-            this.cb_castles.TabIndex = 24;
-            this.cb_castles.SelectedIndexChanged += new System.EventHandler(this.cb_castles_SelectedIndexChanged);
+            this.cbCastles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCastles.FormattingEnabled = true;
+            this.cbCastles.Location = new System.Drawing.Point(548, 21);
+            this.cbCastles.Name = "cbCastles";
+            this.cbCastles.Size = new System.Drawing.Size(103, 21);
+            this.cbCastles.TabIndex = 24;
+            this.cbCastles.SelectedIndexChanged += new System.EventHandler(this.cb_castles_SelectedIndexChanged);
             // 
             // textBox16
             // 
@@ -1517,7 +1498,7 @@
             this.pictureBox2.TabStop = false;
             // 
             // tabSpells
-            //             
+            // 
             this.tabSpells.Location = new System.Drawing.Point(4, 25);
             this.tabSpells.Name = "tabSpells";
             this.tabSpells.Size = new System.Drawing.Size(908, 512);
@@ -1534,7 +1515,7 @@
             this.tabMain.Controls.Add(this.rtbMain);
             this.tabMain.Controls.Add(this.button8);
             this.tabMain.Controls.Add(this.ldBmp);
-            this.tabMain.Controls.Add(this.cb_Filter);
+            this.tabMain.Controls.Add(this.cbFilter);
             this.tabMain.Controls.Add(this.button5);
             this.tabMain.Controls.Add(this.lbFiles);
             this.tabMain.Controls.Add(this.button4);
@@ -1549,7 +1530,7 @@
             // chbTimerEnabled
             // 
             this.chbTimerEnabled.AutoSize = true;
-            this.chbTimerEnabled.Location = new System.Drawing.Point(418, 428);
+            this.chbTimerEnabled.Location = new System.Drawing.Point(605, 288);
             this.chbTimerEnabled.Name = "chbTimerEnabled";
             this.chbTimerEnabled.Size = new System.Drawing.Size(15, 14);
             this.chbTimerEnabled.TabIndex = 21;
@@ -1558,40 +1539,62 @@
             // 
             // trbDefSprites
             // 
-            this.trbDefSprites.Location = new System.Drawing.Point(7, 423);
+            this.trbDefSprites.Location = new System.Drawing.Point(626, 288);
             this.trbDefSprites.Name = "trbDefSprites";
-            this.trbDefSprites.Size = new System.Drawing.Size(405, 45);
+            this.trbDefSprites.Size = new System.Drawing.Size(282, 45);
             this.trbDefSprites.TabIndex = 20;
             this.trbDefSprites.ValueChanged += new System.EventHandler(this.trbDefSprites_ValueChanged);
-            this.trbDefSprites.VisibleChanged += new System.EventHandler(this.trbDefSprites_ValueChanged);
             // 
             // lbDecomposed
             // 
             this.lbDecomposed.FormattingEnabled = true;
-            this.lbDecomposed.Location = new System.Drawing.Point(673, 259);
+            this.lbDecomposed.Location = new System.Drawing.Point(605, 334);
             this.lbDecomposed.Name = "lbDecomposed";
-            this.lbDecomposed.Size = new System.Drawing.Size(133, 147);
+            this.lbDecomposed.Size = new System.Drawing.Size(300, 173);
             this.lbDecomposed.TabIndex = 19;
             this.lbDecomposed.SelectedIndexChanged += new System.EventHandler(this.lbDecomposed_SelectedIndexChanged);
             // 
             // pbResourceView
             // 
             this.pbResourceView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbResourceView.Location = new System.Drawing.Point(7, 6);
+            this.pbResourceView.Location = new System.Drawing.Point(605, 0);
             this.pbResourceView.Name = "pbResourceView";
-            this.pbResourceView.Size = new System.Drawing.Size(640, 401);
+            this.pbResourceView.Size = new System.Drawing.Size(303, 282);
             this.pbResourceView.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbResourceView.TabIndex = 18;
             this.pbResourceView.TabStop = false;
             this.pbResourceView.Visible = false;
             // 
+            // hpcHeroProfile
+            // 
+            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hpcHeroProfile.Hero = null;
+            this.hpcHeroProfile.HeroIndex = 0;
+            this.hpcHeroProfile.Image = null;
+            this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
+            this.hpcHeroProfile.Name = "hpcHeroProfile";
+            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
+            this.hpcHeroProfile.TabIndex = 22;
+            // 
+            // specialityBuilder1
+            // 
+            this.specialityBuilder1.CurrentIndex = 0;
+            this.specialityBuilder1.ForceAllCreatures = false;
+            this.specialityBuilder1.HeroIndex = 0;
+            this.specialityBuilder1.Location = new System.Drawing.Point(0, 0);
+            this.specialityBuilder1.Name = "specialityBuilder1";
+            this.specialityBuilder1.PropertyType = h3magic.ProfilePropertyType.Creature;
+            this.specialityBuilder1.SelectedValue = 0;
+            this.specialityBuilder1.Size = new System.Drawing.Size(510, 321);
+            this.specialityBuilder1.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(939, 612);
+            this.ClientSize = new System.Drawing.Size(939, 577);
             this.Controls.Add(this.tabsMain);
-            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -1614,7 +1617,6 @@
             this.tabCreatures.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.tabSpells.ResumeLayout(false);
             this.tabMain.ResumeLayout(false);
             this.tabMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).EndInit();
@@ -1631,7 +1633,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.RichTextBox rtbMain;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem файлToolStripMenuItem;
@@ -1639,7 +1640,7 @@
         private System.Windows.Forms.ToolStripMenuItem m_saveFile;
         private System.Windows.Forms.ToolStripMenuItem m_saveFileAs;
         private System.Windows.Forms.ToolStripMenuItem m_exit;
-        private System.Windows.Forms.ComboBox cb_Filter;
+        private System.Windows.Forms.ComboBox cbFilter;
         private System.Windows.Forms.Button ldBmp;
         private System.Windows.Forms.TabControl tabsMain;
         private System.Windows.Forms.TabPage tabMain;
@@ -1668,7 +1669,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.ComboBox cb_creatures;
-        private System.Windows.Forms.ComboBox cb_castles;
+        private System.Windows.Forms.ComboBox cbCastles;
         private System.Windows.Forms.TextBox textBox22;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox textBox21;
@@ -1765,6 +1766,7 @@
         private System.Windows.Forms.CheckBox chbTimerEnabled;
         private HeroProfileControl hpcHeroProfile;
         private ImageGridControl specialityBuilder1;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
