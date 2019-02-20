@@ -276,7 +276,7 @@ namespace h3magic
 
         private void listBox1_MouseHover(object sender, EventArgs e)
         {
-            PreviewShow();
+          //  PreviewShow();
         }
 
         private void PreviewShow()
@@ -371,7 +371,7 @@ namespace h3magic
         private void lbFiles_MouseMove(object sender, MouseEventArgs e)
         {
             last = e.Location;
-            PreviewShow();
+            //PreviewShow();
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -600,10 +600,8 @@ namespace h3magic
                 }
                 else if (tabsMain.SelectedIndex == 0)
                 {
-
                     lbHeroes.Items.Clear();
                     lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
-
                 }
 
             }
@@ -778,7 +776,7 @@ namespace h3magic
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            PreviewShow();
         }
 
         private void lbDecomposed_SelectedIndexChanged(object sender, EventArgs e)

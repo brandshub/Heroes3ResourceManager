@@ -148,6 +148,7 @@
     <Compile Include="Spell.cs" />
     <Compile Include="SpriteBlockHeader.cs" />
     <Compile Include="SpriteHeader.cs" />
+    <Compile Include="StringsData.cs" />
     <Compile Include="ZlibWrapper.cs" />
     <None Include="Resources\allspecs.bin" />
     <None Include="Resources\UN32.gz" />

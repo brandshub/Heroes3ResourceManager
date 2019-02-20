@@ -22,6 +22,7 @@ namespace h3magic
 
         public event Action<int, ProfilePropertyType, int, int> PropertyClicked;
 
+        private Font font1 = new Font("Arial Unicode MS", 8);
         private float ratio = 1;
         private int lastRectIndex = -1;
         private float dx = 0;
@@ -75,10 +76,111 @@ namespace h3magic
 
                 if (heroData.Spell != null)
                     g.DrawImage(heroData.Spell.GetImage(master.H3Sprite), 192, 262);
+
+                DrawData(g, heroData);
+
+
+                //heroData.Class.Stats
+                /*
+                 *  g.DrawImage(ps.GetSprite(0), new Point(18, 97));
+                    g.DrawImage(ps.GetSprite(1), new Point(88, 97));
+                    g.DrawImage(ps.GetSprite(2), new Point(158, 97));
+                    g.DrawImage(ps.GetSprite(5), new Point(228, 97));
+                 */
                 g.Dispose();
                 PictureBox.Image = canvas;
                 CalculateRatio();
             }
+        }
+
+        private void DrawData(Graphics g, HeroExeData hero)
+        {
+            var cl = hero.Class;
+            var hs = HeroesManager.AllHeroes[hero.Index];
+
+            var strData = Heroes3Master.Master.H3Bitmap.StringsData.JKTEXT;
+            Color mainColor = Color.FromArgb(255, 231, 148);
+            SizeF sz;
+
+            var nameFont = new Font(font1.FontFamily, 14, FontStyle.Bold);
+            sz = g.MeasureString(hs.Name, nameFont);
+            DrawShadowedString(hs.Name, g, mainColor, nameFont, 67 + (220 - sz.Width) / 2, 15);
+
+            var classFont = new Font(font1.FontFamily, 9);
+            sz = g.MeasureString(cl.Stats[0], classFont);
+            DrawShadowedString(cl.Stats[0], g, Color.White, classFont, 67 + (220 - sz.Width) / 2, 40);
+
+
+            sz = g.MeasureString(strData[1], font1);
+            DrawShadowedString(strData[1], g, mainColor, font1, 16 + (44 - sz.Width) / 2, 77);
+
+            sz = g.MeasureString(strData[2], font1);
+            DrawShadowedString(strData[2], g, mainColor, font1, 86 + (44 - sz.Width) / 2, 77);
+
+            sz = g.MeasureString(strData[3], font1);
+            DrawShadowedString(strData[3], g, mainColor, font1, 156 + (44 - sz.Width) / 2, 77);
+
+            sz = g.MeasureString(strData[4], font1);
+            DrawShadowedString(strData[4], g, mainColor, font1, 226 + (44 - sz.Width) / 2, 77);
+
+
+            DrawShadowedString(strData[5].Replace("{", "").Replace("}", ""), g, mainColor, font1, 52, 171);
+
+            float fontSize = font1.Size;
+            Font temp;
+            string specName = hs.Speciality.Split('\t')[0];
+            do
+            {
+                temp = new Font(font1.FontFamily.Name, fontSize--);
+                sz = g.MeasureString(specName, temp);
+            }
+            while (sz.Width > 93);
+            DrawShadowedString(specName, g, Color.White, temp, 52, 189);
+
+            DrawShadowedString(string.Format("{0}/{0}", cl.Mana), g, Color.White, font1, 221 + (51 - 33) / 2, 165 + 22 - 7);
+
+            DrawSkill(hero, 1, g, Color.White, font1, 52, 213, 44, 93);
+            DrawSkill(hero, 2, g, Color.White, font1, 194, 213, 44, 93);
+
+            DrawShadowedString(cl.Attack.ToString(), g, Color.White, font1, 18 + 22 - 6, 143);
+            DrawShadowedString(cl.Defense.ToString(), g, Color.White, font1, 88 + 22 - 6, 143);
+            DrawShadowedString(cl.MagicPower.ToString(), g, Color.White, font1, 158 + 22 - 6, 143);
+            DrawShadowedString(cl.Knowledge.ToString(), g, Color.White, font1, 228 + 22 - 6, 143);
+        }
+
+        private void DrawSkill(HeroExeData hero, int skillIndex, Graphics g, Color color, Font font, float x, float top, float heightLimit, float widthLimit)
+        {
+            string skillStr = null;
+            if (skillIndex == 1)
+            {
+                skillStr = hero.Skill1.Name + " (" + hero.FirstSkillLevel + ")";
+            }
+            else if (skillIndex == 2 && hero.SecondSkillIndex != -1)
+            {
+                skillStr = hero.Skill2.Name + " (" + hero.SecondSkillLevel + ")";
+            }
+
+            if (string.IsNullOrEmpty(skillStr))
+                return;
+
+            SizeF sz = g.MeasureString(skillStr, font);
+            if (sz.Width > widthLimit)
+            {
+                int firstSpace = skillStr.IndexOf(' ');
+                if (firstSpace >= 0)
+                {
+                    skillStr = skillStr.Substring(0, firstSpace) + "\r\n" + skillStr.Substring(firstSpace + 1);
+                    sz = g.MeasureString(skillStr, font);
+                }
+            }
+
+            float y = top + (heightLimit - sz.Height) / 2;
+            DrawShadowedString(skillStr, g, Color.White, font, x, y);
+        }
+        private void DrawShadowedString(string text, Graphics g, Color color, Font font, float x, float y)
+        {
+            g.DrawString(text, font, Brushes.Black, x + 1, y + 1);
+            g.DrawString(text, font, new SolidBrush(color), x, y);
         }
 
         private void CalculateRatio()
@@ -189,7 +291,7 @@ namespace h3magic
                     }
                     else if (lastRectIndex == 2)
                     {
-                        type = Speciality.ToProfilePropertyType(Hero.Spec.Type);                               
+                        type = Speciality.ToProfilePropertyType(Hero.Spec.Type);
                         currentValue = Hero.Spec.ObjectId;
                     }
                     else if (lastRectIndex <= 4)

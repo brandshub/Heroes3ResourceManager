@@ -12,6 +12,12 @@ namespace h3magic
         private static string[] rows;
 
         public static bool HasChanges { get; set; }
+        public int Attack { get { return GetStat(2); } }
+        public int Defense { get { return GetStat(3); } }
+        public int MagicPower { get { return GetStat(4); } }
+        public int Knowledge { get {  return GetStat(5);} }
+
+        public int Mana { get { return Knowledge * 10; } }
 
         public static List<HeroClass> AllHeroClasses;
 
@@ -61,6 +67,14 @@ namespace h3magic
             return AllHeroClasses[index];
         }
 
+        public int GetStat(int index)
+        {
+            if (Stats != null && index < Stats.Length)
+            {
+                return int.Parse(Stats[index]);
+            }
+            return -1;
+        }
         public override string ToString()
         {
             return Stats == null ? "" : Stats[0];

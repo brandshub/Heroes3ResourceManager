@@ -41,7 +41,7 @@ namespace h3magic
             FilesTable = new List<FatRecord>(FileCount);
         }
 
-        public void LoadFAT(int count)
+        public virtual void LoadData(int count)
         {
             stream.Position = FAT_OFFSET;
 
@@ -72,7 +72,7 @@ namespace h3magic
 
         public void LoadFAT()
         {
-            LoadFAT(FileCount);
+            LoadData(FileCount);
         }
 
         public string[] GetNames()
