@@ -89,7 +89,7 @@ namespace h3magic
             bool anyChanges = Data.Any(d => d.HasChanged);
             if (anyChanges)
             {
-                System.IO.File.WriteAllBytes(exe.Path + ".bak." + DateTime.Now.ToString("hhmmss"), exe.Data);
+                System.IO.File.WriteAllBytes(exe.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_hhmmss"), exe.Data);
                 for (int i = 0; i < Data.Count; i++)
                 {
                     var current = Data[i];

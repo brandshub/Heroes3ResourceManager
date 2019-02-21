@@ -20,8 +20,8 @@ namespace h3magic
 
         public static void LoadDefs(byte[] un32, byte[] un44)
         {
-            def32 = new DefFile(Decompress(un32));
-            def44 = new DefFile(Decompress(un44));
+            def32 = new DefFile(null, Decompress(un32));
+            def44 = new DefFile(null, Decompress(un44));
         }
 
         private static byte[] Decompress(byte[] data)

@@ -171,9 +171,7 @@ namespace h3magic
                     tbHeroSpecDesc.Text = originalSpec;
 
                     HeroesManager.HasChanges = true;
-
-                    hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
-                    //TODO
+                    hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);                    
                 }
 
                 //hpcHeroProfile
@@ -661,7 +659,7 @@ namespace h3magic
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnHeroSave_Click(object sender, EventArgs e)
         {
             if (lbHeroes.SelectedIndex != -1)
             {
@@ -678,11 +676,6 @@ namespace h3magic
                 HeroesManager.AllHeroes[lbHeroes.SelectedIndex] = hs;
                 HeroesManager.HasChanges = true;
             }
-
-            // Heroes3Master.Master.SaveHeroExeData();
-
-            //  MessageBox.Show("Success!");
-
         }
 
         private void завантажитиToolStripMenuItem_Click(object sender, EventArgs e)
@@ -718,10 +711,7 @@ namespace h3magic
                 sfd.Filter = "Images (*.bmp,*.jpg,*jpeg,*gif)|*.bmp;*.jpeg;*.jpg;*gif";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    /* if (contextMenuStrip1.SourceControl == pictureBox3)
-                         pictureBox3.Image.Save(sfd.FileName);
-                     else
-                         pictureBox4.Image.Save(sfd.FileName);*/
+
                 }
                 sfd.Filter = filter;
             }
@@ -737,6 +727,8 @@ namespace h3magic
                 heroClass.Stats[0] = tabHeroClass.Controls["textBox" + index].Text;
                 for (int i = 2; i < heroClass.Stats.Length - 9; i++)
                     heroClass.Stats[i] = tabHeroClass.Controls["textBox" + (index + i)].Text;
+
+                HeroClass.HasChanges = true;
             }
         }
 

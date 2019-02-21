@@ -19,6 +19,8 @@ namespace h3magic
         public int Unknown1 { get; private set; }
         public int SpriteType { get; private set; }
 
+        public bool HasChanged { get; set; }
+
         private byte[] fname;
         private byte[] newVal;
 
@@ -110,7 +112,7 @@ namespace h3magic
                     stream.Read(newVal, 0, RealSize);
                 }
             }
-            return new DefFile(newVal);
+            return new DefFile(this, newVal);
         }
 
 
@@ -184,7 +186,7 @@ namespace h3magic
 
         public void SaveToStream(Stream input, Stream output)
         {
-            if (newVal == null)
+            if (!HasChanged)
             {
                 int len = Size == 0 ? RealSize : Size;
                 byte[] bytes = new byte[len];
@@ -195,11 +197,10 @@ namespace h3magic
             }
             else
             {
-                if (!changed)
-                    ApplyChanges(newVal);
-
+                var temp = ZlibWrapper.Zlib(newVal);
+                Size = temp.Length;
                 Offset = (int)output.Position;
-                output.Write(newVal, 0, newVal.Length);
+                output.Write(temp, 0, temp.Length);
             }
         }
 
@@ -213,13 +214,14 @@ namespace h3magic
         }
 
 
-        private bool changed = false;
+
 
         public void ApplyChanges(byte[] newValue)
         {
-            changed = true;
-            newVal = ZlibWrapper.Zlib(newValue);
-            Size = newVal.Length;
+            HasChanged = true;
+            newVal = newValue;
+            //newVal = ZlibWrapper.Zlib(newValue);
+            //Size = newVal.Length;
             RealSize = newValue.Length;
         }
     }

@@ -27,12 +27,29 @@ namespace h3magic
         private int[] palette2 = new int[256];
         private byte[] bytes;
 
-        public bool HasChanged { get; set; }
-
-
-        public DefFile(byte[] block)
+        private bool hasChanged = false;
+        public bool HasChanged
         {
-            HasChanged = false;
+            get
+            {
+                if (Parent == null)
+                    return hasChanged;
+
+                return Parent.HasChanged;
+            }
+            set
+            {
+                hasChanged = value;
+                if (Parent != null && value)
+                    Parent.HasChanged = true;
+            }
+        }
+
+        public FatRecord Parent { get; set; }
+
+        public DefFile(FatRecord parent, byte[] block)
+        {
+            Parent = parent;
 
             ID = BitConverter.ToInt32(block, 0);
             Width = BitConverter.ToInt32(block, 4);
@@ -48,7 +65,6 @@ namespace h3magic
             }
             LoadPalette();
         }
-
 
         public Bitmap GetByName(string name)
         {
@@ -530,7 +546,7 @@ namespace h3magic
                             pIndex = 2;
                         else if (type == 5)
                             pIndex = 5;
-                        else 
+                        else
                         {
                             pIndex = type;
                         }

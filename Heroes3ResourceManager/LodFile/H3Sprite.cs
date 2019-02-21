@@ -51,9 +51,14 @@ namespace h3magic
 
         }
 
-        public override void SaveToDisk(string fileName)
-        { 
-            base.SaveToDisk(fileName);
+        public override bool SaveToDisk(string fileName)
+        {
+            if (Un44Def.HasChanged || Un32Def.HasChanged)
+            {
+                base.SaveToDisk(fileName);
+                return true;
+            }
+            return false;
         }
     }
 }

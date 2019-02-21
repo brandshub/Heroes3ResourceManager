@@ -46,7 +46,7 @@
             this.ldBmp = new System.Windows.Forms.Button();
             this.tabsMain = new System.Windows.Forms.TabControl();
             this.tabHeroes = new System.Windows.Forms.TabPage();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnHeroSave = new System.Windows.Forms.Button();
             this.tbHeroLS3 = new System.Windows.Forms.TextBox();
             this.tbHeroHS3 = new System.Windows.Forms.TextBox();
             this.tbHeroBio = new System.Windows.Forms.TextBox();
@@ -66,6 +66,7 @@
             this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbHeroes = new System.Windows.Forms.ListBox();
+            this.hpcHeroProfile = new h3magic.HeroProfileControl();
             this.tabHeroClass = new System.Windows.Forms.TabPage();
             this.textBox68 = new System.Windows.Forms.TextBox();
             this.textBox69 = new System.Windows.Forms.TextBox();
@@ -167,7 +168,6 @@
             this.lbDecomposed = new System.Windows.Forms.ListBox();
             this.pbResourceView = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.hpcHeroProfile = new h3magic.HeroProfileControl();
             this.specialityBuilder1 = new h3magic.ImageGridControl();
             this.menuStrip1.SuspendLayout();
             this.tabsMain.SuspendLayout();
@@ -338,7 +338,7 @@
             // 
             // tabHeroes
             // 
-            this.tabHeroes.Controls.Add(this.button2);
+            this.tabHeroes.Controls.Add(this.btnHeroSave);
             this.tabHeroes.Controls.Add(this.tbHeroLS3);
             this.tabHeroes.Controls.Add(this.tbHeroHS3);
             this.tabHeroes.Controls.Add(this.tbHeroBio);
@@ -364,15 +364,15 @@
             this.tabHeroes.Text = "Heroes";
             this.tabHeroes.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnHeroSave
             // 
-            this.button2.Location = new System.Drawing.Point(580, 447);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(310, 44);
-            this.button2.TabIndex = 19;
-            this.button2.Text = "Save Changes";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnHeroSave.Location = new System.Drawing.Point(580, 447);
+            this.btnHeroSave.Name = "btnHeroSave";
+            this.btnHeroSave.Size = new System.Drawing.Size(310, 44);
+            this.btnHeroSave.TabIndex = 19;
+            this.btnHeroSave.Text = "Save Changes";
+            this.btnHeroSave.UseVisualStyleBackColor = true;
+            this.btnHeroSave.Click += new System.EventHandler(this.btnHeroSave_Click);
             // 
             // tbHeroLS3
             // 
@@ -537,6 +537,18 @@
             this.lbHeroes.Size = new System.Drawing.Size(130, 485);
             this.lbHeroes.TabIndex = 0;
             this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
+            // 
+            // hpcHeroProfile
+            // 
+            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hpcHeroProfile.Hero = null;
+            this.hpcHeroProfile.HeroIndex = 0;
+            this.hpcHeroProfile.Image = null;
+            this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
+            this.hpcHeroProfile.Name = "hpcHeroProfile";
+            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
+            this.hpcHeroProfile.TabIndex = 22;
             // 
             // tabHeroClass
             // 
@@ -1565,18 +1577,6 @@
             this.pbResourceView.TabStop = false;
             this.pbResourceView.Visible = false;
             // 
-            // hpcHeroProfile
-            // 
-            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.hpcHeroProfile.Hero = null;
-            this.hpcHeroProfile.HeroIndex = 0;
-            this.hpcHeroProfile.Image = null;
-            this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
-            this.hpcHeroProfile.Name = "hpcHeroProfile";
-            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
-            this.hpcHeroProfile.TabIndex = 22;
-            // 
             // specialityBuilder1
             // 
             this.specialityBuilder1.CurrentIndex = 0;
@@ -1585,7 +1585,7 @@
             this.specialityBuilder1.Location = new System.Drawing.Point(0, 0);
             this.specialityBuilder1.Name = "specialityBuilder1";
             this.specialityBuilder1.PropertyType = h3magic.ProfilePropertyType.Creature;
-            this.specialityBuilder1.SelectedValue = 0;
+            this.specialityBuilder1.SelectedValue = -1;
             this.specialityBuilder1.Size = new System.Drawing.Size(510, 321);
             this.specialityBuilder1.TabIndex = 0;
             // 
@@ -1758,7 +1758,7 @@
         private System.Windows.Forms.TextBox tbHeroHS3;
         private System.Windows.Forms.TextBox tbHeroBio;
         private System.Windows.Forms.TextBox tbHeroSpecDesc;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnHeroSave;
         private System.Windows.Forms.TabPage tabSpells;
         private System.Windows.Forms.ListBox lbDecomposed;
         private System.Windows.Forms.PictureBox pbResourceView;

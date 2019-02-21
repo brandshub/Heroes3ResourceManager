@@ -163,8 +163,7 @@ namespace h3magic
 
         private static Bitmap _allCreatures;
         public static Bitmap GetAllCreaturesBitmap(LodFile h3sprite)
-        {
-            var sw = Stopwatch.StartNew();
+        {            
             if (_allCreatures != null)
                 return _allCreatures;
 

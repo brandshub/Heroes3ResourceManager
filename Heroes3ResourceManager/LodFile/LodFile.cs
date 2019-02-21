@@ -20,7 +20,7 @@ namespace h3magic
         public int FileCount { get; private set; }
         public List<FatRecord> FilesTable { get; private set; }
         public string Name { get; private set; }
-        public string Path { get; private set; }
+        public string Path { get; private set; }        
 
         public LodFile(FileStream fs)
         {
@@ -128,34 +128,39 @@ namespace h3magic
         }
 
 
-        public virtual void SaveToDisk(string fileName)
+        public virtual bool SaveToDisk(string fileName)
         {
-            using (var destination = new FileStream(fileName, FileMode.Create))
+            if (FilesTable.Any(f => f.HasChanged))
             {
-                byte[] buffer = new byte[4096];
-
-                destination.Position = FilesTable[0].Offset;
-                for (int i = 0; i < FileCount; i++)
+                using (var destination = new FileStream(fileName, FileMode.Create))
                 {
-                    string fn = FilesTable[i].FileName;
-                    if(fn == "UN44.def")
+                    byte[] buffer = new byte[4096];
+
+                    destination.Position = FilesTable[0].Offset;
+                    for (int i = 0; i < FileCount; i++)
                     {
 
+                        string fn = FilesTable[i].FileName;
+                        if(fn == "UN44.def")
+                        {
+
+                        }
+                        FilesTable[i].SaveToStream(stream, destination);
                     }
-                    FilesTable[i].SaveToStream(stream, destination);
+
+                    stream.Position = 0;
+                    stream.Read(buffer, 0, FAT_OFFSET);
+
+                    destination.Position = 0;
+                    destination.Write(buffer, 0, FAT_OFFSET);
+                    for (int i = 0; i < FileCount; i++)
+                        destination.Write(FilesTable[i].GetHeader(), 0, 32);
+
+                    destination.Flush();
                 }
-
-
-                stream.Position = 0;
-                stream.Read(buffer, 0, FAT_OFFSET);
-
-                destination.Position = 0;
-                destination.Write(buffer, 0, FAT_OFFSET);
-                for (int i = 0; i < FileCount; i++)
-                    destination.Write(FilesTable[i].GetHeader(), 0, 32);
-
-                destination.Flush();
+                return true;
             }
+            return false;
         }
 
 

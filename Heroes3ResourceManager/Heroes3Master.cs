@@ -78,8 +78,24 @@ namespace h3magic
         public void Save()
         {
             SaveHeroExeData();
-            H3Bitmap.SaveToDisk(H3Bitmap.Path + "new");
-            H3Sprite.SaveToDisk(H3Sprite.Path + "new");
+            string h3bitmapFn = H3Bitmap.Path + "new";
+            string h3spritefn = H3Sprite.Path + "new";
+
+            if (H3Bitmap.SaveToDisk(h3bitmapFn))
+            {
+                H3Bitmap.stream.Close();
+                File.Move(H3Bitmap.Path, H3Bitmap.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_hhmmss"));
+                File.Move(h3bitmapFn, H3Bitmap.Path);
+                H3Bitmap.stream = new FileStream(H3Bitmap.Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            }
+
+            if (H3Sprite.SaveToDisk(h3spritefn))
+            {
+                H3Sprite.stream.Close();
+                File.Move(H3Sprite.Path, H3Sprite.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_hhmmss"));
+                File.Move(h3spritefn, H3Sprite.Path);
+                H3Sprite.stream = new FileStream(H3Sprite.Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            }
         }
     }
 }

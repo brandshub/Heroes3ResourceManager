@@ -209,7 +209,6 @@ namespace h3magic
             *iptr++ = spec.TypeId;
             *iptr++ = spec.ObjectId;
             Marshal.Copy(spec.Data, 0, new IntPtr((void*)iptr), 32);
-
         }
 
 

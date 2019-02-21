@@ -19,7 +19,7 @@ namespace h3magic
             StringsData = new StringsData(this);
         }
 
-        public override void SaveToDisk(string fileName)
+        public override bool SaveToDisk(string fileName)
         {
             if (CreatureManager.HasChanges)
                 CreatureManager.Save(this);
@@ -30,7 +30,7 @@ namespace h3magic
             if (HeroClass.HasChanges)
                 HeroClass.Save(this);
 
-            base.SaveToDisk(fileName);
+            return base.SaveToDisk(fileName);
         }
     }
 }
