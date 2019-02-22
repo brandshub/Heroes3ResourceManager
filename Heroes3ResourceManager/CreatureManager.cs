@@ -13,7 +13,7 @@ namespace h3magic
         private const string FAT_NAME = "CRTRAITS.TXT";
         private const string IMG_FNAME = "TwCrPort.def";
 
-        public static readonly string[] Castles = { "Замок", "Долина", "Башня", "Инферно", "Некрополис", "Подземелье", "Твердиня", "Болото", "Разное" };
+        public static readonly string[] Castles = { "Castle", "Rampart", "Tower", "Inferno", "Necropolis", "Dungeon", "Stronghold", "Fortress", "Other" };
 
         public static List<Creature> OnlyActiveCreatures = new List<Creature>();
         public static Creature[] AllCreatures2 = null;
@@ -24,15 +24,14 @@ namespace h3magic
 
         public static bool Loaded { get; private set; }
         public static bool HasChanges = false;
-        private static string lastLodName = "";
+
 
 
         public static void LoadInfo(LodFile file)
         {
-            if (lastLodName == file.Name)
-                Loaded = true;
-            else
-                lastLodName = file.Name;
+
+
+
 
 
             var rec = file.GetRecord(FAT_NAME);
@@ -56,6 +55,7 @@ namespace h3magic
                 }
                 int off = 2 + 17 * 8;
 
+                int ccri = 0;
                 List<Creature> misc = new List<Creature>();
                 for (int i = off; i < rows.Length - 1; i++)
                 {
@@ -67,9 +67,10 @@ namespace h3magic
                     {
                         if (!rows[i].Contains("NOT USED"))
                         {
-                            var stat = new Creature(rows[i]) { CastleIndex = 8, CreatureIndex = curIndex, CreatureCastleRelativeIndex = i - off };
+                            var stat = new Creature(rows[i]) { CastleIndex = 8, CreatureIndex = curIndex, CreatureCastleRelativeIndex = ccri };
                             AllCreatures2[stat.CreatureIndex] = stat;
                             misc.Add(stat);
+                            ccri++;
                         }
                         curIndex++;
                     }
@@ -90,6 +91,8 @@ namespace h3magic
                     indexes.Add(OnlyActiveCreatures[i].CreatureIndex);
                 }
                 IndexesOfFirstLevelCreatures = indexes.ToArray();
+
+                Loaded = true;
             }
 
 
@@ -163,7 +166,7 @@ namespace h3magic
 
         private static Bitmap _allCreatures;
         public static Bitmap GetAllCreaturesBitmap(LodFile h3sprite)
-        {            
+        {
             if (_allCreatures != null)
                 return _allCreatures;
 

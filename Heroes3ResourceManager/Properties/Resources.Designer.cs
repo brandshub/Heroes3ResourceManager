@@ -91,6 +91,33 @@ namespace h3magic.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 0;Pikeman;cpkman;avwpike
+        ///1;Halberdier;chalbd;avwpikx0
+        ///2;Archer;clcbow;avwlcrs
+        ///3;Marksman;chcbow;avwhcrs
+        ///4;Griffin;cgriff;avwgrif
+        ///5;Royal Griffin;crgrif;avwgrix0
+        ///6;Swordsman;csword;avwswrd0
+        ///7;Crusader;ccrusd;avwswrx0
+        ///8;Monk;cmonkk;avwmonk
+        ///9;Zealot;czealt;avwmonx0
+        ///10;Cavalier;ccavlr;avwcvlr0
+        ///11;Champion;cchamp;avwcvlx0
+        ///12;Angel;cangel;avwangl
+        ///13;Archangel;crangl;avwarch
+        ///14;Centaur;ccentr;avwcent0
+        ///15;Centaur Captain;cecent;avwcenx0
+        ///16;Dwarf;cdwarf;avwdwrf0
+        ///17;Battle Dwarf;cbdwar;avwdwrx0
+        ///18;W [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string creatures {
+            get {
+                return ResourceManager.GetString("creatures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap H3C {

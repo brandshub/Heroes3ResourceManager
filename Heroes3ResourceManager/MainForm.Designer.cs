@@ -159,7 +159,7 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pbCreature = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabSpells = new System.Windows.Forms.TabPage();
             this.tabMain = new System.Windows.Forms.TabPage();
@@ -178,7 +178,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).BeginInit();
             this.tabCreatures.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCreature)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).BeginInit();
@@ -1128,7 +1128,7 @@
             this.tabCreatures.Controls.Add(this.textBox3);
             this.tabCreatures.Controls.Add(this.label1);
             this.tabCreatures.Controls.Add(this.textBox1);
-            this.tabCreatures.Controls.Add(this.pictureBox1);
+            this.tabCreatures.Controls.Add(this.pbCreature);
             this.tabCreatures.Controls.Add(this.pictureBox2);
             this.tabCreatures.Location = new System.Drawing.Point(4, 25);
             this.tabCreatures.Name = "tabCreatures";
@@ -1492,13 +1492,14 @@
             this.textBox1.TabIndex = 1;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // pictureBox1
+            // pbCreature
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(33, 116);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(128, 128);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.pbCreature.Location = new System.Drawing.Point(6, 114);
+            this.pbCreature.Name = "pbCreature";
+            this.pbCreature.Size = new System.Drawing.Size(200, 260);
+            this.pbCreature.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbCreature.TabIndex = 0;
+            this.pbCreature.TabStop = false;
             // 
             // pictureBox2
             // 
@@ -1523,12 +1524,12 @@
             this.tabMain.Controls.Add(this.chbTimerEnabled);
             this.tabMain.Controls.Add(this.trbDefSprites);
             this.tabMain.Controls.Add(this.lbDecomposed);
-            this.tabMain.Controls.Add(this.pbResourceView);
             this.tabMain.Controls.Add(this.rtbMain);
             this.tabMain.Controls.Add(this.button8);
             this.tabMain.Controls.Add(this.ldBmp);
             this.tabMain.Controls.Add(this.cbFilter);
             this.tabMain.Controls.Add(this.button5);
+            this.tabMain.Controls.Add(this.pbResourceView);
             this.tabMain.Controls.Add(this.lbFiles);
             this.tabMain.Controls.Add(this.button4);
             this.tabMain.Location = new System.Drawing.Point(4, 25);
@@ -1585,7 +1586,7 @@
             this.specialityBuilder1.Location = new System.Drawing.Point(0, 0);
             this.specialityBuilder1.Name = "specialityBuilder1";
             this.specialityBuilder1.PropertyType = h3magic.ProfilePropertyType.Creature;
-            this.specialityBuilder1.SelectedValue = -1;
+            this.specialityBuilder1.SelectedValue = 0;
             this.specialityBuilder1.Size = new System.Drawing.Size(510, 321);
             this.specialityBuilder1.TabIndex = 0;
             // 
@@ -1615,7 +1616,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).EndInit();
             this.tabCreatures.ResumeLayout(false);
             this.tabCreatures.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbCreature)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tabMain.ResumeLayout(false);
             this.tabMain.PerformLayout();
@@ -1645,7 +1646,7 @@
         private System.Windows.Forms.TabControl tabsMain;
         private System.Windows.Forms.TabPage tabMain;
         private System.Windows.Forms.TabPage tabCreatures;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pbCreature;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label5;
