@@ -22,7 +22,7 @@ namespace h3magic
         private SaveFileDialog sfd = new SaveFileDialog() { Filter = "Hero Files (*.LOD)|*.LOD" };
 
 
-        private LodFile lodFile, h3spriteLod, h3bitmapLod;
+        private LodFile selectedLodFile, h3spriteLod, h3bitmapLod;
 
         private Bitmap bmp;
         private DefFile def;
@@ -192,17 +192,30 @@ namespace h3magic
         public void LoadMaster(string executablPath)
         {
             var master = Heroes3Master.LoadInfo(executablPath);
-            lodFile = master.H3Bitmap;
-            h3bitmapLod = lodFile;
+            selectedLodFile = master.H3Bitmap;
+            h3bitmapLod = selectedLodFile;
             h3spriteLod = master.H3Sprite;
 
-            lbFiles.Items.AddRange(lodFile.GetNames());
             lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
             lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
             cbCastles.Items.AddRange(CreatureManager.Castles);
             pbSkillTree.Image = SecondarySkill.GetSkillTreeForHeroClass(Heroes3Master.Master.H3Sprite);
 
-            if (lodFile["HCTRAITS.TXT"] == null)
+            var lodFileNames = master.ResourceFiles.Select(s => s.Name).ToArray();
+            cbLodFiles.Items.AddRange(lodFileNames);
+            cbLodFiles.SelectedIndex = Array.IndexOf<string>(lodFileNames, selectedLodFile.Name);
+
+
+            lbSpells.Items.AddRange(Spell.AllSpells.Select(s => s.Name).ToArray());
+
+            tabsMain.TabPages.Add(tabHeroes);
+            tabsMain.TabPages.Add(tabHeroClass);
+            tabsMain.TabPages.Add(tabCreatures);
+            tabsMain.TabPages.Add(tabSpells);
+            tabsMain.TabPages.Add(tabMain);
+
+            /*
+            if (selectedLodFile["HCTRAITS.TXT"] == null)
             {
                 tabsMain.TabPages.Add(tabMain);
             }
@@ -213,7 +226,7 @@ namespace h3magic
                 tabsMain.TabPages.Add(tabCreatures);
                 tabsMain.TabPages.Add(tabSpells);
                 tabsMain.TabPages.Add(tabMain);
-            }
+            }*/
         }
 
 
@@ -231,17 +244,17 @@ namespace h3magic
         {
             if (lbFiles.SelectedIndex != -1)
             {
-                FatRecord rec = lodFile[lbFiles.SelectedItem.ToString()];
+                FatRecord rec = selectedLodFile[lbFiles.SelectedItem.ToString()];
                 if (rec.Extension == "TXT")
-                    rtbMain.Text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
+                    rtbMain.Text = Encoding.Default.GetString(rec.GetRawData(selectedLodFile.stream));
                 else if (rec.Extension == "PCX")
                 {
-                    bmp = rec.GetBitmap(lodFile.stream);
+                    bmp = rec.GetBitmap(selectedLodFile.stream);
                     Invalidate();
                 }
                 else if (rec.Extension == "DEF")
                 {
-                    def = rec.GetDefFile(lodFile);
+                    def = rec.GetDefFile(selectedLodFile);
                     bmp = def.GetSprite(0, 0);
                     lbDecomposed.Items.Clear();
                     for (int i = 0; i < def.BlockCount; i++)
@@ -254,7 +267,7 @@ namespace h3magic
         {
             for (int i = 0; i < lbFiles.SelectedItems.Count; i++)
             {
-                lodFile[lbFiles.SelectedItems[i].ToString()].SaveToDisk(lodFile.stream);
+                selectedLodFile[lbFiles.SelectedItems[i].ToString()].SaveToDisk(selectedLodFile.stream);
             }
         }
 
@@ -280,9 +293,17 @@ namespace h3magic
         private void PreviewShow()
         {
             var sw = Stopwatch.StartNew();
-            if (last.X >= 0 && last.Y >= 0)
+            int index = -1;
+            if (lbFiles.SelectedIndex >= 0)
+                index = lbFiles.SelectedIndex;
+            else if (chbHover.Checked)
+                index = lbFiles.IndexFromPoint(last);
+
+
+            //if (last.X >= 0 && last.Y >= 0)
+            if (index >= 0)
             {
-                int index = lbFiles.IndexFromPoint(last);
+                //  int index = 
                 if (index >= 0 && index < lbFiles.Items.Count && lastindex != index)
                 {
                     lbDecomposed.Visible = false;
@@ -293,10 +314,10 @@ namespace h3magic
                     selectedFile = temp;
 
 
-                    FatRecord rec = lodFile[lbFiles.Items[index].ToString()];
+                    FatRecord rec = selectedLodFile[lbFiles.Items[index].ToString()];
                     if (rec.Extension == "PCX")
                     {
-                        bmp = rec.GetBitmap(lodFile.stream);
+                        bmp = rec.GetBitmap(selectedLodFile.stream);
                         if (bmp != null)
                         {
                             //form.Show(bmp);
@@ -311,7 +332,7 @@ namespace h3magic
                     }
                     else if (rec.Extension == "TXT")
                     {
-                        byte[] bts = rec.GetRawData(lodFile.stream);
+                        byte[] bts = rec.GetRawData(selectedLodFile.stream);
                         if (bts != null)
                         {
                             pbResourceView.Visible = false;
@@ -325,7 +346,7 @@ namespace h3magic
                     {
                         lbDecomposed.Visible = true;
 
-                        var def = rec.GetDefFile(lodFile.stream);
+                        var def = rec.GetDefFile(selectedLodFile.stream);
 
                         trbDefSprites.Maximum = def.headers.Sum(s => s.SpritesCount) - 1;
                         trbDefSprites.Value = 0;
@@ -342,10 +363,10 @@ namespace h3magic
                 }
                 else if (index > -1)
                 {
-                    var rec = lodFile[lbFiles.Items[index].ToString()];
+                    var rec = selectedLodFile[lbFiles.Items[index].ToString()];
                     if (rec.Extension == "DEF")
                     {
-                        var def = rec.GetDefFile(lodFile.stream);
+                        var def = rec.GetDefFile(selectedLodFile.stream);
 
                         bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
                         if (bmp.Width > pbResourceView.Width || bmp.Height > pbResourceView.Height)
@@ -357,6 +378,9 @@ namespace h3magic
                 }
                 lastindex = index;
             }
+
+
+            trbDefSprites.Visible = trbDefSprites.Maximum > 1;
             sw.Stop();
             //Debug.WriteLine("previewshow: " + (sw.ElapsedTicks * 1000.0f / Stopwatch.Frequency));
         }
@@ -368,8 +392,11 @@ namespace h3magic
 
         private void lbFiles_MouseMove(object sender, MouseEventArgs e)
         {
-            last = e.Location;
-            //PreviewShow();
+            if (chbHover.Checked && lbFiles.SelectedIndex == -1)
+            {
+                last = e.Location;
+                PreviewShow();
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -380,12 +407,12 @@ namespace h3magic
                 byte[] buf2 = new byte[4096];
 
                 FileStream test = new FileStream(ofd.FileName, FileMode.Open);
-                lodFile.stream.Position = 0;
+                selectedLodFile.stream.Position = 0;
                 int pos = 0;
                 while (true)
                 {
                     int r1 = test.Read(buf1, 0, 4096);
-                    int r2 = lodFile.stream.Read(buf2, 0, 4096);
+                    int r2 = selectedLodFile.stream.Read(buf2, 0, 4096);
                     if (r1 == 0 && r2 == 0)
                         break;
                     for (int i = 0; i < buf2.Length; i++)
@@ -403,7 +430,7 @@ namespace h3magic
 
         private void button8_Click(object sender, EventArgs e)
         {
-            FatRecord fr = lodFile.GetRecord(lbFiles.SelectedItem.ToString());
+            var fr = selectedLodFile.GetRecord(lbFiles.SelectedItem.ToString());
             if (fr.Extension == "TXT")
             {
                 fr.ApplyChanges(Encoding.Default.GetBytes(rtbMain.Text));
@@ -419,8 +446,8 @@ namespace h3magic
 
         private void m_exit_Click(object sender, EventArgs e)
         {
-            if (lodFile != null)
-                lodFile.stream.Close();
+            if (selectedLodFile != null)
+                selectedLodFile.stream.Close();
             Close();
 
         }
@@ -429,119 +456,148 @@ namespace h3magic
         {
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                if (lodFile != null)
-                    lodFile.stream.Close();
+                if (selectedLodFile != null)
+                    selectedLodFile.stream.Close();
 
                 lbFiles.Items.Clear();
                 tabsMain.TabPages.Clear();
                 lbHeroes.Items.Clear();
                 lbHeroClasses.Items.Clear();
                 cbCastles.Items.Clear();
-                cbFilter.Items.Clear();
-
-                cbFilter.Items.Add("*");
-
+                lbSpells.Items.Clear();
+                cbLodFiles.Items.Clear();
 
                 string extension = Path.GetExtension(ofd.FileName).ToLower();
                 if (extension == ".exe")
                 {
                     LoadMaster(ofd.FileName);
+                    m_saveFile.Text = "Save All Data";
+                    m_saveFile.Visible = true;
+                    m_saveFileAs.Visible = true;
                 }
                 else
                 {
                     Heroes3Master.Master = null;
+                    m_saveFile.Text = "Save Resource File";
+                    m_saveFile.Visible = true;
+                    m_saveFileAs.Visible = true;
 
                     var fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    lodFile = new LodFile(fs);
-                    lodFile.LoadFAT();
+                    selectedLodFile = new LodFile(fs);
+                    selectedLodFile.LoadFAT();
 
-                    lbFiles.Items.AddRange(lodFile.GetNames());
+                    lbFiles.Items.AddRange(selectedLodFile.GetNames());
 
                     if (fs.Name.ToLower().Contains("h3bitmap"))
-                        h3bitmapLod = lodFile;
+                        h3bitmapLod = selectedLodFile;
                     else if (fs.Name.ToLower().Contains("h3sprite"))
-                        h3spriteLod = lodFile;
+                        h3spriteLod = selectedLodFile;
 
                     tabsMain.TabPages.Add(tabMain);
 
+                    cbLodFiles.Items.Add(Path.GetFileName(ofd.FileName));
+                    cbLodFiles.SelectedIndex = 0;
+                    ReloadAndFilterData();
                 }
 
-                cbFilter.Items.AddRange(lodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray<object>());
+
+
                 tabsMain.Visible = true;
             }
         }
 
         private void cb_Filter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lodFile != null)
+            if (selectedLodFile != null)
             {
-                string val = cbFilter.SelectedItem.ToString();
-                lbFiles.Items.Clear();
-                lbFiles.Items.AddRange(lodFile.Filter(val).Select(fat => fat.FileName).ToArray());
+                FilterData();
             }
         }
 
 
         private void m_saveFileAs_Click(object sender, EventArgs e)
         {
-            if (lodFile != null)
-                if (sfd.ShowDialog() == DialogResult.OK)
+            if (selectedLodFile != null)
+            {
+                if (!selectedLodFile.HasChanges)
                 {
-                    if (sfd.FileName == lodFile.Name)
-                    {
-                        MessageBox.Show("Cannot save to original file!");
-                        return;
-                    }
-
-                    var watch = Stopwatch.StartNew();
-                    Heroes3Master.Master.Save();
-                    Text = string.Format("Saved in {0:F2} ms", watch.ElapsedMs());
+                    MessageBox.Show("Nothing to save - no changes ocurred");
                 }
+                else
+                {
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        if (string.Compare(Path.GetFileName(sfd.FileName), selectedLodFile.Name, true) == 0)
+                        {
+                            MessageBox.Show("Cannot save to original file!");
+                            return;
+                        }
+                        MessageBox.Show(selectedLodFile.SaveToDisk(sfd.FileName) ? (selectedLodFile.Name + " was successfully saved to " + sfd.FileName) : "Nothing was saved to disk");
+                    }
+                }
+            }
         }
-
-
-
 
         private void m_saveFile_Click(object sender, EventArgs e)
         {
-            if (lodFile != null)
+            if (Heroes3Master.Master != null)
             {
-                var watch = Stopwatch.StartNew();
                 Heroes3Master.Master.Save();
-                Text = string.Format("Saved in {0:F2} ms", watch.ElapsedMs());
+                MessageBox.Show("Saved successfully");
+            }
+            else if (selectedLodFile != null)
+            {
+                string lodNewPath = selectedLodFile.Path + "new" + DateTime.Now.ToString("yyyyMMdd_hhmmss");
+                if (selectedLodFile.SaveToDisk(lodNewPath))
+                {
+                    selectedLodFile.stream.Close();
+                    File.Move(selectedLodFile.Path, selectedLodFile.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_hhmmss"));
+                    File.Move(lodNewPath, selectedLodFile.Path);
+                    selectedLodFile.stream = new FileStream(selectedLodFile.Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    MessageBox.Show("Saved successfully to " + selectedLodFile.Name);
+                }
             }
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            if (lodFile != null)
-                lodFile.stream.Close();
+            if (selectedLodFile != null)
+                selectedLodFile.stream.Close();
 
             base.OnFormClosing(e);
         }
 
         private void ldBmp_Click(object sender, EventArgs e)
         {
-            string filt = ofd.Filter;
-            ofd.Filter = "Images |*.bmp;*.jpeg;*.jpg;*.gif";
-            if (ofd.ShowDialog() == DialogResult.OK)
+            var rec = selectedLodFile.GetRecord(lbFiles.SelectedItem.ToString());
+            if (rec.Extension == "TXT")
             {
-                var rec = lodFile.GetRecord(lbFiles.SelectedItem.ToString());
-                var pcx = PcxFile.FromBitmap((Bitmap)Image.FromFile(ofd.FileName));
-                rec.ApplyChanges(pcx.GetBytes);
+                rec.ApplyChanges(Encoding.Default.GetBytes(rtbMain.Text));
             }
-            ofd.Filter = filt;
+            else if (rec.Extension == "PCX")
+            {
+
+                string filt = ofd.Filter;
+                ofd.Filter = "Images |*.bmp;*.jpeg;*.jpg;*.gif";
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    var pcx = PcxFile.FromBitmap((Bitmap)Image.FromFile(ofd.FileName));
+                    rec.ApplyChanges(pcx.GetBytes);
+                }
+                ofd.Filter = filt;
+            }
         }
 
 
-        private void cb_castles_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbCastles_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (CreatureManager.Loaded)
             {
-                cb_creatures.Items.Clear();
-                cb_creatures.Items.AddRange(CreatureManager.OnlyActiveCreatures.Where(c => c.CastleIndex == cbCastles.SelectedIndex).Select(cs => cs.Name).ToArray());
-                cb_creatures.Select();
-                cb_creatures.SelectedIndex = 0;
+                cbCreatures.Items.Clear();
+                var creatures = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == cbCastles.SelectedIndex && c.CreatureIndex != 149).Select(cs => cs.Name).ToArray();
+                cbCreatures.Items.AddRange(creatures);
+                cbCreatures.Select();
+                cbCreatures.SelectedIndex = 0;
             }
         }
 
@@ -550,7 +606,7 @@ namespace h3magic
         {
             if (CreatureManager.Loaded)
             {
-                var creature = CreatureManager.Get(cbCastles.SelectedIndex, cb_creatures.SelectedIndex);
+                var creature = CreatureManager.Get(cbCastles.SelectedIndex, cbCreatures.SelectedIndex);
                 LoadCreatureInfo(creature);
 
                 if (h3spriteLod != null)
@@ -579,7 +635,7 @@ namespace h3magic
         {
             if (creatureAnimation != null)
             {
-                pbCreature.Image = creatureAnimation.GetFrame(Heroes3Master.Master);
+                pbCreature.Image = creatureAnimation.GetFrame2(Heroes3Master.Master);
                 //  pbCreature.Invalidate();
             }
         }
@@ -612,35 +668,44 @@ namespace h3magic
 
         private void tabsMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-          /*  if (lodFile != null)
+
+            if (tabsMain.SelectedTab == tabCreatures)
             {
-                if (tabsMain.SelectedTab == tabCreatures)
+                if (Heroes3Master.Master != null && cbCastles.Items.Count > 0)
                 {
-                    if (cbCastles.Items.Count == 0)
-                    {
-                        cbCastles.Items.AddRange(CreatureManager.Castles);
-                    }
+                    cbCastles.SelectedIndex = 0;
                 }
-                else if (tabsMain.SelectedTab == tabHeroClass)
-                {
-                    if (lbHeroClasses.Items.Count == 0)
-                    {
-                        lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
+            }
+
+            /*  if (lodFile != null)
+              {
+                  if (tabsMain.SelectedTab == tabCreatures)
+                  {
+                      if (cbCastles.Items.Count == 0)
+                      {
+                          cbCastles.Items.AddRange(CreatureManager.Castles);
+                      }
+                  }
+                  else if (tabsMain.SelectedTab == tabHeroClass)
+                  {
+                      if (lbHeroClasses.Items.Count == 0)
+                      {
+                          lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
                         
-                    }
-                }
-                else if (tabsMain.SelectedTab == tabHeroes)
-                {
-                    if (lbHeroes.Items.Count == 0)
-                        lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
-                }
-            *
-            }*/
+                      }
+                  }
+                  else if (tabsMain.SelectedTab == tabHeroes)
+                  {
+                      if (lbHeroes.Items.Count == 0)
+                          lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
+                  }
+              *
+              }*/
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var cs = CreatureManager.OnlyActiveCreatures.Where(c => c.CastleIndex == cbCastles.SelectedIndex && c.CreatureCastleRelativeIndex == cb_creatures.SelectedIndex).FirstOrDefault();
+            var cs = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == cbCastles.SelectedIndex && c.CreatureCastleRelativeIndex == cbCreatures.SelectedIndex).FirstOrDefault();
             cs.Name = textBox1.Text;
             cs.Attack = int.Parse(textBox3.Text);
             cs.Defence = int.Parse(textBox4.Text);
@@ -672,14 +737,15 @@ namespace h3magic
         {
             var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
 
-            pbPortraitSmall.Image = lodFile[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(lodFile.stream);
+            pbPortraitSmall.Image = selectedLodFile[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(selectedLodFile.stream);
 
             if (lbHeroes.SelectedIndex > -1 && Heroes3Master.Master != null)
             {
                 hpcHeroProfile.LoadHero(lbHeroes.SelectedIndex, Heroes3Master.Master);
-                Text = lbHeroes.SelectedIndex.ToString();
+                //Text = lbHeroes.SelectedIndex.ToString();
+                var hd = HeroExeData.Data[lbHeroes.SelectedIndex];
+                lbHeroClasses.SelectedIndex = hd.ClassIndex;
             }
-
             tbHeroName.Text = hs.Name;
             tbHeroBio.Text = hs.Biography;
             tbHeroSpecDesc.Text = hs.Speciality;
@@ -720,17 +786,6 @@ namespace h3magic
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     HeroStats hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
-                    /*if (contextMenuStrip1.SourceControl == pictureBox3)
-                    {
-                        hs.Large = (Bitmap)Bitmap.FromFile(ofd.FileName);
-                        pictureBox3.Image = hs.Large;
-                    }
-                    else
-                    {
-                        hs.Small = (Bitmap)Bitmap.FromFile(ofd.FileName);
-                        pictureBox4.Image = hs.Small;
-                    }*/
-
                 }
                 ofd.Filter = filter;
             }
@@ -801,7 +856,17 @@ namespace h3magic
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            PreviewShow();
+            if (lbFiles.SelectedIndex >= 0)
+            {
+                PreviewShow();
+                btnApplyChanges.Visible = lbFiles.SelectedIndices.Count <= 1;
+                var item = lbFiles.SelectedItem.ToString();
+                btnApplyChanges.Text = item.Contains(".pcx") ? "Replace Image" : "Save Changes";
+            }
+            else
+            {
+                btnApplyChanges.Visible = false;
+            }
         }
 
         private void lbDecomposed_SelectedIndexChanged(object sender, EventArgs e)
@@ -831,6 +896,145 @@ namespace h3magic
         private void chbTimerEnabled_CheckedChanged(object sender, EventArgs e)
         {
             timer.Enabled = chbTimerEnabled.Checked;
+        }
+
+        //TODO
+        private void lbFiles_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                int index = lbFiles.IndexFromPoint(e.Location);
+
+                if (index == lbFiles.SelectedIndex)
+                {
+                    last = e.Location;
+                    lbFiles.SelectedIndex = -1;
+                }
+            }
+        }
+
+        private void FilterData()
+        {
+            string selValue = (lbFiles.SelectedItem ?? "").ToString();
+            string selFilter = (cbFilter.SelectedItem ?? "*").ToString();
+
+
+            lbFiles.SelectedIndex = -1;
+            lbFiles.Items.Clear();
+
+            var items = selectedLodFile.Filter(selFilter).Select(fat => fat.FileName).ToArray();
+            int newFileIndex = Array.IndexOf<string>(items, selValue);
+
+            lbFiles.Items.AddRange(items);
+            lbFiles.SelectedIndex = newFileIndex;
+        }
+
+
+        private void ReloadAndFilterData()
+        {
+            string selFilter = (cbFilter.SelectedItem ?? "*").ToString();
+
+            cbFilter.SelectedIndex = -1;
+            cbFilter.Items.Clear();
+            cbFilter.Items.Add("*");
+
+            var newExtensions = selectedLodFile.FilesTable.Select(s => s.Extension.ToUpper()).Distinct().OrderBy(z => z).ToArray();
+            int newExtIndex = Array.IndexOf<string>(newExtensions, selFilter);
+            cbFilter.Items.AddRange(newExtensions);
+            cbFilter.SelectedIndex = newExtIndex < 0 ? 0 : 1 + newExtIndex;
+            //FilterData();
+
+            if (Heroes3Master.Master != null)
+            {
+                Text = "Master: " + Heroes3Master.Master.Executable.Path + " | Selected LOD: " + selectedLodFile.Path;
+            }
+            else
+            {
+                Text = "Selected LOD: " + selectedLodFile.Path;
+            }
+        }
+
+
+        private void cbLodFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Heroes3Master.Master != null)
+            {
+                selectedLodFile = Heroes3Master.Master.ResourceFiles.FirstOrDefault(f => f.Name == cbLodFiles.SelectedItem.ToString());
+                ReloadAndFilterData();
+            }
+        }
+
+        private void lbSpells_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lbSpells.SelectedIndex >= 0 && Heroes3Master.Master != null)
+            {
+                var spell = Spell.AllSpells[lbSpells.SelectedIndex];
+                pbSpell.Image = spell.GetImage(Heroes3Master.Master.H3Sprite);
+            }
+        }
+
+        private void lbHeroClasses_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index >= 0)
+            {
+                int castleIndex = e.Index / 2;
+                var town = Town.AllTowns[castleIndex];
+                var clr = Town.AllColors[castleIndex];
+
+                e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
+                e.Graphics.DrawImage(town.Image, e.Bounds.X, e.Bounds.Y);
+                e.Graphics.DrawString(lbHeroClasses.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds.X + 42, e.Bounds.Y + 4);
+
+                if ((e.State & DrawItemState.Selected) != 0)
+                {
+                    e.DrawFocusRectangle();
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 1), e.Bounds.X , e.Bounds.Y , e.Bounds.Width , e.Bounds.Height - 1);
+                }
+
+
+            }
+        }
+
+        private void cbCastles_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index >= 0)
+            {
+                int castleIndex = e.Index;
+                var town = Town.AllTowns[castleIndex];
+                var clr = Town.AllColors[castleIndex];
+
+                e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
+                e.Graphics.DrawImage(town.LargeImage, e.Bounds.X, e.Bounds.Y);
+                e.Graphics.DrawString(cbCastles.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds.X + 56, e.Bounds.Y + 9);
+
+                if ((e.State & DrawItemState.Selected) != 0)
+                {
+                    e.DrawFocusRectangle();
+                }
+            }
+        }
+
+        private void cb_creatures_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index >= 0)
+            {
+                int castleIndex = cbCastles.SelectedIndex;
+                var clr = Town.AllColors[castleIndex];
+
+                e.DrawBackground();
+                e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
+
+                Font fnt = e.Font;
+
+                var creature = CreatureManager.Get(cbCastles.SelectedIndex, e.Index);
+                e.Graphics.DrawImage(CreatureManager.GetSmallImage(Heroes3Master.Master.H3Sprite, creature.CreatureIndex), e.Bounds.X, e.Bounds.Y);
+                e.Graphics.DrawString(cbCreatures.Items[e.Index].ToString(), fnt, Brushes.Black, e.Bounds.X + 46, e.Bounds.Y + 9);
+
+                if ((e.State & DrawItemState.Selected) != 0)
+                {
+                    e.DrawFocusRectangle();
+                }
+            }
         }
 
 

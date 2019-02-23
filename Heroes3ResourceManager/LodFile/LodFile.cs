@@ -125,12 +125,16 @@ namespace h3magic
             if (extension == "*") return FilesTable.ToList();
             string local = FatRecord.ToggleCase(extension);
             return FilesTable.Where(fat => fat.Extension == local).ToList();
-        }
+        }        
 
+        public virtual bool HasChanges
+        {
+            get { return FilesTable.Any(f => f.HasChanged); }
+        }
 
         public virtual bool SaveToDisk(string fileName)
         {
-            if (FilesTable.Any(f => f.HasChanged))
+            if (HasChanges)
             {
                 using (var destination = new FileStream(fileName, FileMode.Create))
                 {
@@ -139,12 +143,7 @@ namespace h3magic
                     destination.Position = FilesTable[0].Offset;
                     for (int i = 0; i < FileCount; i++)
                     {
-
-                        string fn = FilesTable[i].FileName;
-                        if(fn == "UN44.def")
-                        {
-
-                        }
+                        string fn = FilesTable[i].FileName;                        
                         FilesTable[i].SaveToStream(stream, destination);
                     }
 

@@ -40,7 +40,7 @@ namespace h3magic
         private string attributes;
         public string hordeGrowth;
 
-        public int CastleIndex { get; set; }
+        public int TownIndex { get; set; }
         public int CreatureIndex { get; set; }
         public int CreatureCastleRelativeIndex { get; set; }
 

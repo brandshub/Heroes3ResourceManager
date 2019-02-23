@@ -68,6 +68,36 @@ namespace h3magic
                 {
                     return file.GetBitmap();
                 }
+                catch(Exception ex)
+                {
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        public byte[] GetBitmap24Data(Stream stream, out int width)
+        {
+            width = 0;            
+            if (Extension == "PCX")
+            {
+                byte[] array;
+                if (newVal == null)
+                {
+                    byte[] bts = new byte[Size];
+                    stream.Position = Offset;
+                    stream.Read(bts, 0, Size);
+                    array = ZlibWrapper.UnZlib(bts);
+                }
+                else
+                {
+                    array = newVal;
+                }
+                var file = new PcxFile(array);
+                try
+                {
+                    return file.GetBitmap24Bytes(out width);
+                }
                 catch
                 {
                     return null;
@@ -155,7 +185,7 @@ namespace h3magic
                 Bitmap bmp = GetBitmap(stream);
                 if (bmp != null)
                 {
-                    bmp.Save(Path.Combine(Path.GetDirectoryName((stream as FileStream).Name), FileName.Substring(0, FileName.Length - 4) + ".bmp"));
+                    bmp.Save(Path.Combine(Path.GetDirectoryName((stream as FileStream).Name), FileName.Substring(0, FileName.Length - 4) + ".bmp"), System.Drawing.Imaging.ImageFormat.Bmp);
                     bmp.Dispose();
                 }
             }

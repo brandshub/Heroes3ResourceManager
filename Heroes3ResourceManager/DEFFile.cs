@@ -28,7 +28,7 @@ namespace h3magic
         private byte[] bytes;
 
         private bool hasChanged = false;
-        public bool HasChanged
+        public bool HasChanges
         {
             get
             {
@@ -313,8 +313,6 @@ namespace h3magic
 
         private unsafe byte[] LoadSpriteType12(SpriteHeader sh, byte[] data, int offset)
         {
-
-
             int len = sh.SpriteHeight;
             int tm = sh.TopMargin;
             int lm = sh.LeftMargin;
@@ -346,20 +344,50 @@ namespace h3magic
             int currentCol = 0;
             int boundary = imageBytes.Length / 3;
 
-            /*  while (currentCol < boundary)
-              {
-                  imageBytes[currentCol++] = palette[0, 2];
-                  imageBytes[currentCol++] = palette[0, 1];
-                  imageBytes[currentCol++] = palette[0, 0];
-              }*/
-
 
             fixed (byte* ptr = imageBytes)
             {
-                for (int i = 0; i < len; i++)
+
+                /* for (int i = 0; i < len; i++)
+                 {
+                     int pos = ffsets[i] + offset;
+                     currentCol = (tm+i) * bWidth + lm * 3;
+
+                     int bound;
+                     if (i < len - 1)
+                         bound = offset + ffsets[i + 1];
+                     else
+                         bound = Math.Min(offset + ffsets[i] + sw, bytes.Length);
+
+                     while (pos < bound)
+                     {
+                         type = bytes[pos++];
+                         blength = (bytes[pos++] + 1);
+                         if (type == 0xff)
+                         {
+                             for (int j = 0; j < blength; j++)
+                             {
+                                 *((int*)(ptr + currentCol)) = palette2[bytes[pos]];
+                                 currentCol += 3;
+                                 pos++;
+                             }
+                         }
+                         else
+                         {
+                             for (int j = 0; j < blength; j++)
+                             {
+                                 *((int*)(ptr + currentCol)) = palette2[type];
+                                 currentCol += 3;
+                             }
+                         }
+                     }
+                 }*/
+
+                int pos;
+                for (int i = 0; i < len - 1; i++)
                 {
-                    int pos = ffsets[i] + offset;
-                    currentCol = i * bWidth + lm * 3;
+                    pos = ffsets[i] + offset;
+                    currentCol = (tm + i) * bWidth + lm * 3;
 
                     int bound;
                     if (i < len - 1)
@@ -390,9 +418,50 @@ namespace h3magic
                         }
                     }
                 }
+                // last row
+
+                pos = ffsets[len - 1] + offset;
+                byte* cb = ptr + (tm + len - 1) * bWidth + lm * 3;
+
+                int currentWidth = 0;
+                while (currentWidth < sw)
+                {
+                    type = bytes[pos++];
+                    blength = (bytes[pos++] + 1);
+                    if (type == 0xff)
+                    {
+                        for (int j = 0; j < blength; j++)
+                        {
+                            byte color = bytes[pos];
+                            *cb = palette[color, 2];
+                            cb++;
+                            *cb = palette[color, 1];
+                            cb++;
+                            *cb = palette[color, 0];
+                            cb++;
+                            pos++;
+                        }
+                    }
+                    else
+                    {
+                        for (int j = 0; j < blength; j++)
+                        {
+                            *cb = palette[type, 2];
+                            cb++;
+                            *cb = palette[type, 1];
+                            cb++;
+                            *cb = palette[type, 0];
+                            cb++;
+                        }
+
+                    }
+                    currentWidth += blength;
+                }
             }
             return imageBytes;
         }
+
+
 
         private unsafe void LoadSpriteType2(SpriteHeader sh, BitmapData data, int offset)
         {
@@ -579,7 +648,7 @@ namespace h3magic
 
         public void RetargetSprite(DefFile original, int blockIndex, int oldSpriteIndex, int newSpriteIndex)
         {
-            HasChanged = true;
+            HasChanges = true;
 
             int offset = BLOCK_HEADER_OFFSET;
             for (int i = 0; i < blockIndex; i++)

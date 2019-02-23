@@ -12,14 +12,18 @@ namespace h3magic
     {
         private const string FAT_NAME = "CRTRAITS.TXT";
         private const string IMG_FNAME = "TwCrPort.def";
+        private const string IMG_SMALL_FNAME = "CPRSMALL.def";
 
         public static readonly string[] Castles = { "Castle", "Rampart", "Tower", "Inferno", "Necropolis", "Dungeon", "Stronghold", "Fortress", "Other" };
 
         public static List<Creature> OnlyActiveCreatures = new List<Creature>();
+        public static Bitmap[] SmallImages = null;
         public static Creature[] AllCreatures2 = null;
         public static int[] IndexesOfFirstLevelCreatures;
 
         private static DefFile creatureDef;
+        private static DefFile smallCreatureDef;
+
         private static string[] rows;
 
         public static bool Loaded { get; private set; }
@@ -29,11 +33,6 @@ namespace h3magic
 
         public static void LoadInfo(LodFile file)
         {
-
-
-
-
-
             var rec = file.GetRecord(FAT_NAME);
             if (rec != null)
             {
@@ -47,7 +46,7 @@ namespace h3magic
                 {
                     for (int j = 0; j < 14; j++)
                     {
-                        var stat = new Creature(rows[2 + i * 17 + j]) { CastleIndex = i, CreatureIndex = curIndex++, CreatureCastleRelativeIndex = j };
+                        var stat = new Creature(rows[2 + i * 17 + j]) { TownIndex = i, CreatureIndex = curIndex++, CreatureCastleRelativeIndex = j };
 
                         AllCreatures2[stat.CreatureIndex] = stat;
                         OnlyActiveCreatures.Add(stat);
@@ -67,7 +66,7 @@ namespace h3magic
                     {
                         if (!rows[i].Contains("NOT USED"))
                         {
-                            var stat = new Creature(rows[i]) { CastleIndex = 8, CreatureIndex = curIndex, CreatureCastleRelativeIndex = ccri };
+                            var stat = new Creature(rows[i]) { TownIndex = 8, CreatureIndex = curIndex, CreatureCastleRelativeIndex = ccri };
                             AllCreatures2[stat.CreatureIndex] = stat;
                             misc.Add(stat);
                             ccri++;
@@ -93,6 +92,7 @@ namespace h3magic
                 IndexesOfFirstLevelCreatures = indexes.ToArray();
 
                 Loaded = true;
+                SmallImages = new Bitmap[AllCreatures2.Length];
             }
 
 
@@ -100,7 +100,7 @@ namespace h3magic
 
         public static Creature Get(int castleIndex, int relativeCreatureIndex)
         {
-            return OnlyActiveCreatures.FirstOrDefault(c => c.CastleIndex == castleIndex && c.CreatureCastleRelativeIndex == relativeCreatureIndex);
+            return OnlyActiveCreatures.FirstOrDefault(c => c.TownIndex == castleIndex && c.CreatureCastleRelativeIndex == relativeCreatureIndex);
         }
 
         public static Creature GetByIndex(int index)
@@ -151,6 +151,49 @@ namespace h3magic
             var bmp = creatureDef.GetByAbsoluteNumber(index + 2);
             return bmp;
         }
+
+        public unsafe static Bitmap GetSmallImage(LodFile h3sprite, int creatureIndex)
+        {
+            if (smallCreatureDef == null)
+                smallCreatureDef = h3sprite.GetRecord(IMG_SMALL_FNAME).GetDefFile(h3sprite);
+
+            Bitmap bmp;
+            if (SmallImages[creatureIndex] == null)
+            {
+
+                bmp = smallCreatureDef.GetByAbsoluteNumber(creatureIndex + 2);
+                var creature = AllCreatures2[creatureIndex];
+                var clr = Town.AllColors[creature.TownIndex];
+
+                var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                for (int i = 0; i < imageData.Height; i++)
+                {
+                    byte* offset = (byte*)imageData.Scan0 + i * imageData.Stride;
+                    for (int j = 0; j < imageData.Width; j++)
+                    {
+                        byte b = *offset;
+                        byte g = *(offset + 1);
+                        byte r = *(offset + 2);
+                        if (r == 0 && g == 0xff && b == 0xff)
+                        {
+                            *(offset++) = clr.B;
+                            *(offset++) = clr.G;
+                            *(offset++) = clr.R;
+                        }
+                        else
+                        {
+                            offset += 3;
+                        }
+                    }
+
+                }
+                bmp.UnlockBits(imageData);
+                SmallImages[creatureIndex] = bmp;
+            }
+
+            return SmallImages[creatureIndex];
+        }
+
 
         public static void Save(LodFile lodfile)
         {

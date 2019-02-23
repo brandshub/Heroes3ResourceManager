@@ -33,29 +33,8 @@ namespace h3magic
             string h3BitmapLod = Path.Combine(dataDirectory, "h3bitmap.lod");
             string h3SpriteLod = Path.Combine(dataDirectory, "h3sprite.lod");
 
-            foreach (var file in Directory.GetFiles(dataDirectory, "*.lod"))
-            {
-                FileStream fs = null;
-                try
-                {
-                    fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    string lcfileName = Path.GetFileName(file).ToLower();
-                    LodFile lod = null;
-                    if (lcfileName == "h3bitmap.lod")
-                        lod = new H3Bitmap(fs);
-                    else if (lcfileName == "h3sprite.lod")
-                        lod = new H3Sprite(fs);
-                    else
-                        lod = new LodFile(fs);
-
-                    lod.LoadFAT();
-                    Master.ResourceFiles.Add(lod);
-                }
-                catch (Exception ex)
-                {
-                    fs.Close();
-                }
-            }
+            Master.LoadAllWithExtension(dataDirectory, ".lod");
+            Master.LoadAllWithExtension(dataDirectory, ".pac");
 
             HeroesManager.LoadInfo(Master.H3Bitmap);
             HeroClass.LoadInfo(Master.H3Bitmap);
@@ -63,10 +42,43 @@ namespace h3magic
             Spell.LoadInfo(Master.H3Bitmap);
             SecondarySkill.LoadInfo(Master.H3Bitmap);
             Speciality.LoadInfo(Master.Executable.Data);
-            HeroExeData.LoadInfo(Master.Executable.Data);
+            Town.LoadInfo(Master.H3Sprite);
+            HeroExeData.LoadInfo(Master.Executable.Data);            
 
             return Master;
         }
+
+
+        private void LoadAllWithExtension(string dataDirectory, string extension)
+        {
+            foreach (var file in Directory.GetFiles(dataDirectory, "*" + extension))
+            {
+                if (file.EndsWith(extension, StringComparison.OrdinalIgnoreCase))
+                {
+                    FileStream fs = null;
+                    try
+                    {
+                        fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        string lcfileName = Path.GetFileName(file).ToLower();
+                        LodFile lod = null;
+                        if (lcfileName == "h3bitmap.lod")
+                            lod = new H3Bitmap(fs);
+                        else if (lcfileName == "h3sprite.lod")
+                            lod = new H3Sprite(fs);
+                        else
+                            lod = new LodFile(fs);
+
+                        lod.LoadFAT();
+                        ResourceFiles.Add(lod);
+                    }
+                    catch (Exception ex)
+                    {
+                        fs.Close();
+                    }
+                }
+            }
+        }
+
 
         public void SaveHeroExeData()
         {

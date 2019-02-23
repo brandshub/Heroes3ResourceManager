@@ -53,12 +53,20 @@ namespace h3magic
 
         public override bool SaveToDisk(string fileName)
         {
-            if (Un44Def.HasChanged || Un32Def.HasChanged)
+            if (Un44Def.HasChanges || Un32Def.HasChanges)
             {
                 base.SaveToDisk(fileName);
                 return true;
             }
             return false;
+        }
+
+        public override bool HasChanges
+        {
+            get
+            {
+                return base.HasChanges || Un32Def.HasChanges || Un44Def.HasChanges;
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ namespace h3magic
             BitmapData imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
 
             bool bpp8 = bts.Length == width * heigth + 780;
-            
+
             byte* ip = (byte*)imageData.Scan0.ToPointer();
             int byteN = 12;
             int padding = (4 - ((width * 3) % 4)) % 4;
@@ -63,12 +63,63 @@ namespace h3magic
             }
             else
             {
-                Marshal.Copy(bts, 12, new IntPtr(ip), bts.Length - 12);
+                if (palletteOffset == bts.Length)
+                {
+                    int nstride = width * 3;
+                    for (int i = 0; i < heigth; i++)
+                    {
+                        Marshal.Copy(bts, 12 + i * nstride, IntPtr.Add(new IntPtr(ip), i * imageData.Stride), nstride);
+                    }
+                }
+                else
+                {
+                    Marshal.Copy(bts, 12, new IntPtr(ip), bts.Length - 12);
+                }
             }
 
 
             bmp.UnlockBits(imageData);
             return bmp;
+        }
+
+        public unsafe byte[] GetBitmap24Bytes(out int imageWidth)
+        {
+            if (palletteOffset == width * heigth)
+                palletteOffset += 12;
+
+            imageWidth = width;
+
+            int padding = (4 - ((width * 3) % 4)) % 4;
+            int stride = 3 * width + padding;
+
+            byte[] data = new byte[heigth * stride];
+            bool bpp8 = bts.Length == width * heigth + 780;
+
+
+            int ip = 0;
+            int byteN = 12;
+
+
+            if (bpp8)
+            {
+                for (int i = 0; i < heigth; i++)
+                {
+                    for (int j = 0; j < width; j++)
+                    {
+                        int off = palletteOffset + 3 * bts[byteN];
+                        data[ip++] = bts[off + 2];
+                        data[ip++] = bts[off + 1];
+                        data[ip++] = bts[off];
+                        byteN++;
+                    }
+                    ip += padding;
+                }
+            }
+            else
+            {
+                Buffer.BlockCopy(bts, 12, data, 0, bts.Length - 12);
+            }
+            return data;
         }
 
         public static PcxFile FromBitmap(Bitmap bmp)
@@ -111,7 +162,7 @@ namespace h3magic
 
             int btsN = 12;
             int padding = (4 - ((width * 3) % 4)) % 4;
-            BitmapData imageData = bmp.LockBits(new Rectangle(0, 0, width, heigth), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits(new Rectangle(0, 0, width, heigth), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             byte[] bitmap = new byte[imageData.Stride * imageData.Height];
             Marshal.Copy(imageData.Scan0, bitmap, 0, bitmap.Length);
             bmp.UnlockBits(imageData);
@@ -222,7 +273,7 @@ namespace h3magic
             BitmapData imageData = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             Marshal.Copy(imageData.Scan0, rawData, 54, realSize);
             bmp.UnlockBits(imageData);
-           // File.WriteAllBytes(fileName, rawData);
+            // File.WriteAllBytes(fileName, rawData);
             FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
             fs.Write(rawData, 0, rawData.Length);
             fs.Close();

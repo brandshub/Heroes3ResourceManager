@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
 
 namespace h3magic
 {
@@ -12,6 +15,8 @@ namespace h3magic
 
         private static string[] backgroundNames = { "CRBKGCAS.pcx", "CRBKGRAM.pcx", "CRBKGTOW.pcx", "CRBKGINF.pcx", "CRBKGNEC.pcx", "CRBKGDUN.pcx", "CRBKGSTR.pcx", "CRBKGFOR.pcx", "CrBkgEle.pcx", "CRBKGNEU.pcx" };
         private static Bitmap[] backgrounds = new Bitmap[10];
+        private static byte[][] bckgBytes = new byte[10][];
+        private static int[] widths = new int[10];
 
         private const int TIMER_INTERVAL = 200;
         private const int SPRITES_INDEX = 2;
@@ -21,6 +26,7 @@ namespace h3magic
         private DefFile creatureAnimation;
         public event EventHandler TimerTick;
 
+        //public float fullTime = 0;
         public bool Enabled
         {
             get { return timer.Enabled; }
@@ -62,7 +68,6 @@ namespace h3magic
             if (frames[CurrentFrame] == null)
             {
                 var bmp = creatureAnimation.GetSprite(SPRITES_INDEX, CurrentFrame);
-                var spriteData = creatureAnimation.headers[SPRITES_INDEX].spriteHeaders[CurrentFrame];
                 int castleIndex = GetBackgroundIndex(CreatureIndex);
 
                 if (backgrounds[castleIndex] == null)
@@ -71,26 +76,55 @@ namespace h3magic
                 Point pt;
                 Size size;
                 ComputeSpriteParameters(creatureAnimation.headers[SPRITES_INDEX], out pt, out size);
-
-                /*if (spriteData.TopMargin > 0 || spriteData.LeftMargin > 0)
-                {
-                    using (var g = Graphics.FromImage(bmp))
-                    {
-                        g.DrawRectangle(Pens.Red, new Rectangle(spriteData.LeftMargin, spriteData.TopMargin, spriteData.SpriteWidth, spriteData.SpriteHeight));
-                    }
-                }*/
-
-                // frames[CurrentFrame] = DrawTransparent(backgrounds[castleIndex], bmp, spriteData);
-                //  frames[CurrentFrame] = bmp;
+                // var sw = Stopwatch.StartNew();
                 frames[CurrentFrame] = DrawTransparent(backgrounds[castleIndex], bmp, pt, size);
+                //fullTime += sw.ElapsedMs();
                 using (var g = Graphics.FromImage(frames[CurrentFrame]))
-                    g.DrawRectangle(Pens.Black, 0, 0, 100-1, 130-1);
+                    g.DrawRectangle(Pens.Black, 0, 0, 100 - 1, 130 - 1);
 
             }
 
             return frames[CurrentFrame];
         }
 
+
+        public Bitmap GetFrame2(Heroes3Master master)
+        {
+            if (frames == null || CurrentFrame >= frames.Length)
+                return null;
+
+            if (frames[CurrentFrame] == null)
+            {
+                var bmp = creatureAnimation.GetSprite(SPRITES_INDEX, CurrentFrame);
+                int castleIndex = GetBackgroundIndex(CreatureIndex);
+
+                int imageWidth = 0;
+                if (bckgBytes[castleIndex] == null)
+                {
+                    bckgBytes[castleIndex] = master.H3Bitmap.GetRecord(backgroundNames[castleIndex]).GetBitmap24Data(master.H3Bitmap.stream, out imageWidth);
+                    widths[castleIndex] = imageWidth;
+                }
+
+                Point pt;
+                Size size;
+                ComputeSpriteParameters(creatureAnimation.headers[SPRITES_INDEX], out pt, out size);
+
+                int width = widths[castleIndex];
+                int padding = (4 - ((width * 3) % 4)) % 4;
+                int stride = 3 * width + padding;
+                int height = bckgBytes[castleIndex].Length / stride;
+
+                //var sw = Stopwatch.StartNew();
+                frames[CurrentFrame] = DrawTransparent2(bckgBytes[castleIndex], widths[castleIndex], height, bmp, pt, size);
+                // fullTime += sw.ElapsedMs();
+
+                using (var g = Graphics.FromImage(frames[CurrentFrame]))
+                    g.DrawRectangle(Pens.Black, 0, 0, width - 1, height - 1);
+
+            }
+
+            return frames[CurrentFrame];
+        }
         private static int GetBackgroundIndex(int creatureIndex)
         {
             if (creatureIndex < 8 * 14)
@@ -99,56 +133,6 @@ namespace h3magic
                 return creatureIndex == 116 || creatureIndex == 117 || creatureIndex == 122 || creatureIndex == 124 || creatureIndex == 126 ? 9 : 8;
             return 9;
         }
-
-        /* private unsafe static Bitmap DrawTransparent(Bitmap background, Bitmap creatureFrame, SpriteHeader spriteData)
-         {
-             var result = new Bitmap(background);
-             var backData = result.LockBits(new Rectangle(0, 0, background.Width, background.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-             var imgData = creatureFrame.LockBits(new Rectangle(0, 0, creatureFrame.Width, creatureFrame.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-             int offX = 0;// backData.Width - spriteData.SpriteWidth;
-
-
-             byte* backPtr = (byte*)backData.Scan0.ToPointer();
-             byte* crPtr = (byte*)imgData.Scan0.ToPointer();
-             byte* backOffset, sprOffset;
-
-             for (int i = 0; i < spriteData.SpriteHeight; i++)
-             {
-                 backOffset = backPtr + i * backData.Stride + 3 * offX;
-                 sprOffset = crPtr + (i + spriteData.TopMargin) * imgData.Stride + 3 * spriteData.LeftMargin;
-
-                 for (int j = 0; j < spriteData.SpriteWidth; j++)
-                 {
-                     byte b = *(sprOffset++);
-                     byte g = *(sprOffset++);
-                     byte r = *(sprOffset++);
-
-                     if (!(r == 0 && g == 255 && b == 255) && !(r == 255 && g == 255 && b == 0))
-                     {
-                         if ((r == 255 && b == 255 && (g == 0 || g == 150)) || (r == 180 && g == 0 && b == 255) || (r == 0 && b == 0 && g == 255))
-                         {
-                             *backOffset = 0;
-                             *(backOffset + 1) = 0;
-                             *(backOffset + 2) = 0;
-                         }
-                         else
-                         {
-                             *backOffset = b;
-                             *(backOffset + 1) = g;
-                             *(backOffset + 2) = r;
-                         }
-                     }
-
-                     backOffset += 3;
-                 }
-             }
-
-
-             creatureFrame.UnlockBits(imgData);
-             result.UnlockBits(backData);
-             return result;
-         }*/
 
         private void ComputeSpriteParameters(SpriteBlockHeader block, out Point offset, out Size size)
         {
@@ -159,7 +143,6 @@ namespace h3magic
 
             offset = new Point(x, y);
             size = new Size(w, h);
-
         }
 
 
@@ -207,8 +190,8 @@ namespace h3magic
         private unsafe static Bitmap DrawTransparent(Bitmap background, Bitmap creatureFrame, Point computedOffset, Size computedSize)
         {
             var result = new Bitmap(background);
-            var backData = result.LockBits(new Rectangle(0, 0, background.Width, background.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            var imgData = creatureFrame.LockBits(new Rectangle(0, 0, creatureFrame.Width, creatureFrame.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var backData = result.LockBits(new Rectangle(0, 0, background.Width, background.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            var imgData = creatureFrame.LockBits(new Rectangle(0, 0, creatureFrame.Width, creatureFrame.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
             int offX = (backData.Width - computedSize.Width) / 2;
             int offY = Math.Max(0, backData.Height - 15 - computedSize.Height);
@@ -266,6 +249,68 @@ namespace h3magic
             result.UnlockBits(backData);
             return result;
         }
+
+
+        private unsafe static Bitmap DrawTransparent2(byte[] backgroundBytes, int backgroundWidth, int backgroundHeight, Bitmap creatureFrame, Point computedOffset, Size computedSize)
+        {
+            int width = backgroundWidth;
+            int height = backgroundHeight;
+
+            var result = new Bitmap(width, height, PixelFormat.Format24bppRgb);
+            var backData = result.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            var imgData = creatureFrame.LockBits(new Rectangle(0, 0, creatureFrame.Width, creatureFrame.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+            Marshal.Copy(backgroundBytes, 0, backData.Scan0, backgroundBytes.Length);
+            int offX = (backData.Width - computedSize.Width) / 2;
+            int offY = Math.Max(0, backData.Height - 15 - computedSize.Height);
+
+
+            byte* backPtr = (byte*)backData.Scan0.ToPointer();
+            byte* crPtr = (byte*)imgData.Scan0.ToPointer();
+            byte* backOffset, sprOffset;
+
+            for (int i = 0; i < computedSize.Height; i++)
+            {
+                backOffset = backPtr + (i + offY) * backData.Stride + 3 * offX;
+                sprOffset = crPtr + (i + computedOffset.Y) * imgData.Stride + 3 * computedOffset.X;
+
+                for (int j = 0; j < computedSize.Width; j++)
+                {
+                    uint rgb = *((uint*)sprOffset) << 8;
+                    sprOffset += 3;
+                    //  if (!(r == 0 && g == 255 && b == 255) && !(r == 255 && g == 255 && b == 0))
+                    if (rgb != 0x00ffff00 && rgb != 0xffff0000)
+                    {
+                        //
+                        // if ((r == 180 && g == 0 && b == 255) || (r == 0 && b == 0 && g == 255))
+                        if (rgb == 0xb400ff00 || rgb == 0x00ff0000)
+                        {
+                            *((uint*)backOffset) = 0;
+                        }
+                        //else if (r == 255 && g == 0 && b == 255)
+                        else if (rgb == 0xff00ff00)
+                        {
+                            *((uint*)backOffset) = 0x050505;
+                        }
+                        //else if (r == 255 && b == 255 && g == 150)
+                        else if (rgb == 0xff96ff00)
+                        {
+                            *((uint*)backOffset) = 0x0f0f0f;
+                        }
+                        else
+                        {
+                            *((uint*)backOffset) = (rgb >> 8);
+                        }
+                    }
+
+                    backOffset += 3;
+                }
+            }
+            creatureFrame.UnlockBits(imgData);
+            result.UnlockBits(backData);
+            return result;
+        }
+
 
         public void Dispose()
         {
