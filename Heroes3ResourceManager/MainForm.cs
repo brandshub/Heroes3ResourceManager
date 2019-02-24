@@ -189,6 +189,26 @@ namespace h3magic
             heroPropertyForm.ShowDialog(this);
         }
 
+
+        private void PositionSkillProbabilityBoxes()
+        {
+            int stIndex = 47;
+            int itemWidth = pbSkillTree.Width / 7;
+            int itemHeight = pbSkillTree.Height / 4;
+
+
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 7; j++)
+                {
+                    int index = i * 7 + j + stIndex;
+                    var tb = tabHeroClass.Controls.Find("textBox" + index, true).FirstOrDefault() as TextBox;
+                    if (tb != null)
+                    {
+                        tb.Width = itemWidth;
+                        tb.Location = new Point(pbSkillTree.Left + itemWidth * j, pbSkillTree.Top + (itemHeight) * (i + 1) - 19);
+                    }
+                }
+        }
         public void LoadMaster(string executablPath)
         {
             var master = Heroes3Master.LoadInfo(executablPath);
@@ -199,7 +219,13 @@ namespace h3magic
             lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
             lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
             cbCastles.Items.AddRange(CreatureManager.Castles);
-            pbSkillTree.Image = SecondarySkill.GetSkillTreeForHeroClass(Heroes3Master.Master.H3Sprite);
+            var bmp = SecondarySkill.GetSkillTreeForHeroClass(Heroes3Master.Master.H3Sprite);
+
+            pbSkillTree.Width = bmp.Width * 4 / 5;
+            pbSkillTree.Height = bmp.Height * 4 / 5;
+            pbSkillTree.Image = bmp;
+
+          
 
             var lodFileNames = master.ResourceFiles.Select(s => s.Name).ToArray();
             cbLodFiles.Items.AddRange(lodFileNames);
@@ -213,6 +239,8 @@ namespace h3magic
             tabsMain.TabPages.Add(tabCreatures);
             tabsMain.TabPages.Add(tabSpells);
             tabsMain.TabPages.Add(tabMain);
+
+            PositionSkillProbabilityBoxes();
 
             /*
             if (selectedLodFile["HCTRAITS.TXT"] == null)
@@ -588,21 +616,23 @@ namespace h3magic
             }
         }
 
-
+        int selectedCastle = 0;
         private void cbCastles_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (CreatureManager.Loaded)
             {
                 cbCreatures.Items.Clear();
                 var creatures = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == cbCastles.SelectedIndex && c.CreatureIndex != 149).Select(cs => cs.Name).ToArray();
+                selectedCastle = cbCastles.SelectedIndex;
                 cbCreatures.Items.AddRange(creatures);
-                cbCreatures.Select();
                 cbCreatures.SelectedIndex = 0;
+
+                //Debug.WriteLine("cbCastles_SelectedIndexChanged");
             }
         }
 
         private CreatureAnimationLoop creatureAnimation;
-        private void cb_creatures_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbCreatures_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (CreatureManager.Loaded)
             {
@@ -737,10 +767,11 @@ namespace h3magic
         {
             var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
 
-            pbPortraitSmall.Image = selectedLodFile[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(selectedLodFile.stream);
+
 
             if (lbHeroes.SelectedIndex > -1 && Heroes3Master.Master != null)
             {
+                //pbPortraitSmall.Image = Heroes3Master.Master.H3Bitmap[HeroesManager.HeroesOrder[hs.ImageIndex].Replace("HPL", "HPS")].GetBitmap(selectedLodFile.stream);
                 hpcHeroProfile.LoadHero(lbHeroes.SelectedIndex, Heroes3Master.Master);
                 //Text = lbHeroes.SelectedIndex.ToString();
                 var hd = HeroExeData.Data[lbHeroes.SelectedIndex];
@@ -988,9 +1019,8 @@ namespace h3magic
                 if ((e.State & DrawItemState.Selected) != 0)
                 {
                     e.DrawFocusRectangle();
-                    e.Graphics.DrawRectangle(new Pen(Color.Black, 1), e.Bounds.X , e.Bounds.Y , e.Bounds.Width , e.Bounds.Height - 1);
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 1), e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height - 1);
                 }
-
 
             }
         }
@@ -1007,36 +1037,61 @@ namespace h3magic
                 e.Graphics.DrawImage(town.LargeImage, e.Bounds.X, e.Bounds.Y);
                 e.Graphics.DrawString(cbCastles.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds.X + 56, e.Bounds.Y + 9);
 
-                if ((e.State & DrawItemState.Selected) != 0)
-                {
-                    e.DrawFocusRectangle();
-                }
+                /*  if ((e.State & DrawItemState.Selected) != 0)
+                  {
+                      e.DrawFocusRectangle();
+                  }*/
             }
         }
 
-        private void cb_creatures_DrawItem(object sender, DrawItemEventArgs e)
+        private void cbCreatures_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index >= 0)
             {
-                int castleIndex = cbCastles.SelectedIndex;
+                int castleIndex = selectedCastle;
                 var clr = Town.AllColors[castleIndex];
 
                 e.DrawBackground();
                 e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
 
                 Font fnt = e.Font;
-
                 var creature = CreatureManager.Get(cbCastles.SelectedIndex, e.Index);
                 e.Graphics.DrawImage(CreatureManager.GetSmallImage(Heroes3Master.Master.H3Sprite, creature.CreatureIndex), e.Bounds.X, e.Bounds.Y);
                 e.Graphics.DrawString(cbCreatures.Items[e.Index].ToString(), fnt, Brushes.Black, e.Bounds.X + 46, e.Bounds.Y + 9);
-
-                if ((e.State & DrawItemState.Selected) != 0)
-                {
-                    e.DrawFocusRectangle();
-                }
             }
         }
 
+        private void lbHeroes_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            if (e.Index >= 0)
+            {
+                dl("Draw " + e.State + " " + e.Index + " " + lbHeroes.SelectedIndex);
+                if (e.State == (DrawItemState.Selected | DrawItemState.Focus | DrawItemState.NoAccelerator | DrawItemState.NoFocusRect))
+                    return;
+                // if (e.State == (DrawItemState.Selected | DrawItemState.NoAccelerator | DrawItemState.NoFocusRect))
+                //     return;
+
+
+                int castleIndex = e.Index / 16;
+                var clr = Town.AllColors[castleIndex];
+
+                e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
+                e.Graphics.DrawString(HeroesManager.AllHeroes[e.Index].Name, e.Font, Brushes.Black, e.Bounds.X + 42, e.Bounds.Y + 4);
+
+                var img = new Bitmap(Heroes3Master.Master.H3Bitmap[HeroesManager.HeroesOrder[e.Index].Replace("HPL", "HPS")].GetBitmap(Heroes3Master.Master.H3Bitmap.stream), 36, 24);
+                e.Graphics.DrawImage(img, e.Bounds.X, e.Bounds.Y);
+                if ((e.State & DrawItemState.Selected) != 0)
+                {
+                    //e.DrawFocusRectangle();
+                    e.Graphics.DrawRectangle(new Pen(Color.Black, 1), e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height - 1);
+                }
+
+            }
+        }
+        private void dl(string s)
+        {
+            Debug.WriteLine(Name + " " + DateTime.Now.ToString("HH:mm:ss") + " " + s);
+        }
 
     }
 }

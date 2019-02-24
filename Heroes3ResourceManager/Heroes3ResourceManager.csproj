@@ -65,6 +65,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComboBoxWithImages.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CreatureAnimationLoop.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
@@ -91,6 +94,9 @@
       <DependentUpon>HeroPropertyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="HeroStats.cs" />
+    <Compile Include="ListBoxWithImages.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="LodFile\H3Bitmap.cs" />
     <Compile Include="LodFile\H3Sprite.cs" />
     <Compile Include="MainForm.cs">

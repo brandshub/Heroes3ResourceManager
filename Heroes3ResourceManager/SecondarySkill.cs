@@ -73,12 +73,21 @@ namespace h3magic
             if (_defFile == null)
                 _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
 
-            var bmp = new Bitmap((44 + 60) * 4, 44 * 7);
+           /* var bmp = new Bitmap((44 + 60) * 4, 44 * 7);
             using (var g = Graphics.FromImage(bmp))
             {
                 for (int i = 0; i < 4; i++)
                     for (int j = 0; j < 7; j++)
                         g.DrawImage(_defFile.GetByAbsoluteNumber(3 + (i * 7 + j) * 3), i * 104, 44 * j);
+            }*/
+
+            var bmp = new Bitmap(44 * 7, (44 + 24) * 4);
+
+            using (var g = Graphics.FromImage(bmp))
+            {
+                for (int i = 0; i < 4; i++)
+                    for (int j = 0; j < 7; j++)
+                        g.DrawImage(_defFile.GetByAbsoluteNumber(3 + (i * 7 + j) * 3), j * 44, 68 * i);
             }
             _skillTree = bmp;
             return _skillTree;

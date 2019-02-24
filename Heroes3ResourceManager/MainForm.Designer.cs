@@ -60,12 +60,6 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.tbHeroName = new System.Windows.Forms.TextBox();
-            this.pbPortraitSmall = new System.Windows.Forms.PictureBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lbHeroes = new System.Windows.Forms.ListBox();
-            this.hpcHeroProfile = new h3magic.HeroProfileControl();
             this.tabHeroClass = new System.Windows.Forms.TabPage();
             this.textBox68 = new System.Windows.Forms.TextBox();
             this.textBox69 = new System.Windows.Forms.TextBox();
@@ -96,7 +90,6 @@
             this.textBox50 = new System.Windows.Forms.TextBox();
             this.textBox49 = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
-            this.lblStartParams = new System.Windows.Forms.Label();
             this.textBox43 = new System.Windows.Forms.TextBox();
             this.textBox44 = new System.Windows.Forms.TextBox();
             this.textBox45 = new System.Windows.Forms.TextBox();
@@ -112,7 +105,6 @@
             this.label24 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.label22 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
             this.textBox33 = new System.Windows.Forms.TextBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
             this.lbHeroClasses = new System.Windows.Forms.ListBox();
@@ -121,7 +113,6 @@
             this.tabCreatures = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox23 = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.textBox22 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.textBox21 = new System.Windows.Forms.TextBox();
@@ -134,8 +125,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.cbCreatures = new System.Windows.Forms.ComboBox();
-            this.cbCastles = new System.Windows.Forms.ComboBox();
             this.textBox16 = new System.Windows.Forms.TextBox();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.textBox15 = new System.Windows.Forms.TextBox();
@@ -169,13 +158,18 @@
             this.trbDefSprites = new System.Windows.Forms.TrackBar();
             this.lbDecomposed = new System.Windows.Forms.ListBox();
             this.pbResourceView = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.завантажитиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.зберегтиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.lbHeroes = new h3magic.ListBoxWithImages();
+            this.hpcHeroProfile = new h3magic.HeroProfileControl();
+            this.cbCreatures = new h3magic.ComboBoxWithImages();
+            this.cbCastles = new h3magic.ComboBoxWithImages();
             this.specialityBuilder1 = new h3magic.ImageGridControl();
             this.menuStrip1.SuspendLayout();
             this.tabsMain.SuspendLayout();
             this.tabHeroes.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPortraitSmall)).BeginInit();
-            this.contextMenuStrip1.SuspendLayout();
             this.tabHeroClass.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSkillTree)).BeginInit();
@@ -187,6 +181,7 @@
             this.tabMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbResourceView)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lbFiles
@@ -351,7 +346,6 @@
             this.tabHeroes.Controls.Add(this.label15);
             this.tabHeroes.Controls.Add(this.label14);
             this.tabHeroes.Controls.Add(this.tbHeroName);
-            this.tabHeroes.Controls.Add(this.pbPortraitSmall);
             this.tabHeroes.Controls.Add(this.lbHeroes);
             this.tabHeroes.Controls.Add(this.hpcHeroProfile);
             this.tabHeroes.Location = new System.Drawing.Point(4, 25);
@@ -364,9 +358,9 @@
             // 
             // btnHeroSave
             // 
-            this.btnHeroSave.Location = new System.Drawing.Point(580, 447);
+            this.btnHeroSave.Location = new System.Drawing.Point(619, 448);
             this.btnHeroSave.Name = "btnHeroSave";
-            this.btnHeroSave.Size = new System.Drawing.Size(310, 44);
+            this.btnHeroSave.Size = new System.Drawing.Size(271, 44);
             this.btnHeroSave.TabIndex = 19;
             this.btnHeroSave.Text = "Save Changes";
             this.btnHeroSave.UseVisualStyleBackColor = true;
@@ -392,18 +386,18 @@
             // 
             // tbHeroBio
             // 
-            this.tbHeroBio.Location = new System.Drawing.Point(580, 74);
+            this.tbHeroBio.Location = new System.Drawing.Point(619, 74);
             this.tbHeroBio.Multiline = true;
             this.tbHeroBio.Name = "tbHeroBio";
-            this.tbHeroBio.Size = new System.Drawing.Size(310, 123);
+            this.tbHeroBio.Size = new System.Drawing.Size(271, 123);
             this.tbHeroBio.TabIndex = 16;
             // 
             // tbHeroSpecDesc
             // 
-            this.tbHeroSpecDesc.Location = new System.Drawing.Point(580, 216);
+            this.tbHeroSpecDesc.Location = new System.Drawing.Point(619, 216);
             this.tbHeroSpecDesc.Multiline = true;
             this.tbHeroSpecDesc.Name = "tbHeroSpecDesc";
-            this.tbHeroSpecDesc.Size = new System.Drawing.Size(310, 66);
+            this.tbHeroSpecDesc.Size = new System.Drawing.Size(271, 66);
             this.tbHeroSpecDesc.TabIndex = 15;
             // 
             // tbHeroHS2
@@ -445,7 +439,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(577, 200);
+            this.label18.Location = new System.Drawing.Point(616, 200);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(52, 13);
             this.label18.TabIndex = 8;
@@ -454,7 +448,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(582, 346);
+            this.label17.Location = new System.Drawing.Point(616, 346);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(66, 13);
             this.label17.TabIndex = 7;
@@ -463,7 +457,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(582, 294);
+            this.label16.Location = new System.Drawing.Point(616, 294);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(66, 13);
             this.label16.TabIndex = 6;
@@ -472,7 +466,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(582, 320);
+            this.label15.Location = new System.Drawing.Point(616, 320);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(66, 13);
             this.label15.TabIndex = 5;
@@ -481,7 +475,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(577, 58);
+            this.label14.Location = new System.Drawing.Point(616, 58);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(54, 13);
             this.label14.TabIndex = 4;
@@ -490,63 +484,11 @@
             // tbHeroName
             // 
             this.tbHeroName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbHeroName.Location = new System.Drawing.Point(580, 12);
+            this.tbHeroName.Location = new System.Drawing.Point(619, 21);
             this.tbHeroName.Name = "tbHeroName";
-            this.tbHeroName.Size = new System.Drawing.Size(227, 29);
+            this.tbHeroName.Size = new System.Drawing.Size(271, 29);
             this.tbHeroName.TabIndex = 3;
             this.tbHeroName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // pbPortraitSmall
-            // 
-            this.pbPortraitSmall.ContextMenuStrip = this.contextMenuStrip1;
-            this.pbPortraitSmall.Location = new System.Drawing.Point(826, 10);
-            this.pbPortraitSmall.Name = "pbPortraitSmall";
-            this.pbPortraitSmall.Size = new System.Drawing.Size(64, 37);
-            this.pbPortraitSmall.TabIndex = 2;
-            this.pbPortraitSmall.TabStop = false;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.завантажитиToolStripMenuItem,
-            this.зберегтиToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 48);
-            // 
-            // завантажитиToolStripMenuItem
-            // 
-            this.завантажитиToolStripMenuItem.Name = "завантажитиToolStripMenuItem";
-            this.завантажитиToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.завантажитиToolStripMenuItem.Text = "Завантажити";
-            this.завантажитиToolStripMenuItem.Click += new System.EventHandler(this.завантажитиToolStripMenuItem_Click);
-            // 
-            // зберегтиToolStripMenuItem
-            // 
-            this.зберегтиToolStripMenuItem.Name = "зберегтиToolStripMenuItem";
-            this.зберегтиToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.зберегтиToolStripMenuItem.Text = "Зберегти";
-            this.зберегтиToolStripMenuItem.Click += new System.EventHandler(this.зберегтиToolStripMenuItem_Click);
-            // 
-            // lbHeroes
-            // 
-            this.lbHeroes.FormattingEnabled = true;
-            this.lbHeroes.Location = new System.Drawing.Point(2, 9);
-            this.lbHeroes.Name = "lbHeroes";
-            this.lbHeroes.Size = new System.Drawing.Size(130, 485);
-            this.lbHeroes.TabIndex = 0;
-            this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
-            // 
-            // hpcHeroProfile
-            // 
-            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.hpcHeroProfile.Hero = null;
-            this.hpcHeroProfile.HeroIndex = 0;
-            this.hpcHeroProfile.Image = null;
-            this.hpcHeroProfile.Location = new System.Drawing.Point(142, 9);
-            this.hpcHeroProfile.Name = "hpcHeroProfile";
-            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
-            this.hpcHeroProfile.TabIndex = 22;
             // 
             // tabHeroClass
             // 
@@ -579,7 +521,6 @@
             this.tabHeroClass.Controls.Add(this.textBox50);
             this.tabHeroClass.Controls.Add(this.textBox49);
             this.tabHeroClass.Controls.Add(this.label26);
-            this.tabHeroClass.Controls.Add(this.lblStartParams);
             this.tabHeroClass.Controls.Add(this.textBox43);
             this.tabHeroClass.Controls.Add(this.textBox44);
             this.tabHeroClass.Controls.Add(this.textBox45);
@@ -595,7 +536,6 @@
             this.tabHeroClass.Controls.Add(this.label24);
             this.tabHeroClass.Controls.Add(this.label23);
             this.tabHeroClass.Controls.Add(this.label22);
-            this.tabHeroClass.Controls.Add(this.label21);
             this.tabHeroClass.Controls.Add(this.textBox33);
             this.tabHeroClass.Controls.Add(this.pictureBox6);
             this.tabHeroClass.Controls.Add(this.lbHeroClasses);
@@ -612,7 +552,7 @@
             // textBox68
             // 
             this.textBox68.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox68.Location = new System.Drawing.Point(827, 55);
+            this.textBox68.Location = new System.Drawing.Point(827, 40);
             this.textBox68.Name = "textBox68";
             this.textBox68.Size = new System.Drawing.Size(48, 20);
             this.textBox68.TabIndex = 88;
@@ -621,7 +561,7 @@
             // textBox69
             // 
             this.textBox69.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox69.Location = new System.Drawing.Point(826, 96);
+            this.textBox69.Location = new System.Drawing.Point(814, 91);
             this.textBox69.Name = "textBox69";
             this.textBox69.Size = new System.Drawing.Size(48, 20);
             this.textBox69.TabIndex = 87;
@@ -630,7 +570,7 @@
             // textBox70
             // 
             this.textBox70.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox70.Location = new System.Drawing.Point(827, 142);
+            this.textBox70.Location = new System.Drawing.Point(827, 151);
             this.textBox70.Name = "textBox70";
             this.textBox70.Size = new System.Drawing.Size(48, 20);
             this.textBox70.TabIndex = 86;
@@ -639,7 +579,7 @@
             // textBox71
             // 
             this.textBox71.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox71.Location = new System.Drawing.Point(826, 186);
+            this.textBox71.Location = new System.Drawing.Point(826, 195);
             this.textBox71.Name = "textBox71";
             this.textBox71.Size = new System.Drawing.Size(48, 20);
             this.textBox71.TabIndex = 85;
@@ -648,7 +588,7 @@
             // textBox72
             // 
             this.textBox72.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox72.Location = new System.Drawing.Point(827, 230);
+            this.textBox72.Location = new System.Drawing.Point(827, 239);
             this.textBox72.Name = "textBox72";
             this.textBox72.Size = new System.Drawing.Size(48, 20);
             this.textBox72.TabIndex = 84;
@@ -657,7 +597,7 @@
             // textBox73
             // 
             this.textBox73.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox73.Location = new System.Drawing.Point(827, 271);
+            this.textBox73.Location = new System.Drawing.Point(827, 280);
             this.textBox73.Name = "textBox73";
             this.textBox73.Size = new System.Drawing.Size(48, 20);
             this.textBox73.TabIndex = 83;
@@ -666,7 +606,7 @@
             // textBox74
             // 
             this.textBox74.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox74.Location = new System.Drawing.Point(827, 315);
+            this.textBox74.Location = new System.Drawing.Point(827, 324);
             this.textBox74.Name = "textBox74";
             this.textBox74.Size = new System.Drawing.Size(48, 20);
             this.textBox74.TabIndex = 82;
@@ -675,7 +615,7 @@
             // textBox61
             // 
             this.textBox61.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox61.Location = new System.Drawing.Point(718, 55);
+            this.textBox61.Location = new System.Drawing.Point(719, 40);
             this.textBox61.Name = "textBox61";
             this.textBox61.Size = new System.Drawing.Size(48, 20);
             this.textBox61.TabIndex = 81;
@@ -684,7 +624,7 @@
             // textBox62
             // 
             this.textBox62.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox62.Location = new System.Drawing.Point(719, 96);
+            this.textBox62.Location = new System.Drawing.Point(736, 80);
             this.textBox62.Name = "textBox62";
             this.textBox62.Size = new System.Drawing.Size(48, 20);
             this.textBox62.TabIndex = 80;
@@ -693,7 +633,7 @@
             // textBox63
             // 
             this.textBox63.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox63.Location = new System.Drawing.Point(718, 142);
+            this.textBox63.Location = new System.Drawing.Point(719, 136);
             this.textBox63.Name = "textBox63";
             this.textBox63.Size = new System.Drawing.Size(48, 20);
             this.textBox63.TabIndex = 79;
@@ -702,7 +642,7 @@
             // textBox64
             // 
             this.textBox64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox64.Location = new System.Drawing.Point(718, 186);
+            this.textBox64.Location = new System.Drawing.Point(718, 195);
             this.textBox64.Name = "textBox64";
             this.textBox64.Size = new System.Drawing.Size(48, 20);
             this.textBox64.TabIndex = 78;
@@ -711,7 +651,7 @@
             // textBox65
             // 
             this.textBox65.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox65.Location = new System.Drawing.Point(719, 230);
+            this.textBox65.Location = new System.Drawing.Point(719, 239);
             this.textBox65.Name = "textBox65";
             this.textBox65.Size = new System.Drawing.Size(48, 20);
             this.textBox65.TabIndex = 77;
@@ -720,7 +660,7 @@
             // textBox66
             // 
             this.textBox66.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox66.Location = new System.Drawing.Point(718, 271);
+            this.textBox66.Location = new System.Drawing.Point(718, 280);
             this.textBox66.Name = "textBox66";
             this.textBox66.Size = new System.Drawing.Size(48, 20);
             this.textBox66.TabIndex = 76;
@@ -729,7 +669,7 @@
             // textBox67
             // 
             this.textBox67.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox67.Location = new System.Drawing.Point(719, 315);
+            this.textBox67.Location = new System.Drawing.Point(719, 324);
             this.textBox67.Name = "textBox67";
             this.textBox67.Size = new System.Drawing.Size(48, 20);
             this.textBox67.TabIndex = 75;
@@ -738,7 +678,7 @@
             // textBox54
             // 
             this.textBox54.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox54.Location = new System.Drawing.Point(613, 55);
+            this.textBox54.Location = new System.Drawing.Point(619, 58);
             this.textBox54.Name = "textBox54";
             this.textBox54.Size = new System.Drawing.Size(48, 20);
             this.textBox54.TabIndex = 74;
@@ -747,7 +687,7 @@
             // textBox55
             // 
             this.textBox55.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox55.Location = new System.Drawing.Point(613, 96);
+            this.textBox55.Location = new System.Drawing.Point(599, 105);
             this.textBox55.Name = "textBox55";
             this.textBox55.Size = new System.Drawing.Size(48, 20);
             this.textBox55.TabIndex = 73;
@@ -756,7 +696,7 @@
             // textBox56
             // 
             this.textBox56.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox56.Location = new System.Drawing.Point(613, 142);
+            this.textBox56.Location = new System.Drawing.Point(613, 151);
             this.textBox56.Name = "textBox56";
             this.textBox56.Size = new System.Drawing.Size(48, 20);
             this.textBox56.TabIndex = 72;
@@ -765,7 +705,7 @@
             // textBox57
             // 
             this.textBox57.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox57.Location = new System.Drawing.Point(613, 186);
+            this.textBox57.Location = new System.Drawing.Point(613, 195);
             this.textBox57.Name = "textBox57";
             this.textBox57.Size = new System.Drawing.Size(48, 20);
             this.textBox57.TabIndex = 71;
@@ -774,7 +714,7 @@
             // textBox58
             // 
             this.textBox58.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox58.Location = new System.Drawing.Point(613, 230);
+            this.textBox58.Location = new System.Drawing.Point(613, 239);
             this.textBox58.Name = "textBox58";
             this.textBox58.Size = new System.Drawing.Size(48, 20);
             this.textBox58.TabIndex = 70;
@@ -783,7 +723,7 @@
             // textBox59
             // 
             this.textBox59.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox59.Location = new System.Drawing.Point(613, 271);
+            this.textBox59.Location = new System.Drawing.Point(613, 280);
             this.textBox59.Name = "textBox59";
             this.textBox59.Size = new System.Drawing.Size(48, 20);
             this.textBox59.TabIndex = 69;
@@ -792,7 +732,7 @@
             // textBox60
             // 
             this.textBox60.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox60.Location = new System.Drawing.Point(613, 315);
+            this.textBox60.Location = new System.Drawing.Point(613, 324);
             this.textBox60.Name = "textBox60";
             this.textBox60.Size = new System.Drawing.Size(48, 20);
             this.textBox60.TabIndex = 68;
@@ -801,7 +741,7 @@
             // textBox53
             // 
             this.textBox53.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox53.Location = new System.Drawing.Point(508, 315);
+            this.textBox53.Location = new System.Drawing.Point(508, 324);
             this.textBox53.Name = "textBox53";
             this.textBox53.Size = new System.Drawing.Size(48, 20);
             this.textBox53.TabIndex = 67;
@@ -810,7 +750,7 @@
             // textBox52
             // 
             this.textBox52.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox52.Location = new System.Drawing.Point(508, 271);
+            this.textBox52.Location = new System.Drawing.Point(508, 280);
             this.textBox52.Name = "textBox52";
             this.textBox52.Size = new System.Drawing.Size(48, 20);
             this.textBox52.TabIndex = 66;
@@ -819,7 +759,7 @@
             // textBox51
             // 
             this.textBox51.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox51.Location = new System.Drawing.Point(509, 230);
+            this.textBox51.Location = new System.Drawing.Point(509, 239);
             this.textBox51.Name = "textBox51";
             this.textBox51.Size = new System.Drawing.Size(48, 20);
             this.textBox51.TabIndex = 65;
@@ -828,7 +768,7 @@
             // textBox47
             // 
             this.textBox47.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox47.Location = new System.Drawing.Point(508, 55);
+            this.textBox47.Location = new System.Drawing.Point(509, 64);
             this.textBox47.Name = "textBox47";
             this.textBox47.Size = new System.Drawing.Size(48, 20);
             this.textBox47.TabIndex = 64;
@@ -837,7 +777,7 @@
             // textBox48
             // 
             this.textBox48.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox48.Location = new System.Drawing.Point(508, 96);
+            this.textBox48.Location = new System.Drawing.Point(525, 105);
             this.textBox48.Name = "textBox48";
             this.textBox48.Size = new System.Drawing.Size(48, 20);
             this.textBox48.TabIndex = 63;
@@ -846,7 +786,7 @@
             // textBox50
             // 
             this.textBox50.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox50.Location = new System.Drawing.Point(508, 186);
+            this.textBox50.Location = new System.Drawing.Point(508, 195);
             this.textBox50.Name = "textBox50";
             this.textBox50.Size = new System.Drawing.Size(48, 20);
             this.textBox50.TabIndex = 62;
@@ -855,7 +795,7 @@
             // textBox49
             // 
             this.textBox49.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox49.Location = new System.Drawing.Point(509, 142);
+            this.textBox49.Location = new System.Drawing.Point(509, 151);
             this.textBox49.Name = "textBox49";
             this.textBox49.Size = new System.Drawing.Size(48, 20);
             this.textBox49.TabIndex = 61;
@@ -865,26 +805,16 @@
             // 
             this.label26.AutoSize = true;
             this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label26.Location = new System.Drawing.Point(281, 102);
+            this.label26.Location = new System.Drawing.Point(292, 74);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(31, 13);
             this.label26.TabIndex = 60;
             this.label26.Text = "1 lvl";
             // 
-            // lblStartParams
-            // 
-            this.lblStartParams.AutoSize = true;
-            this.lblStartParams.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblStartParams.Location = new System.Drawing.Point(265, 87);
-            this.lblStartParams.Name = "lblStartParams";
-            this.lblStartParams.Size = new System.Drawing.Size(70, 13);
-            this.lblStartParams.TabIndex = 59;
-            this.lblStartParams.Text = "Parameters";
-            // 
             // textBox43
             // 
             this.textBox43.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox43.Location = new System.Drawing.Point(396, 131);
+            this.textBox43.Location = new System.Drawing.Point(399, 93);
             this.textBox43.Name = "textBox43";
             this.textBox43.Size = new System.Drawing.Size(48, 20);
             this.textBox43.TabIndex = 57;
@@ -893,7 +823,7 @@
             // textBox44
             // 
             this.textBox44.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox44.Location = new System.Drawing.Point(396, 176);
+            this.textBox44.Location = new System.Drawing.Point(399, 138);
             this.textBox44.Name = "textBox44";
             this.textBox44.Size = new System.Drawing.Size(48, 20);
             this.textBox44.TabIndex = 56;
@@ -902,7 +832,7 @@
             // textBox45
             // 
             this.textBox45.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox45.Location = new System.Drawing.Point(396, 223);
+            this.textBox45.Location = new System.Drawing.Point(399, 185);
             this.textBox45.Name = "textBox45";
             this.textBox45.Size = new System.Drawing.Size(48, 20);
             this.textBox45.TabIndex = 55;
@@ -911,7 +841,7 @@
             // textBox46
             // 
             this.textBox46.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox46.Location = new System.Drawing.Point(396, 268);
+            this.textBox46.Location = new System.Drawing.Point(399, 230);
             this.textBox46.Name = "textBox46";
             this.textBox46.Size = new System.Drawing.Size(48, 20);
             this.textBox46.TabIndex = 54;
@@ -920,7 +850,7 @@
             // textBox39
             // 
             this.textBox39.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox39.Location = new System.Drawing.Point(338, 131);
+            this.textBox39.Location = new System.Drawing.Point(341, 93);
             this.textBox39.Name = "textBox39";
             this.textBox39.Size = new System.Drawing.Size(48, 20);
             this.textBox39.TabIndex = 53;
@@ -929,7 +859,7 @@
             // textBox40
             // 
             this.textBox40.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox40.Location = new System.Drawing.Point(338, 176);
+            this.textBox40.Location = new System.Drawing.Point(341, 138);
             this.textBox40.Name = "textBox40";
             this.textBox40.Size = new System.Drawing.Size(48, 20);
             this.textBox40.TabIndex = 52;
@@ -938,7 +868,7 @@
             // textBox41
             // 
             this.textBox41.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox41.Location = new System.Drawing.Point(338, 223);
+            this.textBox41.Location = new System.Drawing.Point(341, 185);
             this.textBox41.Name = "textBox41";
             this.textBox41.Size = new System.Drawing.Size(48, 20);
             this.textBox41.TabIndex = 51;
@@ -947,7 +877,7 @@
             // textBox42
             // 
             this.textBox42.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox42.Location = new System.Drawing.Point(338, 268);
+            this.textBox42.Location = new System.Drawing.Point(341, 230);
             this.textBox42.Name = "textBox42";
             this.textBox42.Size = new System.Drawing.Size(48, 20);
             this.textBox42.TabIndex = 50;
@@ -956,7 +886,7 @@
             // textBox38
             // 
             this.textBox38.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox38.Location = new System.Drawing.Point(284, 268);
+            this.textBox38.Location = new System.Drawing.Point(287, 230);
             this.textBox38.Name = "textBox38";
             this.textBox38.Size = new System.Drawing.Size(36, 20);
             this.textBox38.TabIndex = 49;
@@ -965,7 +895,7 @@
             // textBox37
             // 
             this.textBox37.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox37.Location = new System.Drawing.Point(284, 223);
+            this.textBox37.Location = new System.Drawing.Point(287, 185);
             this.textBox37.Name = "textBox37";
             this.textBox37.Size = new System.Drawing.Size(36, 20);
             this.textBox37.TabIndex = 48;
@@ -974,7 +904,7 @@
             // textBox36
             // 
             this.textBox36.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox36.Location = new System.Drawing.Point(284, 176);
+            this.textBox36.Location = new System.Drawing.Point(287, 138);
             this.textBox36.Name = "textBox36";
             this.textBox36.Size = new System.Drawing.Size(36, 20);
             this.textBox36.TabIndex = 47;
@@ -983,7 +913,7 @@
             // textBox35
             // 
             this.textBox35.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox35.Location = new System.Drawing.Point(284, 131);
+            this.textBox35.Location = new System.Drawing.Point(287, 93);
             this.textBox35.Name = "textBox35";
             this.textBox35.Size = new System.Drawing.Size(36, 20);
             this.textBox35.TabIndex = 46;
@@ -993,7 +923,7 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label24.Location = new System.Drawing.Point(405, 105);
+            this.label24.Location = new System.Drawing.Point(405, 75);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(28, 13);
             this.label24.TabIndex = 45;
@@ -1003,7 +933,7 @@
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label23.Location = new System.Drawing.Point(350, 105);
+            this.label23.Location = new System.Drawing.Point(351, 75);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(25, 13);
             this.label23.TabIndex = 44;
@@ -1013,36 +943,26 @@
             // 
             this.label22.AutoSize = true;
             this.label22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label22.Location = new System.Drawing.Point(345, 87);
+            this.label22.Location = new System.Drawing.Point(340, 55);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(93, 13);
             this.label22.TabIndex = 34;
             this.label22.Text = "Stat Probability";
             // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label21.Location = new System.Drawing.Point(606, 11);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(94, 13);
-            this.label21.TabIndex = 33;
-            this.label21.Text = "Skill Probability";
-            // 
             // textBox33
             // 
             this.textBox33.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox33.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox33.Location = new System.Drawing.Point(220, 40);
+            this.textBox33.Location = new System.Drawing.Point(201, 12);
             this.textBox33.Name = "textBox33";
-            this.textBox33.Size = new System.Drawing.Size(224, 25);
+            this.textBox33.Size = new System.Drawing.Size(246, 25);
             this.textBox33.TabIndex = 2;
             this.textBox33.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // pictureBox6
             // 
             this.pictureBox6.Image = global::h3magic.Properties.Resources.ttt;
-            this.pictureBox6.Location = new System.Drawing.Point(220, 120);
+            this.pictureBox6.Location = new System.Drawing.Point(201, 80);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(48, 180);
             this.pictureBox6.TabIndex = 35;
@@ -1063,9 +983,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(580, 447);
+            this.button3.Location = new System.Drawing.Point(619, 448);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(310, 44);
+            this.button3.Size = new System.Drawing.Size(271, 44);
             this.button3.TabIndex = 0;
             this.button3.Text = "Save Changes";
             this.button3.UseVisualStyleBackColor = true;
@@ -1074,9 +994,10 @@
             // pbSkillTree
             // 
             this.pbSkillTree.InitialImage = null;
-            this.pbSkillTree.Location = new System.Drawing.Point(459, 40);
+            this.pbSkillTree.Location = new System.Drawing.Point(201, 266);
             this.pbSkillTree.Name = "pbSkillTree";
-            this.pbSkillTree.Size = new System.Drawing.Size(431, 309);
+            this.pbSkillTree.Size = new System.Drawing.Size(246, 227);
+            this.pbSkillTree.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbSkillTree.TabIndex = 32;
             this.pbSkillTree.TabStop = false;
             // 
@@ -1084,7 +1005,6 @@
             // 
             this.tabCreatures.Controls.Add(this.button1);
             this.tabCreatures.Controls.Add(this.textBox23);
-            this.tabCreatures.Controls.Add(this.label13);
             this.tabCreatures.Controls.Add(this.textBox22);
             this.tabCreatures.Controls.Add(this.label12);
             this.tabCreatures.Controls.Add(this.textBox21);
@@ -1132,9 +1052,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(580, 447);
+            this.button1.Location = new System.Drawing.Point(619, 448);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(310, 44);
+            this.button1.Size = new System.Drawing.Size(271, 44);
             this.button1.TabIndex = 40;
             this.button1.Text = "Save Changes";
             this.button1.UseVisualStyleBackColor = true;
@@ -1142,26 +1062,16 @@
             // 
             // textBox23
             // 
-            this.textBox23.Location = new System.Drawing.Point(580, 353);
+            this.textBox23.Location = new System.Drawing.Point(175, 456);
             this.textBox23.Multiline = true;
             this.textBox23.Name = "textBox23";
-            this.textBox23.Size = new System.Drawing.Size(310, 53);
+            this.textBox23.Size = new System.Drawing.Size(288, 50);
             this.textBox23.TabIndex = 39;
-            this.textBox23.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(577, 333);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(60, 13);
-            this.label13.TabIndex = 38;
-            this.label13.Text = "Description";
             // 
             // textBox22
             // 
             this.textBox22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox22.Location = new System.Drawing.Point(806, 306);
+            this.textBox22.Location = new System.Drawing.Point(379, 431);
             this.textBox22.Name = "textBox22";
             this.textBox22.Size = new System.Drawing.Size(84, 20);
             this.textBox22.TabIndex = 37;
@@ -1170,7 +1080,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(576, 309);
+            this.label12.Location = new System.Drawing.Point(173, 434);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(35, 13);
             this.label12.TabIndex = 36;
@@ -1179,7 +1089,7 @@
             // textBox21
             // 
             this.textBox21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox21.Location = new System.Drawing.Point(806, 280);
+            this.textBox21.Location = new System.Drawing.Point(379, 408);
             this.textBox21.Name = "textBox21";
             this.textBox21.Size = new System.Drawing.Size(84, 20);
             this.textBox21.TabIndex = 35;
@@ -1188,7 +1098,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(576, 283);
+            this.label11.Location = new System.Drawing.Point(173, 411);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(47, 13);
             this.label11.TabIndex = 34;
@@ -1197,7 +1107,7 @@
             // textBox20
             // 
             this.textBox20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox20.Location = new System.Drawing.Point(806, 254);
+            this.textBox20.Location = new System.Drawing.Point(379, 386);
             this.textBox20.Name = "textBox20";
             this.textBox20.Size = new System.Drawing.Size(84, 20);
             this.textBox20.TabIndex = 33;
@@ -1206,7 +1116,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(576, 257);
+            this.label10.Location = new System.Drawing.Point(173, 389);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(60, 13);
             this.label10.TabIndex = 32;
@@ -1215,7 +1125,7 @@
             // textBox19
             // 
             this.textBox19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox19.Location = new System.Drawing.Point(806, 180);
+            this.textBox19.Location = new System.Drawing.Point(379, 222);
             this.textBox19.Name = "textBox19";
             this.textBox19.Size = new System.Drawing.Size(84, 20);
             this.textBox19.TabIndex = 31;
@@ -1224,16 +1134,16 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(576, 183);
+            this.label9.Location = new System.Drawing.Point(172, 225);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(41, 13);
+            this.label9.Size = new System.Drawing.Size(73, 13);
             this.label9.TabIndex = 30;
-            this.label9.Text = "Growth";
+            this.label9.Text = "Horde Growth";
             // 
             // textBox18
             // 
             this.textBox18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox18.Location = new System.Drawing.Point(759, 142);
+            this.textBox18.Location = new System.Drawing.Point(332, 364);
             this.textBox18.Name = "textBox18";
             this.textBox18.Size = new System.Drawing.Size(131, 20);
             this.textBox18.TabIndex = 29;
@@ -1242,7 +1152,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(576, 145);
+            this.label8.Location = new System.Drawing.Point(172, 367);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(39, 13);
             this.label8.TabIndex = 28;
@@ -1251,7 +1161,7 @@
             // textBox17
             // 
             this.textBox17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox17.Location = new System.Drawing.Point(759, 116);
+            this.textBox17.Location = new System.Drawing.Point(332, 341);
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(131, 20);
             this.textBox17.TabIndex = 27;
@@ -1260,43 +1170,17 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(576, 119);
+            this.label7.Location = new System.Drawing.Point(172, 344);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(33, 13);
             this.label7.TabIndex = 26;
             this.label7.Text = "Plural";
             // 
-            // cbCreatures
-            // 
-            this.cbCreatures.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbCreatures.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCreatures.FormattingEnabled = true;
-            this.cbCreatures.ItemHeight = 32;
-            this.cbCreatures.Location = new System.Drawing.Point(679, 21);
-            this.cbCreatures.Name = "cbCreatures";
-            this.cbCreatures.Size = new System.Drawing.Size(211, 38);
-            this.cbCreatures.TabIndex = 25;
-            this.cbCreatures.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cb_creatures_DrawItem);
-            this.cbCreatures.SelectedIndexChanged += new System.EventHandler(this.cb_creatures_SelectedIndexChanged);
-            // 
-            // cbCastles
-            // 
-            this.cbCastles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cbCastles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCastles.FormattingEnabled = true;
-            this.cbCastles.ItemHeight = 32;
-            this.cbCastles.Location = new System.Drawing.Point(478, 21);
-            this.cbCastles.Name = "cbCastles";
-            this.cbCastles.Size = new System.Drawing.Size(195, 38);
-            this.cbCastles.TabIndex = 24;
-            this.cbCastles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbCastles_DrawItem);
-            this.cbCastles.SelectedIndexChanged += new System.EventHandler(this.cbCastles_SelectedIndexChanged);
-            // 
             // textBox16
             // 
             this.textBox16.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox16.Location = new System.Drawing.Point(310, 378);
+            this.textBox16.Location = new System.Drawing.Point(275, 306);
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(91, 13);
             this.textBox16.TabIndex = 22;
@@ -1307,7 +1191,7 @@
             this.textBox14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.textBox14.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox14.Location = new System.Drawing.Point(442, 325);
+            this.textBox14.Location = new System.Drawing.Point(407, 253);
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(37, 13);
             this.textBox14.TabIndex = 21;
@@ -1317,7 +1201,7 @@
             // 
             this.textBox15.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox15.Location = new System.Drawing.Point(347, 347);
+            this.textBox15.Location = new System.Drawing.Point(312, 275);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(37, 13);
             this.textBox15.TabIndex = 20;
@@ -1327,7 +1211,7 @@
             // 
             this.textBox12.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox12.Location = new System.Drawing.Point(254, 347);
+            this.textBox12.Location = new System.Drawing.Point(219, 275);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(37, 13);
             this.textBox12.TabIndex = 19;
@@ -1337,7 +1221,7 @@
             // 
             this.textBox13.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox13.Location = new System.Drawing.Point(442, 347);
+            this.textBox13.Location = new System.Drawing.Point(407, 275);
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(37, 13);
             this.textBox13.TabIndex = 18;
@@ -1347,7 +1231,7 @@
             // 
             this.textBox11.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox11.Location = new System.Drawing.Point(347, 324);
+            this.textBox11.Location = new System.Drawing.Point(312, 252);
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(37, 13);
             this.textBox11.TabIndex = 17;
@@ -1357,7 +1241,7 @@
             // 
             this.textBox10.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox10.Location = new System.Drawing.Point(254, 323);
+            this.textBox10.Location = new System.Drawing.Point(219, 251);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(37, 13);
             this.textBox10.TabIndex = 16;
@@ -1366,7 +1250,7 @@
             // textBox9
             // 
             this.textBox9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox9.Location = new System.Drawing.Point(461, 206);
+            this.textBox9.Location = new System.Drawing.Point(426, 134);
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(37, 20);
             this.textBox9.TabIndex = 14;
@@ -1375,7 +1259,7 @@
             // textBox8
             // 
             this.textBox8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox8.Location = new System.Drawing.Point(414, 206);
+            this.textBox8.Location = new System.Drawing.Point(379, 134);
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(37, 20);
             this.textBox8.TabIndex = 13;
@@ -1384,7 +1268,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(207, 209);
+            this.label6.Location = new System.Drawing.Point(172, 137);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(47, 13);
             this.label6.TabIndex = 12;
@@ -1393,7 +1277,7 @@
             // textBox7
             // 
             this.textBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox7.Location = new System.Drawing.Point(414, 258);
+            this.textBox7.Location = new System.Drawing.Point(379, 178);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(84, 20);
             this.textBox7.TabIndex = 11;
@@ -1402,7 +1286,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(207, 261);
+            this.label5.Location = new System.Drawing.Point(173, 181);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(38, 13);
             this.label5.TabIndex = 10;
@@ -1411,7 +1295,7 @@
             // textBox6
             // 
             this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox6.Location = new System.Drawing.Point(414, 232);
+            this.textBox6.Location = new System.Drawing.Point(379, 156);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(84, 20);
             this.textBox6.TabIndex = 9;
@@ -1420,7 +1304,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(207, 235);
+            this.label4.Location = new System.Drawing.Point(172, 159);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(22, 13);
             this.label4.TabIndex = 8;
@@ -1429,7 +1313,7 @@
             // textBox5
             // 
             this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox5.Location = new System.Drawing.Point(414, 284);
+            this.textBox5.Location = new System.Drawing.Point(379, 200);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(84, 20);
             this.textBox5.TabIndex = 7;
@@ -1438,7 +1322,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(207, 287);
+            this.label3.Location = new System.Drawing.Point(173, 203);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 6;
@@ -1447,7 +1331,7 @@
             // textBox4
             // 
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox4.Location = new System.Drawing.Point(414, 180);
+            this.textBox4.Location = new System.Drawing.Point(379, 112);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(84, 20);
             this.textBox4.TabIndex = 5;
@@ -1456,16 +1340,16 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(207, 183);
+            this.label2.Location = new System.Drawing.Point(172, 115);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 13);
+            this.label2.Size = new System.Drawing.Size(47, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Defence";
+            this.label2.Text = "Defense";
             // 
             // textBox3
             // 
             this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox3.Location = new System.Drawing.Point(414, 154);
+            this.textBox3.Location = new System.Drawing.Point(379, 90);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(84, 20);
             this.textBox3.TabIndex = 3;
@@ -1474,7 +1358,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(207, 157);
+            this.label1.Location = new System.Drawing.Point(172, 93);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 2;
@@ -1484,7 +1368,7 @@
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBox1.Location = new System.Drawing.Point(210, 116);
+            this.textBox1.Location = new System.Drawing.Point(175, 57);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(288, 25);
             this.textBox1.TabIndex = 1;
@@ -1492,7 +1376,7 @@
             // 
             // pbCreature
             // 
-            this.pbCreature.Location = new System.Drawing.Point(6, 114);
+            this.pbCreature.Location = new System.Drawing.Point(6, 55);
             this.pbCreature.Name = "pbCreature";
             this.pbCreature.Size = new System.Drawing.Size(150, 195);
             this.pbCreature.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1502,7 +1386,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(210, 319);
+            this.pictureBox2.Location = new System.Drawing.Point(175, 247);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(288, 87);
             this.pictureBox2.TabIndex = 23;
@@ -1617,6 +1501,79 @@
             this.pbResourceView.TabStop = false;
             this.pbResourceView.Visible = false;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.завантажитиToolStripMenuItem,
+            this.зберегтиToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(146, 48);
+            // 
+            // завантажитиToolStripMenuItem
+            // 
+            this.завантажитиToolStripMenuItem.Name = "завантажитиToolStripMenuItem";
+            this.завантажитиToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.завантажитиToolStripMenuItem.Text = "Завантажити";
+            this.завантажитиToolStripMenuItem.Click += new System.EventHandler(this.завантажитиToolStripMenuItem_Click);
+            // 
+            // зберегтиToolStripMenuItem
+            // 
+            this.зберегтиToolStripMenuItem.Name = "зберегтиToolStripMenuItem";
+            this.зберегтиToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.зберегтиToolStripMenuItem.Text = "Зберегти";
+            this.зберегтиToolStripMenuItem.Click += new System.EventHandler(this.зберегтиToolStripMenuItem_Click);
+            // 
+            // lbHeroes
+            // 
+            this.lbHeroes.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lbHeroes.FormattingEnabled = true;
+            this.lbHeroes.ItemHeight = 24;
+            this.lbHeroes.Location = new System.Drawing.Point(2, 9);
+            this.lbHeroes.Name = "lbHeroes";
+            this.lbHeroes.Size = new System.Drawing.Size(182, 484);
+            this.lbHeroes.TabIndex = 0;
+            this.lbHeroes.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbHeroes_DrawItem);
+            this.lbHeroes.SelectedIndexChanged += new System.EventHandler(this.lbHeroes_SelectedIndexChanged);
+            // 
+            // hpcHeroProfile
+            // 
+            this.hpcHeroProfile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.hpcHeroProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.hpcHeroProfile.Hero = null;
+            this.hpcHeroProfile.HeroIndex = 0;
+            this.hpcHeroProfile.Image = null;
+            this.hpcHeroProfile.Location = new System.Drawing.Point(190, 9);
+            this.hpcHeroProfile.Name = "hpcHeroProfile";
+            this.hpcHeroProfile.Size = new System.Drawing.Size(419, 482);
+            this.hpcHeroProfile.TabIndex = 22;
+            // 
+            // cbCreatures
+            // 
+            this.cbCreatures.BackColor = System.Drawing.SystemColors.Window;
+            this.cbCreatures.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbCreatures.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCreatures.FormattingEnabled = true;
+            this.cbCreatures.ItemHeight = 32;
+            this.cbCreatures.Location = new System.Drawing.Point(175, 9);
+            this.cbCreatures.Name = "cbCreatures";
+            this.cbCreatures.Size = new System.Drawing.Size(288, 38);
+            this.cbCreatures.TabIndex = 25;
+            this.cbCreatures.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbCreatures_DrawItem);
+            this.cbCreatures.SelectedIndexChanged += new System.EventHandler(this.cbCreatures_SelectedIndexChanged);
+            // 
+            // cbCastles
+            // 
+            this.cbCastles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbCastles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCastles.FormattingEnabled = true;
+            this.cbCastles.ItemHeight = 32;
+            this.cbCastles.Location = new System.Drawing.Point(6, 9);
+            this.cbCastles.Name = "cbCastles";
+            this.cbCastles.Size = new System.Drawing.Size(150, 38);
+            this.cbCastles.TabIndex = 24;
+            this.cbCastles.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbCastles_DrawItem);
+            this.cbCastles.SelectedIndexChanged += new System.EventHandler(this.cbCastles_SelectedIndexChanged);
+            // 
             // specialityBuilder1
             // 
             this.specialityBuilder1.CurrentIndex = 0;
@@ -1625,7 +1582,7 @@
             this.specialityBuilder1.Location = new System.Drawing.Point(0, 0);
             this.specialityBuilder1.Name = "specialityBuilder1";
             this.specialityBuilder1.PropertyType = h3magic.ProfilePropertyType.Creature;
-            this.specialityBuilder1.SelectedValue = 0;
+            this.specialityBuilder1.SelectedValue = -1;
             this.specialityBuilder1.Size = new System.Drawing.Size(510, 321);
             this.specialityBuilder1.TabIndex = 0;
             // 
@@ -1647,8 +1604,6 @@
             this.tabsMain.ResumeLayout(false);
             this.tabHeroes.ResumeLayout(false);
             this.tabHeroes.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPortraitSmall)).EndInit();
-            this.contextMenuStrip1.ResumeLayout(false);
             this.tabHeroClass.ResumeLayout(false);
             this.tabHeroClass.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
@@ -1663,6 +1618,7 @@
             this.tabMain.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbDefSprites)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbResourceView)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1709,8 +1665,8 @@
         private System.Windows.Forms.TextBox textBox8;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.ComboBox cbCreatures;
-        private System.Windows.Forms.ComboBox cbCastles;
+        private ComboBoxWithImages cbCreatures;
+        private ComboBoxWithImages cbCastles;
         private System.Windows.Forms.TextBox textBox22;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox textBox21;
@@ -1724,7 +1680,6 @@
         private System.Windows.Forms.TextBox textBox17;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBox23;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem завантажитиToolStripMenuItem;
@@ -1734,7 +1689,6 @@
         private System.Windows.Forms.ListBox lbHeroClasses;
         private System.Windows.Forms.TextBox textBox33;
         private System.Windows.Forms.PictureBox pbSkillTree;
-        private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label23;
@@ -1752,7 +1706,6 @@
         private System.Windows.Forms.TextBox textBox36;
         private System.Windows.Forms.TextBox textBox35;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label lblStartParams;
         private System.Windows.Forms.TextBox textBox61;
         private System.Windows.Forms.TextBox textBox62;
         private System.Windows.Forms.TextBox textBox63;
@@ -1782,8 +1735,7 @@
         private System.Windows.Forms.TextBox textBox73;
         private System.Windows.Forms.TextBox textBox74;
         private System.Windows.Forms.TabPage tabHeroes;
-        private System.Windows.Forms.PictureBox pbPortraitSmall;
-        private System.Windows.Forms.ListBox lbHeroes;
+        private ListBoxWithImages lbHeroes;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label16;

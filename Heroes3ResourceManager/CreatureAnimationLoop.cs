@@ -269,7 +269,8 @@ namespace h3magic
             byte* crPtr = (byte*)imgData.Scan0.ToPointer();
             byte* backOffset, sprOffset;
 
-            for (int i = 0; i < computedSize.Height; i++)
+            int heightLimit = computedSize.Height > height ? height : computedSize.Height;
+            for (int i = 0; i < heightLimit; i++)
             {
                 backOffset = backPtr + (i + offY) * backData.Stride + 3 * offX;
                 sprOffset = crPtr + (i + computedOffset.Y) * imgData.Stride + 3 * computedOffset.X;

@@ -11,7 +11,7 @@ namespace h3magic
         private const string IMG_FNAME = "ITPA.def";
 
         public static Town[] AllTowns = new Town[10];
-        public static Color[] AllColors = new Color[] { Color.LightCyan, Color.PaleGreen, Color.MintCream, Color.MistyRose, Color.Gainsboro, Color.Lavender, Color.Wheat, Color.DarkSeaGreen, Color.WhiteSmoke, Color.LightGray };
+        public static Color[] AllColors = new Color[] { Color.LightCyan, Color.PaleGreen, Color.MintCream, Color.MistyRose, Color.Gainsboro, Color.Lavender, Color.Wheat, Color.DarkSeaGreen, Color.LightSkyBlue, Color.LightGray };
 
         public Bitmap Image;
         public Bitmap LargeImage;
