@@ -6,7 +6,7 @@ using System.Text;
 
 namespace h3magic
 {
-    public class ExeFile
+    public class ExeFile : IDisposable
     {
         public string Name { get; set; }
         public string Path { get; set; }
@@ -17,6 +17,11 @@ namespace h3magic
             Name = System.IO.Path.GetFileName(executablePath);
             Path = executablePath;
             Data = File.ReadAllBytes(executablePath);
+        }
+
+        public void Dispose()
+        {
+            Data = null;
         }
     }
 }

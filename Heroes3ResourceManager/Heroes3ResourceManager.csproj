@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitmapCache.cs" />
     <Compile Include="ComboBoxWithImages.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -127,6 +128,9 @@
     <EmbeddedResource Include="ImageGridControl.resx">
       <DependentUpon>ImageGridControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SpellDataControl.resx">
+      <DependentUpon>SpellDataControl.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -153,6 +157,12 @@
     </Compile>
     <Compile Include="SpecialityDefBuilder.cs" />
     <Compile Include="Spell.cs" />
+    <Compile Include="SpellDataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SpellDataControl.Designer.cs">
+      <DependentUpon>SpellDataControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SpriteBlockHeader.cs" />
     <Compile Include="SpriteHeader.cs" />
     <Compile Include="StringsData.cs" />

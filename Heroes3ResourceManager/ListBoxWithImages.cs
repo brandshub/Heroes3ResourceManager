@@ -8,7 +8,6 @@ namespace h3magic
 {
     public class ListBoxWithImages : ListBox
     {
-
         public ListBoxWithImages()
         {
             DoubleBuffered = true;

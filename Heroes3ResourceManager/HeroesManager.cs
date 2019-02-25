@@ -22,7 +22,7 @@ namespace h3magic
         public static List<HeroStats> AllHeroes = new List<HeroStats>();
 
         public static string[] HeroesOrder;
-        public static bool HasChanges { get; set; }
+        public static bool HasChanges { get; set; }       
 
         public static void LoadInfo(LodFile h3bitmap)
         {

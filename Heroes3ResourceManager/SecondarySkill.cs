@@ -20,6 +20,7 @@ namespace h3magic
 
         public static List<SecondarySkill> AllSkills = new List<SecondarySkill>();
         public static int[] IndexesOfAllSpecSkills = { 1, 2, 5, 8, 11, 12, 13, 22, 23, 24, 25, 26, 27 };
+        public static int[] SchoolSecondarySkillIndexes = new int[] { 17, 16, 14, 15 };
 
         private static DefFile _defFile = null;
         private static Bitmap _skillTree = null;

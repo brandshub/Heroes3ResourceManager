@@ -28,11 +28,10 @@ namespace h3magic
             base.OnDropDown(e);
         }
 
-
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
 
-            if (Items.Count > 14)
+            if (Items.Count > 25)
             {
                 base.OnDrawItem(e);
                 return;
@@ -54,7 +53,6 @@ namespace h3magic
                         drawnItemsIndices[e.Index] = 1;
                         return;
                     }
-
                     if (drawnItemsIndices[e.Index] < 2 && e.Index == curSel)
                     {
                         base.OnDrawItem(e);
@@ -68,7 +66,7 @@ namespace h3magic
                     if (drawnItemsIndices[e.Index] == 0)
                     {
                         base.OnDrawItem(e);
-                               dl("NOnDraw +" + e.State + " " + e.Index + " " + e.Bounds + " " + internalC++);
+                        dl("NOnDraw +" + e.State + " " + e.Index + " " + e.Bounds + " " + internalC++);
                         drawnItemsIndices[e.Index]++;
                         return;
                     }

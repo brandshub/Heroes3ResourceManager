@@ -54,21 +54,35 @@ namespace h3magic
                 byte[] array;
                 if (newVal == null)
                 {
-                    byte[] bts = new byte[Size];
-                    stream.Position = Offset;
-                    stream.Read(bts, 0, Size);
-                    array = ZlibWrapper.UnZlib(bts);
+                    if (Size != 0)
+                    {
+                        byte[] bts = new byte[Size];
+                        stream.Position = Offset;
+                        stream.Read(bts, 0, Size);
+                        array = ZlibWrapper.UnZlib(bts);
+                    }
+                    else if (RealSize != 0)
+                    {
+                        array = new byte[RealSize];
+                        stream.Position = Offset;
+                        stream.Read(array, 0, RealSize);
+                    }
+                    else
+                    {
+                        throw new Exception("Image size unknown");
+                    }
                 }
                 else
                 {
                     array = newVal;
                 }
+
                 var file = new PcxFile(array);
                 try
                 {
                     return file.GetBitmap();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return null;
                 }
@@ -78,7 +92,7 @@ namespace h3magic
 
         public byte[] GetBitmap24Data(Stream stream, out int width)
         {
-            width = 0;            
+            width = 0;
             if (Extension == "PCX")
             {
                 byte[] array;
@@ -108,6 +122,12 @@ namespace h3magic
 
         public byte[] GetRawData(Stream stream)
         {
+            if (HasChanged)
+            {
+                return newVal;
+            }
+
+
             if (Size != 0)
             {
                 byte[] bts = new byte[Size];

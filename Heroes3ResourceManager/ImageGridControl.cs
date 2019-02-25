@@ -317,7 +317,7 @@ namespace h3magic
                     return new Bitmap(SecondarySkill.GetSkillTree(Heroes3Master.Master.H3Sprite));
 
                 if (propertyType == ProfilePropertyType.Spell)
-                    return new Bitmap(Spell.GetAllSpellsParallel(Heroes3Master.Master.H3Sprite));
+                    return new Bitmap(Spell.GetAllSpells(Heroes3Master.Master.H3Sprite));
 
                 if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic)
                     return CreatureManager.GetAllBasicCreatures(Heroes3Master.Master.H3Sprite);
