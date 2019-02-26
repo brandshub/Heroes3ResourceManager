@@ -18,6 +18,14 @@ namespace h3magic
 
         private int offset;
 
+        public int Stride24
+        {
+            get
+            {
+                int byteWidth = FullWidth * 3;
+                return byteWidth + (4 - (byteWidth % 4)) % 4;
+            }
+        }
         public SpriteHeader(byte[] block, int offset)
         {
             this.offset = offset;
@@ -29,6 +37,6 @@ namespace h3magic
             SpriteHeight = BitConverter.ToInt32(block, offset + 20);
             LeftMargin = BitConverter.ToInt32(block, offset + 24);
             TopMargin = BitConverter.ToInt32(block, offset + 28);
-        }        
+        }
     }
 }

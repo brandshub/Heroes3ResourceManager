@@ -115,6 +115,10 @@ namespace h3magic
                 int height = bckgBytes[castleIndex].Length / stride;
 
                 //var sw = Stopwatch.StartNew();
+                /*bckgBytes[castleIndex] = new byte[bckgBytes[castleIndex].Length];
+                for (int i = 0; i < bckgBytes[castleIndex].Length; i++)
+                    bckgBytes[castleIndex][i] = (byte)0xff;
+                */
                 frames[CurrentFrame] = DrawTransparent2(bckgBytes[castleIndex], widths[castleIndex], height, bmp, pt, size);
                 // fullTime += sw.ElapsedMs();
 

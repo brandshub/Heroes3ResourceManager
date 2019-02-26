@@ -69,6 +69,8 @@
             this.nmAiValue1 = new System.Windows.Forms.NumericUpDown();
             this.nmAiValue0 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
+            this.lbSpells = new System.Windows.Forms.ListBox();
+            this.cbSpellFilter = new h3magic.ComboBoxWithImages();
             ((System.ComponentModel.ISupportInitialize)(this.nmEffectPerMp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBaseLvl3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBaseLvl2)).BeginInit();
@@ -101,7 +103,7 @@
             // 
             // nmEffectPerMp
             // 
-            this.nmEffectPerMp.Location = new System.Drawing.Point(203, 188);
+            this.nmEffectPerMp.Location = new System.Drawing.Point(431, 188);
             this.nmEffectPerMp.Maximum = new decimal(new int[] {
             999,
             0,
@@ -115,7 +117,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(-3, 190);
+            this.label30.Location = new System.Drawing.Point(225, 190);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(72, 13);
             this.label30.TabIndex = 43;
@@ -123,7 +125,7 @@
             // 
             // nmBaseLvl3
             // 
-            this.nmBaseLvl3.Location = new System.Drawing.Point(250, 165);
+            this.nmBaseLvl3.Location = new System.Drawing.Point(478, 165);
             this.nmBaseLvl3.Maximum = new decimal(new int[] {
             999,
             0,
@@ -136,7 +138,7 @@
             // 
             // nmBaseLvl2
             // 
-            this.nmBaseLvl2.Location = new System.Drawing.Point(204, 164);
+            this.nmBaseLvl2.Location = new System.Drawing.Point(432, 164);
             this.nmBaseLvl2.Maximum = new decimal(new int[] {
             999,
             0,
@@ -149,7 +151,7 @@
             // 
             // nmBaseLvl1
             // 
-            this.nmBaseLvl1.Location = new System.Drawing.Point(158, 164);
+            this.nmBaseLvl1.Location = new System.Drawing.Point(386, 164);
             this.nmBaseLvl1.Maximum = new decimal(new int[] {
             999,
             0,
@@ -162,7 +164,7 @@
             // 
             // nmBaseLvl0
             // 
-            this.nmBaseLvl0.Location = new System.Drawing.Point(112, 164);
+            this.nmBaseLvl0.Location = new System.Drawing.Point(340, 164);
             this.nmBaseLvl0.Maximum = new decimal(new int[] {
             999,
             0,
@@ -176,7 +178,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(-3, 166);
+            this.label29.Location = new System.Drawing.Point(225, 166);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(62, 13);
             this.label29.TabIndex = 38;
@@ -185,7 +187,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(249, 115);
+            this.label27.Location = new System.Drawing.Point(477, 115);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(37, 13);
             this.label27.TabIndex = 37;
@@ -194,7 +196,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(206, 114);
+            this.label28.Location = new System.Drawing.Point(434, 114);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(29, 13);
             this.label28.TabIndex = 36;
@@ -203,7 +205,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(158, 114);
+            this.label25.Location = new System.Drawing.Point(386, 114);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(33, 13);
             this.label25.TabIndex = 35;
@@ -212,7 +214,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(111, 114);
+            this.label21.Location = new System.Drawing.Point(339, 114);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(33, 13);
             this.label21.TabIndex = 34;
@@ -220,7 +222,7 @@
             // 
             // nmMpLvl3
             // 
-            this.nmMpLvl3.Location = new System.Drawing.Point(250, 139);
+            this.nmMpLvl3.Location = new System.Drawing.Point(478, 139);
             this.nmMpLvl3.Maximum = new decimal(new int[] {
             999,
             0,
@@ -233,7 +235,7 @@
             // 
             // nmMpLvl2
             // 
-            this.nmMpLvl2.Location = new System.Drawing.Point(203, 138);
+            this.nmMpLvl2.Location = new System.Drawing.Point(431, 138);
             this.nmMpLvl2.Maximum = new decimal(new int[] {
             999,
             0,
@@ -246,7 +248,7 @@
             // 
             // nmMpLvl1
             // 
-            this.nmMpLvl1.Location = new System.Drawing.Point(157, 138);
+            this.nmMpLvl1.Location = new System.Drawing.Point(385, 138);
             this.nmMpLvl1.Maximum = new decimal(new int[] {
             999,
             0,
@@ -259,7 +261,7 @@
             // 
             // nmMpLvl0
             // 
-            this.nmMpLvl0.Location = new System.Drawing.Point(111, 138);
+            this.nmMpLvl0.Location = new System.Drawing.Point(339, 138);
             this.nmMpLvl0.Maximum = new decimal(new int[] {
             999,
             0,
@@ -273,7 +275,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(-3, 140);
+            this.label20.Location = new System.Drawing.Point(225, 140);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(54, 13);
             this.label20.TabIndex = 29;
@@ -282,7 +284,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(-3, 80);
+            this.label19.Location = new System.Drawing.Point(225, 80);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(51, 13);
             this.label19.TabIndex = 28;
@@ -291,7 +293,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(64, 34);
+            this.label13.Location = new System.Drawing.Point(292, 34);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(59, 13);
             this.label13.TabIndex = 26;
@@ -307,7 +309,7 @@
             "3",
             "4",
             "5"});
-            this.cbSpellLevel.Location = new System.Drawing.Point(203, 31);
+            this.cbSpellLevel.Location = new System.Drawing.Point(431, 31);
             this.cbSpellLevel.Name = "cbSpellLevel";
             this.cbSpellLevel.Size = new System.Drawing.Size(87, 21);
             this.cbSpellLevel.TabIndex = 25;
@@ -315,7 +317,7 @@
             // tbSpellName
             // 
             this.tbSpellName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbSpellName.Location = new System.Drawing.Point(65, 0);
+            this.tbSpellName.Location = new System.Drawing.Point(293, 0);
             this.tbSpellName.Name = "tbSpellName";
             this.tbSpellName.Size = new System.Drawing.Size(225, 22);
             this.tbSpellName.TabIndex = 24;
@@ -324,7 +326,7 @@
             // pbSpell
             // 
             this.pbSpell.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbSpell.Location = new System.Drawing.Point(0, 0);
+            this.pbSpell.Location = new System.Drawing.Point(228, 0);
             this.pbSpell.Name = "pbSpell";
             this.pbSpell.Size = new System.Drawing.Size(58, 64);
             this.pbSpell.TabIndex = 23;
@@ -332,7 +334,7 @@
             // 
             // pbEarth
             // 
-            this.pbEarth.Location = new System.Drawing.Point(111, 64);
+            this.pbEarth.Location = new System.Drawing.Point(339, 64);
             this.pbEarth.Name = "pbEarth";
             this.pbEarth.Size = new System.Drawing.Size(44, 44);
             this.pbEarth.TabIndex = 45;
@@ -341,7 +343,7 @@
             // 
             // pbWater
             // 
-            this.pbWater.Location = new System.Drawing.Point(156, 64);
+            this.pbWater.Location = new System.Drawing.Point(384, 64);
             this.pbWater.Name = "pbWater";
             this.pbWater.Size = new System.Drawing.Size(44, 44);
             this.pbWater.TabIndex = 46;
@@ -350,7 +352,7 @@
             // 
             // pbFire
             // 
-            this.pbFire.Location = new System.Drawing.Point(201, 64);
+            this.pbFire.Location = new System.Drawing.Point(429, 64);
             this.pbFire.Name = "pbFire";
             this.pbFire.Size = new System.Drawing.Size(44, 44);
             this.pbFire.TabIndex = 47;
@@ -359,7 +361,7 @@
             // 
             // pbAir
             // 
-            this.pbAir.Location = new System.Drawing.Point(246, 64);
+            this.pbAir.Location = new System.Drawing.Point(474, 64);
             this.pbAir.Name = "pbAir";
             this.pbAir.Size = new System.Drawing.Size(44, 44);
             this.pbAir.TabIndex = 48;
@@ -368,7 +370,7 @@
             // 
             // pbTownProbability
             // 
-            this.pbTownProbability.Location = new System.Drawing.Point(111, 286);
+            this.pbTownProbability.Location = new System.Drawing.Point(339, 286);
             this.pbTownProbability.Name = "pbTownProbability";
             this.pbTownProbability.Size = new System.Drawing.Size(179, 182);
             this.pbTownProbability.TabIndex = 49;
@@ -377,7 +379,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(-3, 355);
+            this.label1.Location = new System.Drawing.Point(225, 355);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(81, 13);
             this.label1.TabIndex = 50;
@@ -385,7 +387,7 @@
             // 
             // nmProb0
             // 
-            this.nmProb0.Location = new System.Drawing.Point(125, 319);
+            this.nmProb0.Location = new System.Drawing.Point(353, 319);
             this.nmProb0.Maximum = new decimal(new int[] {
             999,
             0,
@@ -398,7 +400,7 @@
             // 
             // nmProb1
             // 
-            this.nmProb1.Location = new System.Drawing.Point(180, 319);
+            this.nmProb1.Location = new System.Drawing.Point(408, 319);
             this.nmProb1.Maximum = new decimal(new int[] {
             999,
             0,
@@ -411,7 +413,7 @@
             // 
             // nmProb2
             // 
-            this.nmProb2.Location = new System.Drawing.Point(242, 319);
+            this.nmProb2.Location = new System.Drawing.Point(470, 319);
             this.nmProb2.Maximum = new decimal(new int[] {
             999,
             0,
@@ -424,7 +426,7 @@
             // 
             // nmProb5
             // 
-            this.nmProb5.Location = new System.Drawing.Point(242, 381);
+            this.nmProb5.Location = new System.Drawing.Point(470, 381);
             this.nmProb5.Maximum = new decimal(new int[] {
             999,
             0,
@@ -437,7 +439,7 @@
             // 
             // nmProb4
             // 
-            this.nmProb4.Location = new System.Drawing.Point(183, 381);
+            this.nmProb4.Location = new System.Drawing.Point(411, 381);
             this.nmProb4.Maximum = new decimal(new int[] {
             999,
             0,
@@ -450,7 +452,7 @@
             // 
             // nmProb3
             // 
-            this.nmProb3.Location = new System.Drawing.Point(128, 381);
+            this.nmProb3.Location = new System.Drawing.Point(356, 381);
             this.nmProb3.Maximum = new decimal(new int[] {
             999,
             0,
@@ -463,7 +465,7 @@
             // 
             // nmProb8
             // 
-            this.nmProb8.Location = new System.Drawing.Point(242, 448);
+            this.nmProb8.Location = new System.Drawing.Point(470, 448);
             this.nmProb8.Maximum = new decimal(new int[] {
             999,
             0,
@@ -476,7 +478,7 @@
             // 
             // nmProb7
             // 
-            this.nmProb7.Location = new System.Drawing.Point(181, 448);
+            this.nmProb7.Location = new System.Drawing.Point(409, 448);
             this.nmProb7.Maximum = new decimal(new int[] {
             999,
             0,
@@ -489,7 +491,7 @@
             // 
             // nmProb6
             // 
-            this.nmProb6.Location = new System.Drawing.Point(125, 448);
+            this.nmProb6.Location = new System.Drawing.Point(353, 448);
             this.nmProb6.Maximum = new decimal(new int[] {
             999,
             0,
@@ -502,7 +504,7 @@
             // 
             // nmAiValue3
             // 
-            this.nmAiValue3.Location = new System.Drawing.Point(250, 232);
+            this.nmAiValue3.Location = new System.Drawing.Point(478, 232);
             this.nmAiValue3.Maximum = new decimal(new int[] {
             999,
             0,
@@ -515,7 +517,7 @@
             // 
             // nmAiValue2
             // 
-            this.nmAiValue2.Location = new System.Drawing.Point(203, 231);
+            this.nmAiValue2.Location = new System.Drawing.Point(431, 231);
             this.nmAiValue2.Maximum = new decimal(new int[] {
             999,
             0,
@@ -528,7 +530,7 @@
             // 
             // nmAiValue1
             // 
-            this.nmAiValue1.Location = new System.Drawing.Point(157, 231);
+            this.nmAiValue1.Location = new System.Drawing.Point(385, 231);
             this.nmAiValue1.Maximum = new decimal(new int[] {
             999,
             0,
@@ -541,7 +543,7 @@
             // 
             // nmAiValue0
             // 
-            this.nmAiValue0.Location = new System.Drawing.Point(111, 231);
+            this.nmAiValue0.Location = new System.Drawing.Point(339, 231);
             this.nmAiValue0.Maximum = new decimal(new int[] {
             999,
             0,
@@ -555,16 +557,43 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(-3, 233);
+            this.label2.Location = new System.Drawing.Point(225, 233);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 13);
             this.label2.TabIndex = 60;
             this.label2.Text = "AI Value";
             // 
+            // lbSpells
+            // 
+            this.lbSpells.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lbSpells.FormattingEnabled = true;
+            this.lbSpells.ItemHeight = 32;
+            this.lbSpells.Location = new System.Drawing.Point(1, 44);
+            this.lbSpells.Name = "lbSpells";
+            this.lbSpells.Size = new System.Drawing.Size(204, 452);
+            this.lbSpells.TabIndex = 65;
+            this.lbSpells.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbSpells_DrawItem);
+            this.lbSpells.SelectedIndexChanged += new System.EventHandler(this.lbSpells_SelectedIndexChanged);
+            // 
+            // cbSpellFilter
+            // 
+            this.cbSpellFilter.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbSpellFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSpellFilter.FormattingEnabled = true;
+            this.cbSpellFilter.ItemHeight = 32;
+            this.cbSpellFilter.Location = new System.Drawing.Point(0, 0);
+            this.cbSpellFilter.Name = "cbSpellFilter";
+            this.cbSpellFilter.Size = new System.Drawing.Size(205, 38);
+            this.cbSpellFilter.TabIndex = 66;
+            this.cbSpellFilter.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.cbSpellFilter_DrawItem);
+            this.cbSpellFilter.SelectedIndexChanged += new System.EventHandler(this.cbSpellFilter_SelectedIndexChanged);
+            // 
             // SpellDataControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cbSpellFilter);
+            this.Controls.Add(this.lbSpells);
             this.Controls.Add(this.nmAiValue3);
             this.Controls.Add(this.nmAiValue2);
             this.Controls.Add(this.nmAiValue1);
@@ -607,7 +636,7 @@
             this.Controls.Add(this.tbSpellName);
             this.Controls.Add(this.pbSpell);
             this.Name = "SpellDataControl";
-            this.Size = new System.Drawing.Size(304, 495);
+            this.Size = new System.Drawing.Size(558, 581);
             ((System.ComponentModel.ISupportInitialize)(this.nmEffectPerMp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBaseLvl3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBaseLvl2)).EndInit();
@@ -684,5 +713,7 @@
         private System.Windows.Forms.NumericUpDown nmAiValue1;
         private System.Windows.Forms.NumericUpDown nmAiValue0;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ListBox lbSpells;
+        private ComboBoxWithImages cbSpellFilter;
     }
 }

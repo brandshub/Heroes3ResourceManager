@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,16 +11,21 @@ namespace h3magic
 {
     public class Spell
     {
+        public const int ALL_SPELLS_COLUMN_NUMBER = 10;
+
         private const string TXT_FNAME = "SPTRAITS.TXT";
         private const string IMG_FNAME = "SpellBon.def";
 
         private static string[] allRows = null;
-        public static List<Spell> AllSpells = null;
         private static DefFile defFile;
 
+        public static int[] SpecSpellIndexes = { 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 37, 38, 39, 41, 43, 44, 45, 46, 47, 48, 51, 53, 55 };
         public static Color[] MagicSchoolColors = new Color[] { Color.PaleGreen, Color.LightCyan, Color.MistyRose, Color.White };
-        private string[] cells;
+        public static List<Spell> AllSpells = null;
 
+
+        private string[] cells;
+        public bool HasChanges { get; set; }
         public int Index { get; private set; }
         public string Name { get { return cells[0]; } set { cells[0] = value; } }
         public int Level { get { return getIntCell(2); } set { setIntCell(2, value); } }
@@ -41,7 +47,6 @@ namespace h3magic
         public int BaseEffectLvl2 { get { return getIntCell(14); } set { setIntCell(14, value); } }
         public int BaseEffectLvl3 { get { return getIntCell(15); } set { setIntCell(15, value); } }
 
-
         public int AiValue0 { get { return getIntCell(25); } set { setIntCell(25, value); } }
         public int AiValue1 { get { return getIntCell(26); } set { setIntCell(26, value); } }
         public int AiValue2 { get { return getIntCell(27); } set { setIntCell(27, value); } }
@@ -54,7 +59,6 @@ namespace h3magic
 
             cells = row.Split('\t');
             Name = cells[0];
-            //   Level = int.Parse(cells[2]);
 
             int type = 0;
             for (int i = 3; i < 7; i++)
@@ -79,6 +83,7 @@ namespace h3magic
                 return IsWaterMagic;
             if (index == 2)
                 return IsFireMagic;
+
             return IsAirMagic;
         }
 
@@ -94,7 +99,7 @@ namespace h3magic
 
         public static void LoadInfo(LodFile h3bitmap)
         {
-            FatRecord rec = h3bitmap[TXT_FNAME];
+            var rec = h3bitmap[TXT_FNAME];
 
             string text = Encoding.Default.GetString(rec.GetRawData(h3bitmap.stream));
             allRows = text.Split(new[] { "\r\n" }, StringSplitOptions.None);
@@ -106,7 +111,8 @@ namespace h3magic
                 string row = allRows[i];
                 if (row.StartsWith("Creature Abilities"))
                     break;
-                if (string.IsNullOrEmpty(row) || row.StartsWith("\t\t") || row.StartsWith("Combat Spells") || row.StartsWith("Adventure Spells") || row.StartsWith("Name"))
+
+                if (string.IsNullOrEmpty(row) || row.StartsWith("\t\t\t") || row.StartsWith("Combat Spells") || row.StartsWith("Adventure Spells") || row.StartsWith("Name"))
                     continue;
 
                 AllSpells.Add(new Spell(index++, row));
@@ -136,18 +142,28 @@ namespace h3magic
             if (defFile == null)
                 defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
 
-            var bmp = new Bitmap((58 + 1) * 10, (64 + 1) * 7);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            int total = defFile.headers[0].SpritesCount;
 
-            Parallel.For(0, 70, i =>
+            var baseSprite = defFile.headers[0].spriteHeaders[0];
+            int imgWidth = baseSprite.SpriteWidth;
+            int imgHeight = baseSprite.SpriteHeight;
+            int stride = baseSprite.Stride24;
+
+            int colCount = ALL_SPELLS_COLUMN_NUMBER;
+            int rowCount = (total / colCount) + (total % colCount == 0 ? 0 : 1);
+
+            var bmp = new Bitmap((imgWidth + 1) * colCount, (imgHeight + 1) * rowCount);
+            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+            Parallel.For(0, total, i =>
             {
-                int row = i / 10;
-                int col = i % 10;
+                int row = i / colCount;
+                int col = i % colCount;
 
                 var img = defFile.GetByAbsoluteNumber2(i);
                 if (img != null)
                 {
-                    imageData.DrawImage24(col * (58 + 1), row * (64 + 1), 176, img);
+                    imageData.DrawImage24(col * (imgWidth + 1), row * (imgHeight + 1), stride, img);
                 }
             });
 
@@ -156,7 +172,6 @@ namespace h3magic
             return BitmapCache.SpellsAll;
         }
 
-        public static int[] SpecSpellIndexes = { 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 37, 38, 39, 41, 43, 44, 45, 46, 47, 48, 51, 53, 55 };
         public static Bitmap GetAvailableSpellsForSpeciality(LodFile h3sprite)
         {
             if (BitmapCache.SpellsForSpeciality != null)
@@ -167,7 +182,7 @@ namespace h3magic
                 defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
 
             var bmp = new Bitmap((58 + 1) * 6, (64 + 1) * 5);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
             Parallel.For(0, SpecSpellIndexes.Length, i =>
             {
@@ -194,6 +209,49 @@ namespace h3magic
         {
             cells[index] = value.ToString();
         }
+
+        public static void Save(LodFile lodFile)
+        {
+            var rec = lodFile.GetRecord(TXT_FNAME);
+            if (rec != null)
+            {
+                var sb = new StringBuilder();
+                int i;
+                int index = 0;
+
+                for (i = 0; i < 5; i++)
+                    sb.AppendLine(allRows[i]);
+
+                for (; i < allRows.Length; i++)
+                {
+                    string row = allRows[i];
+                    if (row.StartsWith("Creature Abilities"))
+                        break;
+
+                    if (string.IsNullOrEmpty(row) || row.StartsWith("\t\t\t") || row.StartsWith("Combat Spells") || row.StartsWith("Adventure Spells") || row.StartsWith("Name"))
+                    {
+                        sb.AppendLine(row);
+                        continue;
+                    }
+
+                    var spellCells = AllSpells[index].cells;
+                    for (int j = 0; j < spellCells.Length - 1; j++)
+                    {
+                        sb.Append(spellCells[j]);
+                        sb.Append('\t');
+                    }
+                    sb.AppendLine(spellCells[spellCells.Length - 1]);
+
+                    index++;
+                }
+
+                for (; i < allRows.Length; i++)
+                    sb.AppendLine(allRows[i]);
+                 
+                rec.ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));
+            }
+        }
+
 
         public override string ToString()
         {

@@ -31,11 +31,11 @@ namespace h3magic
 
         public unsafe Bitmap GetBitmap()
         {
-            Bitmap bmp = new Bitmap(width, heigth, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var bmp = new Bitmap(width, heigth, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             if (palletteOffset == width * heigth)
                 palletteOffset += 12;
 
-            BitmapData imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
 
             bool bpp8 = bts.Length == width * heigth + 780;
 

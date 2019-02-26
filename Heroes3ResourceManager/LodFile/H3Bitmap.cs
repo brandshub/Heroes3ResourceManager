@@ -18,7 +18,7 @@ namespace h3magic
             base.LoadData(count);
             StringsData = new StringsData(this);
         }
-        
+
         public override bool SaveToDisk(string fileName)
         {
             if (CreatureManager.HasChanges)
@@ -30,6 +30,9 @@ namespace h3magic
             if (HeroClass.HasChanges)
                 HeroClass.Save(this);
 
+            if (Spell.AllSpells.Any(s => s.HasChanges))
+                Spell.Save(this);
+
             return base.SaveToDisk(fileName);
         }
 
@@ -37,7 +40,7 @@ namespace h3magic
         {
             get
             {
-                return base.HasChanges || CreatureManager.HasChanges || HeroesManager.HasChanges || HeroClass.HasChanges;
+                return base.HasChanges || CreatureManager.HasChanges || HeroesManager.HasChanges || HeroClass.HasChanges || Spell.AllSpells.Any(s => s.HasChanges);
             }
         }
     }

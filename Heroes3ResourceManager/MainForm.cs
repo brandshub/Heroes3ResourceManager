@@ -45,8 +45,8 @@ namespace h3magic
             InitializeComponent();
 
             CheckForIllegalCrossThreadCalls = false;
-            Text = "Heroes 3 Resource Manager: v"+Application.ProductVersion.ToString();
-            
+            Text = "Heroes 3 Resource Manager: v" + Application.ProductVersion.ToString();
+
             timer.Interval = 143;
             timer.Tick += Timer_Tick;
 
@@ -220,19 +220,18 @@ namespace h3magic
             lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
 
             lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
-            cbCastles.Items.AddRange(CreatureManager.Castles);
             var bmp = SecondarySkill.GetSkillTreeForHeroClass(Heroes3Master.Master.H3Sprite);
-
             pbSkillTree.Width = bmp.Width * 4 / 5;
             pbSkillTree.Height = bmp.Height * 4 / 5;
             pbSkillTree.Image = bmp;
 
+            cbCastles.Items.AddRange(CreatureManager.Castles);
+
+            spellDataControl.LoadSpells();
+
             var lodFileNames = master.ResourceFiles.Select(s => s.Name).ToArray();
-
             cbLodFiles.Items.AddRange(lodFileNames);
-            cbLodFiles.SelectedIndex = Array.IndexOf<string>(lodFileNames, selectedLodFile.Name);
-
-            lbSpells.Items.AddRange(Spell.AllSpells.Select(s => s.Name).ToArray());
+            cbLodFiles.SelectedIndex = Array.IndexOf<string>(lodFileNames, selectedLodFile.Name);            
 
             tabsMain.TabPages.Add(tabHeroes);
             tabsMain.TabPages.Add(tabHeroClass);
@@ -314,10 +313,10 @@ namespace h3magic
                 index = lbFiles.IndexFromPoint(last);
 
 
-            //if (last.X >= 0 && last.Y >= 0)
+
             if (index >= 0)
             {
-                //  int index = 
+
                 if (index >= 0 && index < lbFiles.Items.Count && lastindex != index)
                 {
                     lbDecomposed.Visible = false;
@@ -328,9 +327,10 @@ namespace h3magic
                     selectedFile = temp;
 
 
-                    FatRecord rec = selectedLodFile[lbFiles.Items[index].ToString()];
+                    var rec = selectedLodFile[lbFiles.Items[index].ToString()];
                     if (rec.Extension == "PCX")
                     {
+                        trbDefSprites.Maximum = 1;
                         bmp = rec.GetBitmap(selectedLodFile.stream);
                         if (bmp != null)
                         {
@@ -346,6 +346,7 @@ namespace h3magic
                     }
                     else if (rec.Extension == "TXT")
                     {
+                        trbDefSprites.Maximum = 1;
                         byte[] bts = rec.GetRawData(selectedLodFile.stream);
                         if (bts != null)
                         {
@@ -469,7 +470,7 @@ namespace h3magic
             lbHeroes.Items.Clear();
             lbHeroClasses.Items.Clear();
             cbCastles.Items.Clear();
-            lbSpells.Items.Clear();
+            spellDataControl.Reset();
             cbLodFiles.Items.Clear();
 
         }
@@ -664,6 +665,7 @@ namespace h3magic
             if (creatureAnimation != null)
             {
                 pbCreature.Image = creatureAnimation.GetFrame2(Heroes3Master.Master);
+                //pbCreature.Image = creatureAnimation.GetFrame(Heroes3Master.Master);
                 //  pbCreature.Invalidate();
             }
         }
@@ -704,55 +706,31 @@ namespace h3magic
                 {
                     if (cbCastles.SelectedIndex == -1 && cbCastles.Items.Count > 0)
                         cbCastles.SelectedIndex = 0;
-                    Width = 540;
+                    Width = 600;
                 }
                 else if (tabsMain.SelectedTab == tabHeroClass)
                 {
                     if (lbHeroClasses.SelectedIndex == -1 && lbHeroClasses.Items.Count > 0)
                         lbHeroClasses.SelectedIndex = 0;
-                    Width = 540;
+                    Width = 600;
                 }
                 else if (tabsMain.SelectedTab == tabSpells)
                 {
-                    if (lbSpells.SelectedIndex == -1 && lbSpells.Items.Count > 0)
-                        lbSpells.SelectedIndex = 0;
-                    Width = 540;
+                    if (spellDataControl.ItemCount > 0 && spellDataControl.Spell == null)
+                        spellDataControl.Spell = Spell.AllSpells.First();
+
+                    Width = 600;
                 }
                 else if (tabsMain.SelectedTab == tabResources)
                 {
                     btnSaveLocalChanges.Visible = false;
                     Width = 955;
                 }
-                else if(tabsMain.SelectedTab == tabHeroes)
+                else if (tabsMain.SelectedTab == tabHeroes)
                 {
                     Width = 955;
                 }
             }
-
-            /*  if (lodFile != null)
-              {
-                  if (tabsMain.SelectedTab == tabCreatures)
-                  {
-                      if (cbCastles.Items.Count == 0)
-                      {
-                          cbCastles.Items.AddRange(CreatureManager.Castles);
-                      }
-                  }
-                  else if (tabsMain.SelectedTab == tabHeroClass)
-                  {
-                      if (lbHeroClasses.Items.Count == 0)
-                      {
-                          lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
-                        
-                      }
-                  }
-                  else if (tabsMain.SelectedTab == tabHeroes)
-                  {
-                      if (lbHeroes.Items.Count == 0)
-                          lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
-                  }
-              *
-              }*/
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -1015,15 +993,6 @@ namespace h3magic
             }
         }
 
-        private void lbSpells_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (Heroes3Master.Master != null && lbSpells.SelectedIndex >= 0)
-            {
-                var spell = Spell.AllSpells[lbSpells.SelectedIndex];
-                spellDataControl1.Spell = spell;
-            }
-        }
-
         private void lbHeroClasses_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (Heroes3Master.Master != null && e.Index >= 0)
@@ -1114,7 +1083,7 @@ namespace h3magic
         {
             if (Heroes3Master.Master != null && e.Index >= 0)
             {
-                dl("Draw " + e.State + " " + e.Index + " " + lbHeroes.SelectedIndex);
+                // dl("Draw " + e.State + " " + e.Index + " " + lbHeroes.SelectedIndex);
 
                 if (e.State == (DrawItemState.Selected | DrawItemState.Focus | DrawItemState.NoAccelerator | DrawItemState.NoFocusRect))
                     return;
@@ -1156,84 +1125,6 @@ namespace h3magic
                     else
                     {
                         cached = BitmapCache.DrawItemHeroesListBox[e.Index];
-                    }
-
-                    e.Graphics.DrawImage(cached, e.Bounds.Location);
-                }
-
-                if ((e.State & DrawItemState.Selected) != 0)
-                {
-                    e.Graphics.DrawRectangle(new Pen(Color.Black, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dot }, e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height - 1);
-                }
-
-            }
-        }
-
-        bool cacheSpells = true;
-
-        private void lbSpells_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (Heroes3Master.Master != null && e.Index >= 0)
-            {
-                dl("Draw " + e.State + " " + e.Index + " " + lbSpells.SelectedIndex);
-
-                if (e.State == (DrawItemState.Selected | DrawItemState.Focus | DrawItemState.NoAccelerator | DrawItemState.NoFocusRect))
-                    return;
-
-                if (!cacheSpells)
-                {
-                    //e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
-                    e.Graphics.DrawString(Spell.AllSpells[e.Index].Name, e.Font, Brushes.Black, e.Bounds.X + 42, e.Bounds.Y + 4);
-                    var img = new Bitmap(Spell.AllSpells[e.Index].GetImage(Heroes3Master.Master.H3Sprite), 36, 24);
-                    e.Graphics.DrawImage(img, e.Bounds.X, e.Bounds.Y);
-
-                }
-                else
-                {
-                    if (BitmapCache.DrawItemSpellsListBox == null)
-                    {
-                        BitmapCache.DrawItemSpellsListBox = new Bitmap[Spell.AllSpells.Count];
-                    }
-
-                    Bitmap cached;
-                    if (BitmapCache.DrawItemSpellsListBox[e.Index] == null)
-                    {
-                        cached = new Bitmap(e.Bounds.Width, e.Bounds.Height);
-                        using (var g = Graphics.FromImage(cached))
-                        {
-                            var spell = Spell.AllSpells[e.Index];
-                            var img = new Bitmap(spell.GetImage(Heroes3Master.Master.H3Sprite), 29, 32);
-
-                            var schools = new List<int>();
-                            var schoolsCount = 0;
-                            for (int i = 0; i < 4; i++)
-                                if (spell.HasSchool(i))
-                                {
-                                    schools.Add(i);
-                                    schoolsCount++;
-                                }
-
-                            if (schoolsCount == 1)
-                            {
-                                g.FillRectangle(new SolidBrush(Spell.MagicSchoolColors[schools[0]]), new Rectangle(Point.Empty, e.Bounds.Size));
-                            }
-                            else if (schoolsCount > 1)
-                            {
-                                float divWidth = (e.Bounds.Width - img.Width) / (float)schoolsCount;
-                                for (int i = 0; i < schools.Count; i++)
-                                {
-                                    g.FillRectangle(new SolidBrush(Spell.MagicSchoolColors[schools[i]]), img.Width + i * divWidth, 0, divWidth, e.Bounds.Height);
-                                }
-                            }
-                            g.DrawString(spell.Name, e.Font, Brushes.Black, 32, 9);
-
-                            g.DrawImage(img, Point.Empty);
-                        }
-                        BitmapCache.DrawItemSpellsListBox[e.Index] = cached;
-                    }
-                    else
-                    {
-                        cached = BitmapCache.DrawItemSpellsListBox[e.Index];
                     }
 
                     e.Graphics.DrawImage(cached, e.Bounds.Location);
@@ -1315,7 +1206,7 @@ namespace h3magic
             }
             else if (tabsMain.SelectedTab == tabSpells)
             {
-                //TODO
+                spellDataControl.SaveData();
             }
             else if (tabsMain.SelectedTab == tabResources)
             {
