@@ -12,21 +12,19 @@ namespace h3magic
 {
     public class CreatureAnimationLoop : IDisposable
     {
-
-        private static string[] backgroundNames = { "CRBKGCAS.pcx", "CRBKGRAM.pcx", "CRBKGTOW.pcx", "CRBKGINF.pcx", "CRBKGNEC.pcx", "CRBKGDUN.pcx", "CRBKGSTR.pcx", "CRBKGFOR.pcx", "CrBkgEle.pcx", "CRBKGNEU.pcx" };
-        private static Bitmap[] backgrounds = new Bitmap[10];
-        private static byte[][] bckgBytes = new byte[10][];
-        private static int[] widths = new int[10];
-
         private const int TIMER_INTERVAL = 200;
         private const int SPRITES_INDEX = 2;
-        private Timer timer;
+        private static string[] backgroundNames = { "CRBKGCAS.pcx", "CRBKGRAM.pcx", "CRBKGTOW.pcx", "CRBKGINF.pcx", "CRBKGNEC.pcx", "CRBKGDUN.pcx", "CRBKGSTR.pcx", "CRBKGFOR.pcx", "CrBkgEle.pcx", "CRBKGNEU.pcx" };
+
+        private static Bitmap[] backgrounds;
+        private static byte[][] backgroundBytes;
+        private static int[] widths;
 
         private Bitmap[] frames;
         private DefFile creatureAnimation;
         public event EventHandler TimerTick;
-
-        //public float fullTime = 0;
+        private Timer timer;
+        
         public bool Enabled
         {
             get { return timer.Enabled; }
@@ -70,6 +68,9 @@ namespace h3magic
                 var bmp = creatureAnimation.GetSprite(SPRITES_INDEX, CurrentFrame);
                 int castleIndex = GetBackgroundIndex(CreatureIndex);
 
+                if (backgrounds == null)
+                    backgrounds = new Bitmap[master.CastlesCount + 1];
+
                 if (backgrounds[castleIndex] == null)
                     backgrounds[castleIndex] = master.H3Bitmap.GetRecord(backgroundNames[castleIndex]).GetBitmap(master.H3Bitmap.stream);
 
@@ -99,9 +100,16 @@ namespace h3magic
                 int castleIndex = GetBackgroundIndex(CreatureIndex);
 
                 int imageWidth = 0;
-                if (bckgBytes[castleIndex] == null)
+                if (backgroundBytes == null)
+                    backgroundBytes = new byte[master.CastlesCount + 1][];
+
+                if (widths == null)
+                    widths = new int[master.CastlesCount + 1];
+
+                if (backgroundBytes[castleIndex] == null)
                 {
-                    bckgBytes[castleIndex] = master.H3Bitmap.GetRecord(backgroundNames[castleIndex]).GetBitmap24Data(master.H3Bitmap.stream, out imageWidth);
+                    var lodFile = master.Resolve(backgroundNames[castleIndex]);
+                    backgroundBytes[castleIndex] = lodFile.GetRecord(backgroundNames[castleIndex]).GetBitmap24Data(lodFile.stream, out imageWidth);
                     widths[castleIndex] = imageWidth;
                 }
 
@@ -112,14 +120,14 @@ namespace h3magic
                 int width = widths[castleIndex];
                 int padding = (4 - ((width * 3) % 4)) % 4;
                 int stride = 3 * width + padding;
-                int height = bckgBytes[castleIndex].Length / stride;
+                int height = backgroundBytes[castleIndex].Length / stride;
 
                 //var sw = Stopwatch.StartNew();
                 /*bckgBytes[castleIndex] = new byte[bckgBytes[castleIndex].Length];
                 for (int i = 0; i < bckgBytes[castleIndex].Length; i++)
                     bckgBytes[castleIndex][i] = (byte)0xff;
                 */
-                frames[CurrentFrame] = DrawTransparent2(bckgBytes[castleIndex], widths[castleIndex], height, bmp, pt, size);
+                frames[CurrentFrame] = DrawTransparent2(backgroundBytes[castleIndex], widths[castleIndex], height, bmp, pt, size);
                 // fullTime += sw.ElapsedMs();
 
                 using (var g = Graphics.FromImage(frames[CurrentFrame]))
@@ -316,6 +324,12 @@ namespace h3magic
             return result;
         }
 
+        public static void Unload()
+        {
+            backgrounds = null;
+            backgroundBytes = null;
+            widths = null;
+        }
 
         public void Dispose()
         {

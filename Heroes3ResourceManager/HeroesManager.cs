@@ -22,34 +22,40 @@ namespace h3magic
         public static List<HeroStats> AllHeroes = new List<HeroStats>();
 
         public static string[] HeroesOrder;
-        public static bool HasChanges { get; set; }       
-
-        public static void LoadInfo(LodFile h3bitmap)
+        public static bool HasChanges { get; set; }
+        public static void LoadInfo(Heroes3Master master)
         {
+            Unload();
             HasChanges = false;
-            int index = h3bitmap.IndexOf("HPL000EL.pcx");
-            int bound = h3bitmap.FilesTable.FindLastIndex(index + types.Length * 22, fat => fat.FileName.Contains("HPL"));
-            Dictionary<string, List<string>> heroes = new Dictionary<string, List<string>>(types.Length);
+
+            var lodFile = master.Resolve(TXT_BIOGRAPHIES_FNAME);
+
+            var imageLodFile = master.Resolve("HPL000EL.pcx");
+            //int index = lodFile.IndexOf("HPL000EL.pcx");
+            int index = imageLodFile.IndexOf("HPL000EL.pcx");
+
+            int bound = imageLodFile.FilesTable.FindLastIndex(index + types.Length * 22, fat => fat.FileName.Contains("HPL"));
+            var heroes = new Dictionary<string, List<string>>(types.Length);
             for (int i = index; i < bound; i++)
             {
                 List<string> list = null;
-                string end = h3bitmap[i].FileName.Substring(6, 2);
+                string end = imageLodFile[i].FileName.Substring(6, 2);
                 if (!heroes.TryGetValue(end, out list))
                 {
-                    heroes.Add(end, new List<string> { h3bitmap[i].FileName });
+                    heroes.Add(end, new List<string> { imageLodFile[i].FileName });
                 }
                 else
-                    list.Add(h3bitmap[i].FileName);
+                    list.Add(imageLodFile[i].FileName);
             }
             List<string> stringList = new List<string>(types.Length * 16);
             for (int i = 0; i < types.Length; i++)
                 stringList.AddRange(heroes[types[i]]);
             HeroesOrder = stringList.ToArray();
-            
-            bio_rows = Encoding.Default.GetString(h3bitmap.GetRawData(TXT_BIOGRAPHIES_FNAME)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            spec_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            hero_rows = Encoding.Default.GetString(h3bitmap.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            
+
+            bio_rows = Encoding.Default.GetString(lodFile.GetRawData(TXT_BIOGRAPHIES_FNAME)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            spec_rows = Encoding.Default.GetString(lodFile.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            hero_rows = Encoding.Default.GetString(lodFile.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
             AllHeroes = new List<HeroStats>(HeroesOrder.Length);
             for (int i = 0; i < HeroesOrder.Length; i++)
             {
@@ -77,16 +83,16 @@ namespace h3magic
         }
         public static string GetSpecDescription(int index)
         {
-            return spec_rows[2+index];
+            return spec_rows[2 + index];
         }
 
-        private static Bitmap backg = null;
         public static Bitmap GetBackground(LodFile h3bitmap, LodFile h3sprite)
         {
-            if (backg != null)
-                return backg;
-            backg = new Bitmap(288, 331);
-            using (var g = Graphics.FromImage(backg))
+            if (BitmapCache.HeroesBackground != null)
+                return BitmapCache.HeroesBackground;
+
+            var bmp = new Bitmap(288, 331);
+            using (var g = Graphics.FromImage(bmp))
             {
 
                 var f = h3bitmap.GetRecord("HeroScr4.pcx").GetBitmap(h3bitmap.stream);
@@ -110,7 +116,9 @@ namespace h3magic
                     g.DrawImage(ps.GetSprite(3), new Point(167, 167));
                 }
             }
-            return backg;
+
+            BitmapCache.HeroesBackground = bmp;
+            return BitmapCache.HeroesBackground;
         }
 
         public static void Save(LodFile lodfile)
@@ -165,7 +173,17 @@ namespace h3magic
             lodfile[TXT_BIOGRAPHIES_FNAME].ApplyChanges(Encoding.Default.GetBytes(bios.ToString()));
             lodfile[H_SPECS].ApplyChanges(Encoding.Default.GetBytes(spec.ToString()));
             lodfile[H_HEROES].ApplyChanges(Encoding.Default.GetBytes(traits.ToString()));
+        }
 
+        public static void Unload()
+        {
+            BitmapCache.HeroesBackground = null;
+            AllHeroes = null;
+
+            bio_rows = null;
+            spec_rows = null;
+            hero_rows = null;
+            HeroesOrder = null;
         }
     }
 }

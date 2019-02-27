@@ -19,8 +19,7 @@ namespace h3magic
         private PictureBox[] pbSorted;
         private bool[] schoolsSelected = new bool[4];
         private Spell[] filteredSpells;
-
-        private int prbImagesWidth, prbImagesHeight;
+        
         private int prbHorizontalOffset = 17, prbVerticalOffset = 21;
 
         public int ItemCount
@@ -110,9 +109,9 @@ namespace h3magic
 
                 if (pbTownProbability.Image == null)
                 {
-                    pbTownProbability.Image = Town.GetAllTownsImage(Heroes3Master.Master.H3Sprite, prbHorizontalOffset, prbVerticalOffset);
-                    int imgWidth = Town.AllTowns[0].LargeImage.Width;
-                    int imgHeight = Town.AllTowns[0].LargeImage.Height;
+                    pbTownProbability.Image = Town.GetAllTownsImage(prbHorizontalOffset, prbVerticalOffset);
+                    int imgWidth = Town.AllTownsWithNeutral[0].LargeImage.Width;
+                    int imgHeight = Town.AllTownsWithNeutral[0].LargeImage.Height;
                     PositionProbabilityBoxes(imgWidth, imgHeight, prbHorizontalOffset, prbVerticalOffset);
                 }
 

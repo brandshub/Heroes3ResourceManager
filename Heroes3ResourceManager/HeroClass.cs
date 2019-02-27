@@ -9,7 +9,9 @@ namespace h3magic
     public class HeroClass
     {
         private const string TXT_FNAME = "HCTRAITS.TXT";
+
         private static string[] rows;
+        public static List<HeroClass> AllHeroClasses;
 
         public static bool HasChanges { get; set; }
         public int Attack { get { return GetStat(2); } }
@@ -18,8 +20,6 @@ namespace h3magic
         public int Knowledge { get {  return GetStat(5);} }
 
         public int Mana { get { return Knowledge * 10; } }
-
-        public static List<HeroClass> AllHeroClasses;
 
         public string[] Stats;
 
@@ -30,7 +30,7 @@ namespace h3magic
 
         public string GetRow()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0; i < Stats.Length - 1; i++)
             {
                 sb.Append(Stats[i]);
@@ -40,10 +40,12 @@ namespace h3magic
             return sb.ToString();
         }
 
-        public static void LoadInfo(LodFile h3Bitmap)
+        public static void LoadInfo(Heroes3Master master)
         {
-            var rec = h3Bitmap[TXT_FNAME];
-            string text = Encoding.Default.GetString(rec.GetRawData(h3Bitmap.stream));
+            var lodFile = master.Resolve(TXT_FNAME);
+
+            var rec = lodFile[TXT_FNAME];
+            string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
             rows = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             AllHeroClasses = new List<HeroClass>(rows.Length);
@@ -74,6 +76,12 @@ namespace h3magic
                 return int.Parse(Stats[index]);
             }
             return -1;
+        }
+
+        public static void Unload()
+        {
+            AllHeroClasses = null;
+            rows = null;
         }
         public override string ToString()
         {

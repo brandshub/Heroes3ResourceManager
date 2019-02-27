@@ -12,9 +12,7 @@ namespace h3magic
     {
         private const string FAT_NAME = "CRTRAITS.TXT";
         private const string IMG_FNAME = "TwCrPort.def";
-        private const string IMG_SMALL_FNAME = "CPRSMALL.def";
-
-        public static readonly string[] Castles = { "Castle", "Rampart", "Tower", "Inferno", "Necropolis", "Dungeon", "Stronghold", "Fortress", "Conflux", "Neutral" };
+        private const string IMG_SMALL_FNAME = "CPRSMALL.def";       
 
         public static List<Creature> OnlyActiveCreatures = new List<Creature>();
         public static Bitmap[] SmallImages = null;
@@ -28,18 +26,21 @@ namespace h3magic
 
         public static bool Loaded { get; private set; }
         public static bool HasChanges = false;
-
-
-
-        public static void LoadInfo(LodFile file)
+        public static void LoadInfo(Heroes3Master master)
         {
-            var rec = file.GetRecord(FAT_NAME);
+            HasChanges = false;
+            Loaded = false;
+            Unload();
+
+            var lodFile = master.Resolve(FAT_NAME);
+            var rec = lodFile.GetRecord(FAT_NAME);
             if (rec != null)
             {
-                string text = Encoding.Default.GetString(rec.GetRawData(file.stream));
+                string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
+
                 rows = text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
                 AllCreatures2 = new Creature[rows.Length];
-                OnlyActiveCreatures.Clear();
+                OnlyActiveCreatures = new List<Creature>();
 
                 int curIndex = 0;
                 for (int i = 0; i < 8; i++)
@@ -97,13 +98,12 @@ namespace h3magic
                     }
                     indexes.Add(OnlyActiveCreatures[i].CreatureIndex);
                 }
+
                 IndexesOfFirstLevelCreatures = indexes.ToArray();
+                BitmapCache.CreaturesSmall = new Bitmap[AllCreatures2.Length];
 
                 Loaded = true;
-                SmallImages = new Bitmap[AllCreatures2.Length];
             }
-
-
         }
 
         public static Creature Get(int castleIndex, int relativeCreatureIndex)
@@ -165,8 +165,9 @@ namespace h3magic
             if (smallCreatureDef == null)
                 smallCreatureDef = h3sprite.GetRecord(IMG_SMALL_FNAME).GetDefFile(h3sprite);
 
+
             Bitmap bmp;
-            if (SmallImages[creatureIndex] == null)
+            if (BitmapCache.CreaturesSmall[creatureIndex] == null)
             {
 
                 bmp = smallCreatureDef.GetByAbsoluteNumber(creatureIndex + 2);
@@ -196,10 +197,10 @@ namespace h3magic
 
                 }
                 bmp.UnlockBits(imageData);
-                SmallImages[creatureIndex] = bmp;
+                BitmapCache.CreaturesSmall[creatureIndex] = bmp;
             }
 
-            return SmallImages[creatureIndex];
+            return BitmapCache.CreaturesSmall[creatureIndex];
         }
 
 
@@ -268,6 +269,19 @@ namespace h3magic
             return BitmapCache.CreaturesUnupgraded;
         }
 
-        //
+        public static void Unload()
+        {
+            BitmapCache.CreaturesAll = null;
+            BitmapCache.CreaturesUnupgraded = null;
+
+            OnlyActiveCreatures = null;
+            AllCreatures2 = null;
+            IndexesOfFirstLevelCreatures = null;
+
+            smallCreatureDef = null;
+            creatureDef = null;
+
+            rows = null;
+        }
     }
 }

@@ -29,8 +29,6 @@ namespace h3magic
         public int Unit2Index;
         public int Unit3Index;
 
-
-
         public int Index { get; private set; }
 
         public HeroStats Hero { get { return HeroesManager.AllHeroes[Index]; } }
@@ -50,34 +48,34 @@ namespace h3magic
 
         public static void LoadInfo(byte[] executableBinary)
         {
-            if (Data == null)
+            Unload();
+
+            Data = new List<HeroExeData>();
+            int startOffset = (int)HeroesSection.FindHeroOffset1(executableBinary);
+            int currentOffset = startOffset;
+            int bound = HeroesManager.AllHeroes.Count;
+            for (int i = 0; i < bound; i++)
             {
-                Data = new List<HeroExeData>();
-                int startOffset = (int)HeroesSection.FindHeroOffset1(executableBinary);
-                int currentOffset = startOffset;
-                int bound = HeroesManager.AllHeroes.Count;
-                for (int i = 0; i < bound; i++)
+                var hero = new HeroExeData
                 {
-                    var hero = new HeroExeData
-                    {
-                        Index = i,
-                        GenderInt = BitConverter.ToInt32(executableBinary, currentOffset),
-                        Race = BitConverter.ToInt32(executableBinary, currentOffset + 4),
-                        ClassIndex = BitConverter.ToInt32(executableBinary, currentOffset + 8),
-                        FirstSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 12),
-                        FirstSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 16),
-                        SecondSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 20),
-                        SecondSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 24),
-                        SpellBook = BitConverter.ToInt32(executableBinary, currentOffset + 28),
-                        SpellIndex = BitConverter.ToInt32(executableBinary, currentOffset + 32),
-                        Unit1Index = BitConverter.ToInt32(executableBinary, currentOffset + 36),
-                        Unit2Index = BitConverter.ToInt32(executableBinary, currentOffset + 40),
-                        Unit3Index = BitConverter.ToInt32(executableBinary, currentOffset + 44)
-                    };
-                    Data.Add(hero);
-                    currentOffset += BLOCK_SIZE_A;
-                }
+                    Index = i,
+                    GenderInt = BitConverter.ToInt32(executableBinary, currentOffset),
+                    Race = BitConverter.ToInt32(executableBinary, currentOffset + 4),
+                    ClassIndex = BitConverter.ToInt32(executableBinary, currentOffset + 8),
+                    FirstSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 12),
+                    FirstSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 16),
+                    SecondSkillIndex = BitConverter.ToInt32(executableBinary, currentOffset + 20),
+                    SecondSkillLevel = BitConverter.ToInt32(executableBinary, currentOffset + 24),
+                    SpellBook = BitConverter.ToInt32(executableBinary, currentOffset + 28),
+                    SpellIndex = BitConverter.ToInt32(executableBinary, currentOffset + 32),
+                    Unit1Index = BitConverter.ToInt32(executableBinary, currentOffset + 36),
+                    Unit2Index = BitConverter.ToInt32(executableBinary, currentOffset + 40),
+                    Unit3Index = BitConverter.ToInt32(executableBinary, currentOffset + 44)
+                };
+                Data.Add(hero);
+                currentOffset += BLOCK_SIZE_A;
             }
+
         }
 
         public unsafe static bool UpdateDataInMemory()
@@ -88,7 +86,7 @@ namespace h3magic
             string file = exe.Path;
             bool anyChanges = Data.Any(d => d.HasChanged);
             if (anyChanges)
-            {                
+            {
                 for (int i = 0; i < Data.Count; i++)
                 {
                     var current = Data[i];
@@ -120,6 +118,13 @@ namespace h3magic
 
             return anyChanges;
         }
+
+        public static void Unload()
+        {
+            Data = null;
+
+        }
+
         public override string ToString()
         {
             return Hero + ", " + Class + "  " + Skill1 + "[" + FirstSkillLevel + "]" + (SecondSkillIndex != -1 ? (" | " + Skill2 + "[" + SecondSkillLevel + "]") : "");

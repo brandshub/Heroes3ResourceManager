@@ -145,9 +145,9 @@ namespace h3magic
 
         public const int WM_CTLCOLORLISTBOX = 0x0134;
 
-        private int _hwndDropDown = 0;
+       /* private int _hwndDropDown = 0;
 
-        /*   protected override void WndProc(ref Message m)
+           protected override void WndProc(ref Message m)
            {
                if (m.Msg == WM_CTLCOLORLISTBOX)
                {

@@ -8,15 +8,13 @@ namespace h3magic
 {
     public class H3Bitmap : LodFile
     {
-
-        public StringsData StringsData;
-        public H3Bitmap(FileStream fs)
-            : base(fs)
+        
+        public H3Bitmap(Heroes3Master master, FileStream fs)
+            : base(master,fs)
         { }
         public override void LoadData(int count)
         {
             base.LoadData(count);
-            StringsData = new StringsData(this);
         }
 
         public override bool SaveToDisk(string fileName)

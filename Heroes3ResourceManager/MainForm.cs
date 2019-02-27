@@ -225,13 +225,13 @@ namespace h3magic
             pbSkillTree.Height = bmp.Height * 4 / 5;
             pbSkillTree.Image = bmp;
 
-            cbCastles.Items.AddRange(CreatureManager.Castles);
+            cbCastles.Items.AddRange(Town.TownNamesWithNeutral);
 
             spellDataControl.LoadSpells();
 
             var lodFileNames = master.ResourceFiles.Select(s => s.Name).ToArray();
             cbLodFiles.Items.AddRange(lodFileNames);
-            cbLodFiles.SelectedIndex = Array.IndexOf<string>(lodFileNames, selectedLodFile.Name);            
+            cbLodFiles.SelectedIndex = Array.IndexOf<string>(lodFileNames, selectedLodFile.Name);
 
             tabsMain.TabPages.Add(tabHeroes);
             tabsMain.TabPages.Add(tabHeroClass);
@@ -497,7 +497,7 @@ namespace h3magic
                     m_saveFileAs.Visible = true;
 
                     var fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    selectedLodFile = new LodFile(fs);
+                    selectedLodFile = new LodFile(null, fs);
                     selectedLodFile.LoadFAT();
 
                     lbFiles.Items.AddRange(selectedLodFile.GetNames());
@@ -998,7 +998,7 @@ namespace h3magic
             if (Heroes3Master.Master != null && e.Index >= 0)
             {
                 int castleIndex = e.Index / 2;
-                var town = Town.AllTowns[castleIndex];
+                var town = Town.AllTownsWithNeutral[castleIndex];
                 var clr = Town.AllColors[castleIndex];
 
 
@@ -1019,7 +1019,7 @@ namespace h3magic
             if (Heroes3Master.Master != null && e.Index >= 0)
             {
                 int castleIndex = e.Index;
-                var town = Town.AllTowns[castleIndex];
+                var town = Town.AllTownsWithNeutral[castleIndex];
                 var clr = Town.AllColors[castleIndex];
 
                 e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);

@@ -13,16 +13,16 @@ namespace h3magic
     {
         public const int ALL_SPELLS_COLUMN_NUMBER = 10;
 
-        private const string TXT_FNAME = "SPTRAITS.TXT";
-        private const string IMG_FNAME = "SpellBon.def";
+        public const string TXT_FNAME = "SPTRAITS.TXT";
+        public const string IMG_FNAME = "SpellBon.def";
 
-        private static string[] allRows = null;
+        private static string[] allRows;
         private static DefFile defFile;
+        public static List<Spell> AllSpells;
 
         public static int[] SpecSpellIndexes = { 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 37, 38, 39, 41, 43, 44, 45, 46, 47, 48, 51, 53, 55 };
         public static Color[] MagicSchoolColors = new Color[] { Color.PaleGreen, Color.LightCyan, Color.MistyRose, Color.White };
-        public static List<Spell> AllSpells = null;
-
+   
 
         private string[] cells;
         public bool HasChanges { get; set; }
@@ -97,11 +97,13 @@ namespace h3magic
             setIntCell(16 + castleIndex, value);
         }
 
-        public static void LoadInfo(LodFile h3bitmap)
+        public static void LoadInfo(Heroes3Master master)
         {
-            var rec = h3bitmap[TXT_FNAME];
+            Unload();
+            var lodFile = master.Resolve(TXT_FNAME);
+            var rec = lodFile[TXT_FNAME];
 
-            string text = Encoding.Default.GetString(rec.GetRawData(h3bitmap.stream));
+            string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
             allRows = text.Split(new[] { "\r\n" }, StringSplitOptions.None);
 
             AllSpells = new List<Spell>(allRows.Length);
@@ -252,6 +254,15 @@ namespace h3magic
             }
         }
 
+        public static void Unload()
+        {
+            allRows = null;
+            AllSpells = null;
+
+            defFile = null;
+            BitmapCache.SpellsAll = null;
+            BitmapCache.SpellsForSpeciality = null;
+        }
 
         public override string ToString()
         {

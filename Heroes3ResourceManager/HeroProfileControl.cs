@@ -98,7 +98,7 @@ namespace h3magic
             var cl = hero.Class;
             var hs = HeroesManager.AllHeroes[hero.Index];
 
-            var strData = Heroes3Master.Master.H3Bitmap.StringsData.JKTEXT;
+            var strData = StringsData.JKTEXT;
             Color mainColor = Color.FromArgb(255, 231, 148);
             SizeF sz;
 

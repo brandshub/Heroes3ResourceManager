@@ -10,48 +10,129 @@ namespace h3magic
 {
     public class Heroes3Master : IDisposable
     {
+        private Routing routing;
+
         public static Heroes3Master Master { get; set; }
 
+
         public List<LodFile> ResourceFiles { get; private set; }
-        public H3Bitmap H3Bitmap 
+        public H3Bitmap H3Bitmap
         {
-            get 
+            get
             {
-                return GetByName("h3bitmap.lod") as H3Bitmap; 
+                return GetByName("h3bitmap.lod") as H3Bitmap;
             }
         }
         public H3Sprite H3Sprite { get { return GetByName("h3sprite.lod") as H3Sprite; } }
         public ExeFile Executable { get; private set; }
 
+        public Dictionary<string, List<string>> NameToFileMap { get; private set; }
+
+        private Dictionary<string, LodFile> routingCache = new Dictionary<string, LodFile>();
+
+        public Routing Routing
+        {
+            get
+            {
+                return routing ?? Routing.Default;
+            }
+            set
+            {
+                routing = value;
+            }
+        }
+
+        public int CastlesCount
+        {
+            get
+            {
+                return 9;
+            }
+        }
+
         public LodFile GetByName(string name)
         {
-            return ResourceFiles.FirstOrDefault(r => r.Name.ToLower() == name);
+            return ResourceFiles.FirstOrDefault(r => string.Compare(r.Name, name, true) == 0);
         }
 
 
         public static Heroes3Master LoadInfo(string executablePath)
         {
-            Master = new Heroes3Master();
-            Master.Executable = new ExeFile(executablePath);
-            Master.ResourceFiles = new List<LodFile>();
+            var master = new Heroes3Master();
+
+            master.Executable = new ExeFile(executablePath);
+            master.ResourceFiles = new List<LodFile>();
 
             string dataDirectory = Path.Combine(Path.GetDirectoryName(executablePath), "Data");
 
-            Master.LoadAllWithExtension(dataDirectory, ".lod");
-            Master.LoadAllWithExtension(dataDirectory, ".pac");
+            master.LoadAllWithExtension(dataDirectory, ".lod");
+            master.LoadAllWithExtension(dataDirectory, ".pac");
 
-            HeroesManager.LoadInfo(Master.H3Bitmap);
-            HeroClass.LoadInfo(Master.H3Bitmap);
-            CreatureManager.LoadInfo(Master.H3Bitmap);
-            Spell.LoadInfo(Master.H3Bitmap);
-            SecondarySkill.LoadInfo(Master.H3Bitmap);
-            Speciality.LoadInfo(Master.Executable.Data);
-            Town.LoadInfo(Master.H3Sprite);
-            HeroExeData.LoadInfo(Master.Executable.Data);            
+            master.BuildMap();
+            if (master.GetByName("HotA.lod") != null)
+                master.Routing = Routing.Hota;
 
+            master.RefreshData();
+            Master = master;
             return Master;
         }
 
+
+        public void RefreshData()
+        {
+            routingCache = new Dictionary<string, LodFile>();
+            Resource.Unload();
+            CreatureAnimationLoop.Unload();
+            BitmapCache.UnloadCachedDrawItems();
+
+            HeroesManager.LoadInfo(this);
+            HeroClass.LoadInfo(this);
+            CreatureManager.LoadInfo(this);
+            Spell.LoadInfo(this);
+            SecondarySkill.LoadInfo(this);
+            StringsData.LoadInfo(this);
+
+            Speciality.LoadInfo(Executable.Data);
+            Town.LoadInfo(this);
+            HeroExeData.LoadInfo(Executable.Data);
+        }
+
+
+        public LodFile Resolve(string fileName)
+        {
+            LodFile lodFile;
+            if(routingCache.TryGetValue(fileName.ToLower(), out lodFile))
+                return lodFile;
+
+            
+            lodFile = Routing.Resolve(this, fileName);
+            routingCache[fileName.ToLower()] = lodFile;
+            return lodFile;
+        }
+
+        private void BuildMap()
+        {
+            var sw = Stopwatch.StartNew();
+
+            int size = ResourceFiles.Sum(r => r.FileCount);
+            NameToFileMap = new Dictionary<string, List<string>>(size);
+
+            List<string> temp;
+            foreach (var resourceFile in ResourceFiles)
+            {
+                foreach (var file in resourceFile.FilesTable)
+                {
+                    string name = file.FileName.ToLower();
+                    if (!NameToFileMap.TryGetValue(name, out temp))
+                    {
+                        temp = new List<string>();
+                        NameToFileMap[name] = temp;
+                    }
+                    temp.Add(resourceFile.Name.ToLower());
+                }
+            }
+            float z = sw.ElapsedMs();
+        }
 
         private void LoadAllWithExtension(string dataDirectory, string extension)
         {
@@ -66,11 +147,11 @@ namespace h3magic
                         string lcfileName = Path.GetFileName(file).ToLower();
                         LodFile lod = null;
                         if (lcfileName == "h3bitmap.lod")
-                            lod = new H3Bitmap(fs);
+                            lod = new H3Bitmap(this,fs);
                         else if (lcfileName == "h3sprite.lod")
-                            lod = new H3Sprite(fs);
+                            lod = new H3Sprite(this, fs);
                         else
-                            lod = new LodFile(fs);
+                            lod = new LodFile(this, fs);
 
                         lod.LoadFAT();
                         ResourceFiles.Add(lod);
@@ -86,9 +167,9 @@ namespace h3magic
 
         public void SaveHeroExeData()
         {
-            if(HeroExeData.Data.Any(f=>f.HasChanged))
+            if (HeroExeData.Data != null && HeroExeData.Data.Any(f => f.HasChanged))
                 File.WriteAllBytes(Executable.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_HHmmss"), Executable.Data);
-            
+
             if (HeroExeData.UpdateDataInMemory())
                 File.WriteAllBytes(Executable.Path, Executable.Data);
 

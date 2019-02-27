@@ -11,6 +11,14 @@ namespace h3magic
         // Creatures
         public static Bitmap CreaturesAll;
         public static Bitmap CreaturesUnupgraded;
+        public static Bitmap[] CreaturesSmall;
+
+        // Heroes
+        public static Bitmap HeroesBackground;
+
+
+        // Resources
+        public static Bitmap ResourcesAll;
 
         // Spells
         public static Bitmap SpellsAll;
@@ -18,8 +26,11 @@ namespace h3magic
         public static Bitmap[] SpellsMagicSchools;
         public static Bitmap[] SpellsMagicSchoolsInactive;
 
+        // Specialities
+        public static Bitmap SpecialitiesAll;
+
         //Towns         
-        public static Bitmap   TownsGrid;
+        public static Bitmap TownsGrid;
         public static Bitmap[] Towns;
         public static Bitmap[] TownBackgrounds;
         public static Bitmap[] TownsSmall;
@@ -31,10 +42,30 @@ namespace h3magic
         public static Bitmap[] DrawItemCreaturesOtherComboBox;
 
 
-        public static void DisposeImage()
+        public static void UnloadCachedDrawItems()
         {
-            //TODO
+            if (DrawItemHeroesListBox != null)
+            {
+                foreach (var bmp in DrawItemHeroesListBox.Where(p => p != null))
+                    bmp.Dispose();
+                DrawItemHeroesListBox = null;
+            }
+            if (DrawItemSpellsListBox != null)
+            {
+                foreach (var bmp in DrawItemSpellsListBox.Where(p => p != null))
+                    bmp.Dispose();
+                DrawItemSpellsListBox = null;
+            }
+            if (DrawItemCreaturesOtherComboBox != null)
+            {
+                foreach (var bmp in DrawItemCreaturesOtherComboBox.Where(p => p != null))
+                    bmp.Dispose();
+                DrawItemCreaturesOtherComboBox = null;
+            }
+
         }
+
+
 
     }
 }

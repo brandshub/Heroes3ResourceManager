@@ -5,16 +5,24 @@ using System.Text;
 
 namespace h3magic
 {
-    public class StringsData
+    public static class StringsData
     {
-        private const string FNAME_JKTEXT = "JKTEXT.TXT";
+        public const string FNAME_JKTEXT = "JKTEXT.TXT";
 
-        public string[] JKTEXT;
+        public static string[] JKTEXT;
 
-        public StringsData(H3Bitmap lodFile)
+        public static void LoadInfo(Heroes3Master master)
         {
+            Unload();
+            var lodFile = master.Resolve(FNAME_JKTEXT);
             var rec = lodFile.GetRecord(FNAME_JKTEXT);
             JKTEXT = Encoding.Default.GetString(rec.GetRawData(lodFile.stream)).Split(new string[] { "\r\n" }, StringSplitOptions.None);
         }
+
+        public static void Unload()
+        {
+            JKTEXT = null;
+        }
+
     }
 }

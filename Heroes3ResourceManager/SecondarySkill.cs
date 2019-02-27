@@ -16,9 +16,6 @@ namespace h3magic
         private const string TXT_FNAME = "SSTRAITS.TXT";
         private const string IMG_FNAME = "Secskill.def";
 
-        public static bool Loaded { get; private set; }
-
-        public static List<SecondarySkill> AllSkills = new List<SecondarySkill>();
         public static int[] IndexesOfAllSpecSkills = { 1, 2, 5, 8, 11, 12, 13, 22, 23, 24, 25, 26, 27 };
         public static int[] MagicSchoolSecondarySkillIndexes = new int[] { 17, 16, 14, 15 };
 
@@ -27,23 +24,26 @@ namespace h3magic
         private static Bitmap _skillTree2 = null;
         private static Bitmap _specImage = null;
 
+        public static List<SecondarySkill> AllSkills;
         public int Index { get; private set; }
         public string Name { get; private set; }
 
-        public static void LoadInfo(LodFile lodFile)
+        public static void LoadInfo(Heroes3Master master)
         {
+            Unload();
+
+            var lodFile = master.Resolve(TXT_FNAME);
+
             var rec = lodFile[TXT_FNAME];
             string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
             var rows = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            AllSkills = new List<SecondarySkill>(rows.Length - 2);
+
             for (int i = 2; i < rows.Length; i++)
             {
                 string name = rows[i].Split('\t')[0];
                 AllSkills.Add(new SecondarySkill { Index = i - 2, Name = name });
             }
-            _defFile = null;
-            _specImage = null;
-            _skillTree = null;
-            _skillTree2 = null;
         }
 
         public static Bitmap GetImage(LodFile lodFile, int skillIndex, int level)
@@ -72,18 +72,9 @@ namespace h3magic
                 return _skillTree;
 
             if (_defFile == null)
-                _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
-
-           /* var bmp = new Bitmap((44 + 60) * 4, 44 * 7);
-            using (var g = Graphics.FromImage(bmp))
-            {
-                for (int i = 0; i < 4; i++)
-                    for (int j = 0; j < 7; j++)
-                        g.DrawImage(_defFile.GetByAbsoluteNumber(3 + (i * 7 + j) * 3), i * 104, 44 * j);
-            }*/
+               _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);           
 
             var bmp = new Bitmap(44 * 7, (44 + 24) * 4);
-
             using (var g = Graphics.FromImage(bmp))
             {
                 for (int i = 0; i < 4; i++)
@@ -150,6 +141,16 @@ namespace h3magic
             _specImage = bmp;
 
             return _specImage;
+        }
+
+        public static void Unload()
+        {
+            AllSkills = null;
+            _defFile = null;
+            _specImage = null;
+            _skillTree = null;
+            _skillTree2 = null;
+
         }
 
     }

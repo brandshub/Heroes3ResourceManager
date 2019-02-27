@@ -9,9 +9,11 @@ namespace h3magic
 {
     public class Speciality
     {
-        private const string IMG_FNAME = "UN44.def";
-        private const string IMG_FNAME_SMALL = "UN32.def";
+        public const string IMG_FNAME = "UN44.def";
+        public const string IMG_FNAME_SMALL = "UN32.def";
         private const int BLOCK_SIZE = 40;
+
+        public static List<Speciality> AllSpecialities;
 
         //0 - skill, 1 - creature, 2 - +350, 3 - spell , 4 - constant creature
         public int TypeId { get; private set; }
@@ -20,19 +22,6 @@ namespace h3magic
 
         public int Index { get; private set; }
         public SpecialityType Type { get { return (SpecialityType)TypeId; } }
-
-        public static List<Speciality> AllSpecialities = new List<Speciality>();
-
-        public static Bitmap GetImage(H3Sprite h3sprite, int index)
-        {
-            return h3sprite.Un44Def.GetByAbsoluteNumber(index);
-        }
-
-        public Speciality() { }
-        public Speciality(byte[] bytes)
-        {
-
-        }
 
         public static List<Speciality> LoadInfo(byte[] executableBinary, int offset)
         {
@@ -57,12 +46,15 @@ namespace h3magic
 
         public static void LoadInfo(byte[] executableBinary)
         {
+            Unload();
             int startOffset = (int)HeroesSection.FindHeroOffset2(executableBinary);
             if (startOffset >= 0)
                 AllSpecialities = LoadInfo(executableBinary, startOffset);
-            /*var byt2 = new byte[156 * BLOCK_SIZE];
-            Buffer.BlockCopy(executableBinary, startOffset, byt2, 0, byt2.Length);
-            System.IO.File.WriteAllBytes(@"D:\allspecs.bin", byt2);*/
+        }
+
+        public static Bitmap GetImage(H3Sprite h3sprite, int index)
+        {
+            return h3sprite.Un44Def.GetByAbsoluteNumber(index);
         }
 
         public static Speciality GetByIndex(int index)
@@ -70,12 +62,10 @@ namespace h3magic
             return AllSpecialities[index];
         }
 
-        private static Bitmap allSpecs = null;
-
         public static Bitmap GetAllSpecs(H3Sprite h3sprite)
         {
-            if (allSpecs != null)
-                return allSpecs;
+            if (BitmapCache.SpecialitiesAll != null)
+                return BitmapCache.SpecialitiesAll;
 
             var bmp = new Bitmap(16 * (44 + 1), (44 + 1) * 9);
             using (var g = Graphics.FromImage(bmp))
@@ -86,8 +76,9 @@ namespace h3magic
                         g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 45, 45 * i);
                     }
             }
-            allSpecs = bmp;
-            return allSpecs;
+
+            BitmapCache.SpecialitiesAll = bmp;
+            return BitmapCache.SpecialitiesAll;
 
 
         }
@@ -214,13 +205,14 @@ namespace h3magic
 
         public static void UpdateSpecialityData(SpecialityType type, int index, int arg0, int arg1, int arg2, int arg3)
         {
+            var spec = new Speciality
+            {
+                Index = index,
+                Data = new byte[32],
+                TypeId = (int)type,
+            };
 
-            var spec = new Speciality();
-            spec.Index = index;
-            spec.Data = new byte[32];
-            spec.TypeId = (int)type;
-
-            int[] temp = new int[8];
+            var temp = new int[8];
 
             if (type == SpecialityType.Skill || type == SpecialityType.Spell || type == SpecialityType.Resource || type == SpecialityType.CreatureLevelBonus)
             {
@@ -241,11 +233,13 @@ namespace h3magic
                 temp[2] = arg3;
                 Buffer.BlockCopy(temp, 0, spec.Data, 0, 32);
             }
+            else if (type == SpecialityType.Speed)
+            {
+                spec.ObjectId = 2;
+            }
 
             AllSpecialities[index] = spec;
         }
-
-
 
         public override string ToString()
         {
@@ -263,6 +257,12 @@ namespace h3magic
                 return false;
 
             return Data.SequenceEqual(other.Data);
+        }
+
+        public static void Unload()
+        {
+            AllSpecialities = null;
+            BitmapCache.SpecialitiesAll = null;
         }
     }
 }

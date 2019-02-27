@@ -45,8 +45,8 @@ namespace h3magic
             }
         }
 
-        public H3Sprite(FileStream fs)
-            : base(fs)
+        public H3Sprite(Heroes3Master master, FileStream fs)
+            : base(master,fs)
         {
 
         }

@@ -11,10 +11,6 @@ namespace h3magic
 {
     public partial class ImageGridControl : UserControl
     {
-
-        private int selectedIndex;
-        private int hoverIndex;
-
         public int HeroIndex { get; set; }
         public int CurrentIndex { get; set; }
         public bool ForceAllCreatures { get; set; }

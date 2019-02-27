@@ -20,9 +20,11 @@ namespace h3magic
         public int FileCount { get; private set; }
         public List<FatRecord> FilesTable { get; private set; }
         public string Name { get; private set; }
-        public string Path { get; private set; }        
+        public string Path { get; private set; }
 
-        public LodFile(FileStream fs)
+        public Heroes3Master Master { get; private set; }
+
+        public LodFile(Heroes3Master master, FileStream fs)
         {
             Path = fs.Name;
             Name = System.IO.Path.GetFileName(Path).ToLower();
@@ -39,6 +41,7 @@ namespace h3magic
             stream = fs;
             FileCount = BitConverter.ToInt32(temp, 0);
             FilesTable = new List<FatRecord>(FileCount);
+            Master = master;
         }
 
         public virtual void LoadData(int count)
