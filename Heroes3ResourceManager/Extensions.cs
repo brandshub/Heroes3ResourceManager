@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -15,6 +16,11 @@ namespace h3magic
             return stopwatch.ElapsedTicks * 1000.0f / Stopwatch.Frequency;
         }
         
+        public static BitmapData LockBits24(this Bitmap bmp)
+        {
+            return bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+        }
+
         public static void DrawImage24(this BitmapData data, int x, int y, int stride, byte[] image)
         {
             int h = image.Length / stride;

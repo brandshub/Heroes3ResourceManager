@@ -13,16 +13,18 @@ namespace h3magic
 
         private static DefFile defFile;
         
-        public static Bitmap GetAllResources(LodFile h3sprite)
+        public static Bitmap GetAllResources(Heroes3Master master)
         {
             if (BitmapCache.ResourcesAll != null)
                 return BitmapCache.ResourcesAll;
+
+            var h3sprite = master.Resolve(IMG_FNAME);
 
             if (defFile == null)
                 defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
 
             var bmp = new Bitmap((82 + 1) * 7, 93, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits24();
 
             Parallel.For(0, 7, i =>
             {
@@ -36,10 +38,11 @@ namespace h3magic
             return BitmapCache.ResourcesAll;
         }
 
-        public static Bitmap GetImage(LodFile h3sprite, int index)
+        public static Bitmap GetImage(Heroes3Master master, int index)
         {
+            var lodFile = master.Resolve(IMG_FNAME);
             if (defFile == null)
-                defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
+                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
 
             return defFile.GetByAbsoluteNumber(index);
         }

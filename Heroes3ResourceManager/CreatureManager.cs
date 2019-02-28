@@ -12,7 +12,7 @@ namespace h3magic
     {
         private const string FAT_NAME = "CRTRAITS.TXT";
         private const string IMG_FNAME = "TwCrPort.def";
-        private const string IMG_SMALL_FNAME = "CPRSMALL.def";       
+        private const string IMG_SMALL_FNAME = "CPRSMALL.def";
 
         public static List<Creature> OnlyActiveCreatures = new List<Creature>();
         public static Bitmap[] SmallImages = null;
@@ -25,10 +25,11 @@ namespace h3magic
         private static string[] rows;
 
         public static bool Loaded { get; private set; }
-        public static bool HasChanges = false;
+        public static bool AnyChanges;
+
         public static void LoadInfo(Heroes3Master master)
         {
-            HasChanges = false;
+            AnyChanges = false;
             Loaded = false;
             Unload();
 
@@ -151,17 +152,22 @@ namespace h3magic
         }
 
 
-        public static Bitmap GetImage(LodFile h3sprite, int index)
+        public static Bitmap GetImage(Heroes3Master master, int index)
         {
+            var lodFile = master.Resolve(IMG_FNAME);
             if (creatureDef == null)
-                creatureDef = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
+                creatureDef = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
 
             var bmp = creatureDef.GetByAbsoluteNumber(index + 2);
             return bmp;
         }
 
-        public unsafe static Bitmap GetSmallImage(LodFile h3sprite, int creatureIndex)
+        public unsafe static Bitmap GetSmallImage(Heroes3Master master, int creatureIndex)
         {
+
+            var h3sprite = master.Resolve(IMG_SMALL_FNAME);
+
+
             if (smallCreatureDef == null)
                 smallCreatureDef = h3sprite.GetRecord(IMG_SMALL_FNAME).GetDefFile(h3sprite);
 
@@ -204,9 +210,10 @@ namespace h3magic
         }
 
 
-        public static void Save(LodFile lodfile)
+        public static void SaveLocalChanges(Heroes3Master master)
         {
-            var rec = lodfile.GetRecord(FAT_NAME);
+            var lodFile = master.Resolve(FAT_NAME);
+            var rec = lodFile.GetRecord(FAT_NAME);
             if (rec != null)
             {
                 string val = GetAllStats();
@@ -214,17 +221,19 @@ namespace h3magic
             }
         }
 
-        public static Bitmap GetAllCreaturesBitmapParallel(LodFile h3sprite)
+        public static Bitmap GetAllCreaturesBitmapParallel(Heroes3Master master)
         {
             if (BitmapCache.CreaturesAll != null)
                 return BitmapCache.CreaturesAll;
+
+            var h3sprite = master.Resolve(IMG_FNAME);
 
             if (creatureDef == null)
                 creatureDef = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
 
             int totalrows = OnlyActiveCreatures.Count / 14 + (OnlyActiveCreatures.Count % 14 == 0 ? 0 : 1);
             var bmp = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits24();
 
             Parallel.For(0, OnlyActiveCreatures.Count, i =>
                 {
@@ -244,14 +253,16 @@ namespace h3magic
         }
 
 
-        public static Bitmap GetAllBasicCreatures(LodFile h3sprite)
+        public static Bitmap GetAllBasicCreatures(Heroes3Master master)
         {
             if (BitmapCache.CreaturesUnupgraded != null)
                 return BitmapCache.CreaturesUnupgraded;
 
+            var h3sprite = master.Resolve(IMG_FNAME);
+
             int totalrows = IndexesOfFirstLevelCreatures.Length / 14 + (IndexesOfFirstLevelCreatures.Length % 14 == 0 ? 0 : 1);
             var bmp = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits24();
 
             Parallel.For((int)0, IndexesOfFirstLevelCreatures.Length, i =>
             {

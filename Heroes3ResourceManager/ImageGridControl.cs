@@ -269,34 +269,34 @@ namespace h3magic
                 if (propertyType == ProfilePropertyType.Creature)
                 {
                     int realIndex = CreatureManager.OnlyActiveCreatures[index].CreatureIndex;
-                    return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, realIndex);
+                    return CreatureManager.GetImage(Heroes3Master.Master, realIndex);
                 }
                 if (propertyType == ProfilePropertyType.SecondarySkill)
-                    return SecondarySkill.AllSkills[index / 3].GetImage(Heroes3Master.Master.H3Sprite, 1 + index % 3);
+                    return SecondarySkill.AllSkills[index / 3].GetImage(Heroes3Master.Master, 1 + index % 3);
 
                 if (propertyType == ProfilePropertyType.Spell)
-                    return Spell.AllSpells[index].GetImage(Heroes3Master.Master.H3Sprite);
+                    return Spell.AllSpells[index].GetImage(Heroes3Master.Master);
 
                 if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic)
-                    return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, CreatureManager.IndexesOfFirstLevelCreatures[index]);
+                    return CreatureManager.GetImage(Heroes3Master.Master, CreatureManager.IndexesOfFirstLevelCreatures[index]);
 
                 if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
                 {
                     if (!forceAllCreatures)
-                        return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, CreatureManager.IndexesOfFirstLevelCreatures[index]);
+                        return CreatureManager.GetImage(Heroes3Master.Master, CreatureManager.IndexesOfFirstLevelCreatures[index]);
 
                     int realIndex = CreatureManager.OnlyActiveCreatures[index].CreatureIndex;
-                    return CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, realIndex);
+                    return CreatureManager.GetImage(Heroes3Master.Master, realIndex);
                 }
 
                 if (propertyType == ProfilePropertyType.SpecSpell)
-                    return Spell.GetSpellByIndex(Spell.SpecSpellIndexes[index]).GetImage(Heroes3Master.Master.H3Sprite);
+                    return Spell.GetSpellByIndex(Spell.SpecSpellIndexes[index]).GetImage(Heroes3Master.Master);
 
                 if (propertyType == ProfilePropertyType.SpecSecondarySkill)
-                    return SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, SecondarySkill.IndexesOfAllSpecSkills[index], 1);
+                    return SecondarySkill.GetImage(Heroes3Master.Master, SecondarySkill.IndexesOfAllSpecSkills[index], 1);
 
                 if (propertyType == ProfilePropertyType.SpecResource)
-                    return Resource.GetImage(Heroes3Master.Master.H3Sprite, index);
+                    return Resource.GetImage(Heroes3Master.Master, index);
             }
             return null;
         }
@@ -307,30 +307,30 @@ namespace h3magic
             if (Heroes3Master.Master != null)
             {
                 if (propertyType == ProfilePropertyType.Creature)
-                    return new Bitmap(CreatureManager.GetAllCreaturesBitmapParallel(Heroes3Master.Master.H3Sprite));
+                    return new Bitmap(CreatureManager.GetAllCreaturesBitmapParallel(Heroes3Master.Master));
 
                 if (propertyType == ProfilePropertyType.SecondarySkill)
-                    return new Bitmap(SecondarySkill.GetSkillTree(Heroes3Master.Master.H3Sprite));
+                    return new Bitmap(SecondarySkill.GetSkillTree(Heroes3Master.Master));
 
                 if (propertyType == ProfilePropertyType.Spell)
-                    return new Bitmap(Spell.GetAllSpells(Heroes3Master.Master.H3Sprite));
+                    return new Bitmap(Spell.GetAllSpells(Heroes3Master.Master));
 
                 if (propertyType == ProfilePropertyType.SpecCreature || propertyType == ProfilePropertyType.SpecCreatureStatic)
-                    return CreatureManager.GetAllBasicCreatures(Heroes3Master.Master.H3Sprite);
+                    return CreatureManager.GetAllBasicCreatures(Heroes3Master.Master);
                 if (propertyType == ProfilePropertyType.SpecCreatureUpgrade)
                 {
                     if (forceAllCreatures)
-                        return new Bitmap(CreatureManager.GetAllCreaturesBitmapParallel(Heroes3Master.Master.H3Sprite));
-                    return CreatureManager.GetAllBasicCreatures(Heroes3Master.Master.H3Sprite);
+                        return new Bitmap(CreatureManager.GetAllCreaturesBitmapParallel(Heroes3Master.Master));
+                    return CreatureManager.GetAllBasicCreatures(Heroes3Master.Master);
                 }
                 if (propertyType == ProfilePropertyType.SpecSecondarySkill)
-                    return SecondarySkill.GetSkillsForSpeciality(Heroes3Master.Master.H3Sprite);
+                    return SecondarySkill.GetSkillsForSpeciality(Heroes3Master.Master);
 
                 if (propertyType == ProfilePropertyType.SpecSpell)
-                    return Spell.GetAvailableSpellsForSpeciality(Heroes3Master.Master.H3Sprite);
+                    return Spell.GetAvailableSpellsForSpeciality(Heroes3Master.Master);
 
                 if (propertyType == ProfilePropertyType.SpecResource)
-                    return Resource.GetAllResources(Heroes3Master.Master.H3Sprite);
+                    return Resource.GetAllResources(Heroes3Master.Master);
             }
             return null;
         }

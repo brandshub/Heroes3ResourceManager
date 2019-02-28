@@ -128,7 +128,7 @@ namespace h3magic
             if (extension == "*") return FilesTable.ToList();
             string local = FatRecord.ToggleCase(extension);
             return FilesTable.Where(fat => fat.Extension == local).ToList();
-        }        
+        }
 
         public virtual bool HasChanges
         {
@@ -146,7 +146,7 @@ namespace h3magic
                     destination.Position = FilesTable[0].Offset;
                     for (int i = 0; i < FileCount; i++)
                     {
-                        string fn = FilesTable[i].FileName;                        
+                        string fn = FilesTable[i].FileName;
                         FilesTable[i].SaveToStream(stream, destination);
                     }
 
@@ -163,6 +163,22 @@ namespace h3magic
                 return true;
             }
             return false;
+        }
+
+        public bool SaveToDiskBackupAndSwaps(string prefix)
+        {
+            string newFileName = Path + prefix;
+
+            if (SaveToDisk(newFileName))
+            {
+                stream.Close();
+                File.Move(Path, Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+                File.Move(newFileName, Path);
+                stream = new FileStream(Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                return true;
+            }
+            return false;
+
         }
 
 

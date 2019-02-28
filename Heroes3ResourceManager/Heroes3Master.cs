@@ -14,16 +14,8 @@ namespace h3magic
 
         public static Heroes3Master Master { get; set; }
 
+        public List<LodFile> ResourceFiles { get; private set; }        
 
-        public List<LodFile> ResourceFiles { get; private set; }
-        public H3Bitmap H3Bitmap
-        {
-            get
-            {
-                return GetByName("h3bitmap.lod") as H3Bitmap;
-            }
-        }
-        public H3Sprite H3Sprite { get { return GetByName("h3sprite.lod") as H3Sprite; } }
         public ExeFile Executable { get; private set; }
 
         public Dictionary<string, List<string>> NameToFileMap { get; private set; }
@@ -81,6 +73,7 @@ namespace h3magic
         public void RefreshData()
         {
             routingCache = new Dictionary<string, LodFile>();
+
             Resource.Unload();
             CreatureAnimationLoop.Unload();
             BitmapCache.UnloadCachedDrawItems();
@@ -101,14 +94,28 @@ namespace h3magic
         public LodFile Resolve(string fileName)
         {
             LodFile lodFile;
-            if(routingCache.TryGetValue(fileName.ToLower(), out lodFile))
+            if (routingCache.TryGetValue(fileName.ToLower(), out lodFile))
                 return lodFile;
 
-            
+
             lodFile = Routing.Resolve(this, fileName);
             routingCache[fileName.ToLower()] = lodFile;
             return lodFile;
         }
+
+        public FatRecord ResolveWith(string fileName)
+        {
+            LodFile lodFile;
+            if (routingCache.TryGetValue(fileName.ToLower(), out lodFile))
+                return lodFile[fileName];
+
+
+            lodFile = Routing.Resolve(this, fileName);
+            routingCache[fileName.ToLower()] = lodFile;
+
+            return lodFile[fileName];
+        }
+
 
         private void BuildMap()
         {
@@ -145,13 +152,7 @@ namespace h3magic
                     {
                         fs = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                         string lcfileName = Path.GetFileName(file).ToLower();
-                        LodFile lod = null;
-                        if (lcfileName == "h3bitmap.lod")
-                            lod = new H3Bitmap(this,fs);
-                        else if (lcfileName == "h3sprite.lod")
-                            lod = new H3Sprite(this, fs);
-                        else
-                            lod = new LodFile(this, fs);
+                        LodFile lod = new LodFile(this, fs);
 
                         lod.LoadFAT();
                         ResourceFiles.Add(lod);
@@ -175,28 +176,29 @@ namespace h3magic
 
         }
 
-        public void Save()
+        public void SaveToDisk()
         {
             SaveHeroExeData();
-            string h3bitmapFn = H3Bitmap.Path + "new";
-            string h3spritefn = H3Sprite.Path + "new";
 
-            if (H3Bitmap.SaveToDisk(h3bitmapFn))
-            {
-                H3Bitmap.stream.Close();
-                File.Move(H3Bitmap.Path, H3Bitmap.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
-                File.Move(h3bitmapFn, H3Bitmap.Path);
-                H3Bitmap.stream = new FileStream(H3Bitmap.Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            }
+            if (CreatureManager.AnyChanges)
+                CreatureManager.SaveLocalChanges(this);
 
-            if (H3Sprite.SaveToDisk(h3spritefn))
-            {
-                H3Sprite.stream.Close();
-                File.Move(H3Sprite.Path, H3Sprite.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
-                File.Move(h3spritefn, H3Sprite.Path);
-                H3Sprite.stream = new FileStream(H3Sprite.Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            }
+
+            if (HeroesManager.AnyChanges)
+                HeroesManager.SaveLocalChanges(this);
+
+            if (HeroClass.AnyChanges)
+                HeroClass.SaveLocalChanges(this);
+
+            if (Spell.AnyChanges)
+                Spell.SaveLocalChanges(this);
+
+
+            foreach (var lodFile in ResourceFiles)
+                lodFile.SaveToDiskBackupAndSwaps("new");
         }
+
+
 
         public void Dispose()
         {

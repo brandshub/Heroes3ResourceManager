@@ -46,13 +46,14 @@ namespace h3magic
             }
         }
 
-        public static Bitmap GetImage(LodFile lodFile, int skillIndex, int level)
+        public static Bitmap GetImage(Heroes3Master master, int skillIndex, int level)
         {
-            return AllSkills[skillIndex].GetImage(lodFile, level);
+            return AllSkills[skillIndex].GetImage(master, level);
         }
 
-        public Bitmap GetImage(LodFile lodFile, int level)
+        public Bitmap GetImage(Heroes3Master master, int level)
         {
+            var lodFile = master.Resolve(IMG_FNAME);
             if (_defFile == null)
                 _defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
             return _defFile.GetByAbsoluteNumber(Index * 3 + level + 2);
@@ -65,8 +66,9 @@ namespace h3magic
 
 
 
-        public static Bitmap GetSkillTreeForHeroClass(LodFile h3sprite)
+        public static Bitmap GetSkillTreeForHeroClass(Heroes3Master master)
         {
+            var h3sprite = master.Resolve(IMG_FNAME);
 
             if (_skillTree != null)
                 return _skillTree;
@@ -85,18 +87,22 @@ namespace h3magic
             return _skillTree;
         }
 
-        public static Bitmap GetSkillTree(LodFile h3sprite)
+        public static Bitmap GetSkillTree(Heroes3Master master)
         {
             if (_skillTree2 != null)
                 return _skillTree2;
 
             if (_defFile == null)
+            {
+                var h3sprite = master.Resolve(IMG_FNAME);
                 _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
+            }
+                
 
             int rowCount = 3 * AllSkills.Count / ALL_COLNUMBER;
 
             var bmp = new Bitmap((44 + 1) * ALL_COLNUMBER, (44 + 1) * rowCount, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits24();
 
             Parallel.For(0, AllSkills.Count * 3, i =>
                 {
@@ -115,10 +121,13 @@ namespace h3magic
 
 
 
-        public static Bitmap GetSkillsForSpeciality(LodFile h3sprite)
+        public static Bitmap GetSkillsForSpeciality(Heroes3Master master)
         {
+
             if (_specImage != null)
                 return _specImage;
+
+            var h3sprite = master.Resolve(IMG_FNAME);
 
             if (_defFile == null)
                 _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);           
@@ -126,7 +135,7 @@ namespace h3magic
             int rowNum = IndexesOfAllSpecSkills.Length / SPEC_COLNUMBER + (IndexesOfAllSpecSkills.Length % SPEC_COLNUMBER == 0 ? 0 : 1);
 
             var bmp = new Bitmap((44 + 1) * SPEC_COLNUMBER, (44 + 1) * rowNum, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits24();
 
             Parallel.For(0, IndexesOfAllSpecSkills.Length, i =>
             {

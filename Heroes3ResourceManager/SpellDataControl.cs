@@ -83,7 +83,7 @@ namespace h3magic
                 if (lbSpells.SelectedIndex == -1 || lbSpells.SelectedIndex != filteredIndex)
                     lbSpells.SelectedIndex = filteredIndex;
 
-                pbSpell.Image = selectedSpell.GetImage(Heroes3Master.Master.H3Sprite);
+                pbSpell.Image = selectedSpell.GetImage(Heroes3Master.Master);
                 tbSpellName.Text = selectedSpell.Name;
                 cbSpellLevel.SelectedIndex = (selectedSpell.Level - 1);
 
@@ -153,7 +153,7 @@ namespace h3magic
 
                 for (int i = 0; i < 4; i++)
                 {
-                    BitmapCache.SpellsMagicSchools[i] = SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, SecondarySkill.MagicSchoolSecondarySkillIndexes[i], 3);
+                    BitmapCache.SpellsMagicSchools[i] = SecondarySkill.GetImage(Heroes3Master.Master, SecondarySkill.MagicSchoolSecondarySkillIndexes[i], 3);
 
                     var inactive = new Bitmap(BitmapCache.SpellsMagicSchools[i]);
                     using (var g = Graphics.FromImage(inactive))
@@ -243,7 +243,7 @@ namespace h3magic
                 if (!cacheSpells)
                 {
                     e.Graphics.DrawString(Spell.AllSpells[e.Index].Name, e.Font, Brushes.Black, e.Bounds.X + 42, e.Bounds.Y + 4);
-                    var img = new Bitmap(Spell.AllSpells[e.Index].GetImage(Heroes3Master.Master.H3Sprite), 36, 24);
+                    var img = new Bitmap(Spell.AllSpells[e.Index].GetImage(Heroes3Master.Master), 36, 24);
                     e.Graphics.DrawImage(img, e.Bounds.X, e.Bounds.Y);
                 }
                 else
@@ -260,7 +260,7 @@ namespace h3magic
                         using (var g = Graphics.FromImage(cached))
                         {
                             var spell = filteredSpells[e.Index];
-                            var img = new Bitmap(spell.GetImage(Heroes3Master.Master.H3Sprite), 29, 32);
+                            var img = new Bitmap(spell.GetImage(Heroes3Master.Master), 29, 32);
 
                             var schools = new List<int>();
                             var schoolsCount = 0;
@@ -379,13 +379,13 @@ namespace h3magic
                 if (e.Index == 0)
                 {
                     clr = Color.Lavender;
-                    schoolImage = new Bitmap(SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, 25, 3), 32, 32); //25 is sorecery
+                    schoolImage = new Bitmap(SecondarySkill.GetImage(Heroes3Master.Master, 25, 3), 32, 32); //25 is sorecery
                     //schoolImage = SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, 25, 3); //25 is sorecery
                 }
                 else
                 {
                     clr = Spell.MagicSchoolColors[e.Index - 1];
-                    schoolImage = new Bitmap(SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, SecondarySkill.MagicSchoolSecondarySkillIndexes[e.Index - 1], 3), 32, 32);
+                    schoolImage = new Bitmap(SecondarySkill.GetImage(Heroes3Master.Master, SecondarySkill.MagicSchoolSecondarySkillIndexes[e.Index - 1], 3), 32, 32);
                     // schoolImage = SecondarySkill.GetImage(Heroes3Master.Master.H3Sprite, SecondarySkill.MagicSchoolSecondarySkillIndexes[e.Index - 1], 3);
                 }
 

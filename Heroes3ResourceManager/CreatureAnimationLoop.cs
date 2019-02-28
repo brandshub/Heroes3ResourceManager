@@ -72,7 +72,10 @@ namespace h3magic
                     backgrounds = new Bitmap[master.CastlesCount + 1];
 
                 if (backgrounds[castleIndex] == null)
-                    backgrounds[castleIndex] = master.H3Bitmap.GetRecord(backgroundNames[castleIndex]).GetBitmap(master.H3Bitmap.stream);
+                {
+                    var lodFile = master.Resolve(backgroundNames[castleIndex]);
+                    backgrounds[castleIndex] = lodFile.GetRecord(backgroundNames[castleIndex]).GetBitmap(lodFile.stream);
+                }
 
                 Point pt;
                 Size size;

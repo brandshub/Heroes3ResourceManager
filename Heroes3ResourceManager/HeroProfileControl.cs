@@ -45,37 +45,39 @@ namespace h3magic
             if (heroIndex > -1 && heroIndex < HeroesManager.HeroesOrder.Length && master != null)
             {
                 var hs = HeroesManager.AllHeroes[heroIndex];
-                var bckgImage = HeroesManager.GetBackground(master.H3Bitmap, master.H3Sprite);
+
+                var bckgImage = HeroesManager.GetBackground(master);
 
                 var canvas = new Bitmap(bckgImage);
 
                 var g = Graphics.FromImage(canvas);
                 g.DrawImage(bckgImage, Point.Empty);
 
-                var portrait = master.H3Bitmap[HeroesManager.HeroesOrder[hs.ImageIndex]].GetBitmap(master.H3Bitmap.stream);
+                var h3bitmap = master.Resolve(HeroesManager.HeroesOrder[hs.ImageIndex]);
+                var portrait = h3bitmap[HeroesManager.HeroesOrder[hs.ImageIndex]].GetBitmap(h3bitmap.stream);
                 g.DrawImage(portrait, new Point(4, 3));
 
                 var heroData = HeroExeData.Data[heroIndex];
-                var z = Speciality.GetImage(master.H3Sprite, heroData.Index);
+          
+                var z = Speciality.GetImage(master, heroData.Index);
                 g.DrawImage(z, new Point(4, 166));
 
                 Hero = heroData;
-
                 if (heroData.Skill1 != null)
-                    g.DrawImage(heroData.Skill1.GetImage(master.H3Sprite, heroData.FirstSkillLevel), new Point(5, 213));
+                    g.DrawImage(heroData.Skill1.GetImage(master, heroData.FirstSkillLevel), new Point(5, 213));
 
                 if (heroData.Skill2 != null)
-                    g.DrawImage(heroData.Skill2.GetImage(master.H3Sprite, heroData.SecondSkillLevel), new Point(148, 213));
+                    g.DrawImage(heroData.Skill2.GetImage(master, heroData.SecondSkillLevel), new Point(148, 213));
 
-                var img1 = CreatureManager.GetImage(master.H3Sprite, heroData.Unit1Index);
+                var img1 = CreatureManager.GetImage(master, heroData.Unit1Index);
                 g.DrawImage(img1, new Point(5, 262));
-                var img2 = CreatureManager.GetImage(master.H3Sprite, heroData.Unit2Index);
+                var img2 = CreatureManager.GetImage(master, heroData.Unit2Index);
                 g.DrawImage(img2, new Point(68, 262));
-                var img3 = CreatureManager.GetImage(master.H3Sprite, heroData.Unit3Index);
+                var img3 = CreatureManager.GetImage(master, heroData.Unit3Index);
                 g.DrawImage(img3, new Point(129, 262));
 
                 if (heroData.Spell != null)
-                    g.DrawImage(heroData.Spell.GetImage(master.H3Sprite), 192, 262);
+                    g.DrawImage(heroData.Spell.GetImage(master), 192, 262);
 
                 DrawData(g, heroData);
 

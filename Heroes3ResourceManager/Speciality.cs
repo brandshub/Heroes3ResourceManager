@@ -52,9 +52,10 @@ namespace h3magic
                 AllSpecialities = LoadInfo(executableBinary, startOffset);
         }
 
-        public static Bitmap GetImage(H3Sprite h3sprite, int index)
+        public static Bitmap GetImage(Heroes3Master master, int index)
         {
-            return h3sprite.Un44Def.GetByAbsoluteNumber(index);
+            var lodFile = master.Resolve(IMG_FNAME);            
+            return lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile).GetByAbsoluteNumber(index);
         }
 
         public static Speciality GetByIndex(int index)
@@ -62,10 +63,12 @@ namespace h3magic
             return AllSpecialities[index];
         }
 
-        public static Bitmap GetAllSpecs(H3Sprite h3sprite)
+        public static Bitmap GetAllSpecs(Heroes3Master master)
         {
             if (BitmapCache.SpecialitiesAll != null)
                 return BitmapCache.SpecialitiesAll;
+
+
 
             var bmp = new Bitmap(16 * (44 + 1), (44 + 1) * 9);
             using (var g = Graphics.FromImage(bmp))
@@ -73,7 +76,7 @@ namespace h3magic
                 for (int i = 0; i < 9; i++)
                     for (int j = 0; j < 16; j++)
                     {
-                        g.DrawImage(GetImage(h3sprite, i * 16 + j), j * 45, 45 * i);
+                        g.DrawImage(GetImage(master, i * 16 + j), j * 45, 45 * i);
                     }
             }
 

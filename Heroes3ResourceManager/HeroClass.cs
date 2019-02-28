@@ -13,7 +13,7 @@ namespace h3magic
         private static string[] rows;
         public static List<HeroClass> AllHeroClasses;
 
-        public static bool HasChanges { get; set; }
+        public static bool AnyChanges { get; set; }
         public int Attack { get { return GetStat(2); } }
         public int Defense { get { return GetStat(3); } }
         public int MagicPower { get { return GetStat(4); } }
@@ -43,6 +43,7 @@ namespace h3magic
         public static void LoadInfo(Heroes3Master master)
         {
             var lodFile = master.Resolve(TXT_FNAME);
+            AnyChanges = false;
 
             var rec = lodFile[TXT_FNAME];
             string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
@@ -54,14 +55,15 @@ namespace h3magic
         }
 
 
-        public static void Save(LodFile h3Bitmap)
+        public static void SaveLocalChanges(Heroes3Master master)
         {
             var sb = new StringBuilder();
             sb.AppendLine(rows[0]);
             sb.AppendLine(rows[1]);
             for (int i = 0; i < AllHeroClasses.Count; i++)
                 sb.AppendLine(AllHeroClasses[i].GetRow());
-            h3Bitmap[TXT_FNAME].ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));
+
+            master.ResolveWith(TXT_FNAME).ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));
         }
 
         public static HeroClass GetByIndex(int index)

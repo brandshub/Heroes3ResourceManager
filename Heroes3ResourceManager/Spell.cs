@@ -22,10 +22,20 @@ namespace h3magic
 
         public static int[] SpecSpellIndexes = { 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 37, 38, 39, 41, 43, 44, 45, 46, 47, 48, 51, 53, 55 };
         public static Color[] MagicSchoolColors = new Color[] { Color.PaleGreen, Color.LightCyan, Color.MistyRose, Color.White };
-   
+
+        public static bool AnyChanges
+        {
+            get
+            {
+                if (AllSpells == null)
+                    return false;
+                return AllSpells.Any(s => s.HasChanges);
+            }
+        }
 
         private string[] cells;
-        public bool HasChanges { get; set; }
+        public bool HasChanges  { get; set; }
+     
         public int Index { get; private set; }
         public string Name { get { return cells[0]; } set { cells[0] = value; } }
         public int Level { get { return getIntCell(2); } set { setIntCell(2, value); } }
@@ -100,6 +110,7 @@ namespace h3magic
         public static void LoadInfo(Heroes3Master master)
         {
             Unload();
+            
             var lodFile = master.Resolve(TXT_FNAME);
             var rec = lodFile[TXT_FNAME];
 
@@ -127,22 +138,27 @@ namespace h3magic
             return AllSpells.FirstOrDefault(s => s.Index == index);
         }
 
-        public Bitmap GetImage(LodFile h3sprite)
+        public Bitmap GetImage(Heroes3Master master)
         {
+            var lodFile = master.Resolve(IMG_FNAME);
+
             if (defFile == null)
-                defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
+                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile.stream);
 
             return defFile.GetByAbsoluteNumber(Index);
         }
 
 
-        public static Bitmap GetAllSpells(LodFile h3sprite)
+        public static Bitmap GetAllSpells(Heroes3Master master)
         {
             if (BitmapCache.SpellsAll != null)
                 return BitmapCache.SpellsAll;
 
             if (defFile == null)
-                defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
+            {
+                var lodFile = master.Resolve(IMG_FNAME);
+                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile.stream);
+            }
 
             int total = defFile.headers[0].SpritesCount;
 
@@ -155,7 +171,7 @@ namespace h3magic
             int rowCount = (total / colCount) + (total % colCount == 0 ? 0 : 1);
 
             var bmp = new Bitmap((imgWidth + 1) * colCount, (imgHeight + 1) * rowCount);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits24();
 
             Parallel.For(0, total, i =>
             {
@@ -174,17 +190,19 @@ namespace h3magic
             return BitmapCache.SpellsAll;
         }
 
-        public static Bitmap GetAvailableSpellsForSpeciality(LodFile h3sprite)
+        public static Bitmap GetAvailableSpellsForSpeciality(Heroes3Master master)
         {
             if (BitmapCache.SpellsForSpeciality != null)
                 return BitmapCache.SpellsForSpeciality;
 
-
             if (defFile == null)
-                defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
+            {
+                var lodFile = master.Resolve(IMG_FNAME);
+                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile.stream);
+            }
 
             var bmp = new Bitmap((58 + 1) * 6, (64 + 1) * 5);
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            var imageData = bmp.LockBits24();
 
             Parallel.For(0, SpecSpellIndexes.Length, i =>
             {
@@ -212,9 +230,9 @@ namespace h3magic
             cells[index] = value.ToString();
         }
 
-        public static void Save(LodFile lodFile)
+        public static void SaveLocalChanges(Heroes3Master master)
         {
-            var rec = lodFile.GetRecord(TXT_FNAME);
+            var rec = master.ResolveWith(TXT_FNAME);
             if (rec != null)
             {
                 var sb = new StringBuilder();
@@ -249,9 +267,10 @@ namespace h3magic
 
                 for (; i < allRows.Length; i++)
                     sb.AppendLine(allRows[i]);
-                 
-                rec.ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));
+                
+                rec.ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));                
             }
+            
         }
 
         public static void Unload()

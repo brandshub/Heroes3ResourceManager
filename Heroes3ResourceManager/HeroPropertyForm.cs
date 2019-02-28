@@ -96,17 +96,17 @@ namespace h3magic
                 if (selectedBoxIndex == 0)
                 {
                     Box1Creature = CreatureManager.IndexesOfFirstLevelCreatures[value];
-                    pbCreature1.Image = CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, Box1Creature);
+                    pbCreature1.Image = CreatureManager.GetImage(Heroes3Master.Master, Box1Creature);
                 }
                 else if (selectedBoxIndex == 1)
                 {
                     Box2Creature = CreatureManager.IndexesOfFirstLevelCreatures[value];
-                    pbCreature2.Image = CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, Box2Creature);
+                    pbCreature2.Image = CreatureManager.GetImage(Heroes3Master.Master, Box2Creature);
                 }
                 else if (selectedBoxIndex == 2)
                 {
                     Box3Creature = CreatureManager.OnlyActiveCreatures[value].CreatureIndex;
-                    pbCreature3.Image = CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, Box3Creature);
+                    pbCreature3.Image = CreatureManager.GetImage(Heroes3Master.Master, Box3Creature);
                 }
             }
             else
@@ -226,13 +226,13 @@ namespace h3magic
         private void UpdateCreatureBoxes()
         {
             if (Box1Creature >= 0)
-                pbCreature1.Image = CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, Box1Creature);
+                pbCreature1.Image = CreatureManager.GetImage(Heroes3Master.Master, Box1Creature);
 
             if (Box2Creature >= 0)
-                pbCreature2.Image = CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, Box2Creature);
+                pbCreature2.Image = CreatureManager.GetImage(Heroes3Master.Master, Box2Creature);
 
             if (Box3Creature >= 0)
-                pbCreature3.Image = CreatureManager.GetImage(Heroes3Master.Master.H3Sprite, Box3Creature);
+                pbCreature3.Image = CreatureManager.GetImage(Heroes3Master.Master, Box3Creature);
         }
 
 

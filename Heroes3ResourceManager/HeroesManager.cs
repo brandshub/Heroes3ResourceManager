@@ -11,9 +11,11 @@ namespace h3magic
 {
     static class HeroesManager
     {
-        private const string TXT_BIOGRAPHIES_FNAME = "HeroBios.txt";
-        private const string H_SPECS = "HeroSpec.txt";
-        private const string H_HEROES = "HOTRAITS.TXT";
+        public const string TXT_BIOGRAPHIES_FNAME = "HeroBios.txt";
+        public const string H_SPECS = "HeroSpec.txt";
+        public const string H_HEROES = "HOTRAITS.TXT";
+        public const string H_BACKGROUND = "HeroScr4.pcx";
+        public const string H_PRIMARYSKILLS = "PSKIL42.def";
 
         private static string[] bio_rows, spec_rows;
         private static string[] hero_rows;
@@ -22,13 +24,16 @@ namespace h3magic
         public static List<HeroStats> AllHeroes = new List<HeroStats>();
 
         public static string[] HeroesOrder;
-        public static bool HasChanges { get; set; }
+        public static bool AnyChanges { get; set; }
         public static void LoadInfo(Heroes3Master master)
         {
             Unload();
-            HasChanges = false;
+            AnyChanges = false;
 
-            var lodFile = master.Resolve(TXT_BIOGRAPHIES_FNAME);
+            var lod1 = master.Resolve(TXT_BIOGRAPHIES_FNAME);
+
+            var lod2 = master.Resolve(H_SPECS);
+            var lod3 = master.Resolve(H_HEROES);
 
             var imageLodFile = master.Resolve("HPL000EL.pcx");
             //int index = lodFile.IndexOf("HPL000EL.pcx");
@@ -52,9 +57,9 @@ namespace h3magic
                 stringList.AddRange(heroes[types[i]]);
             HeroesOrder = stringList.ToArray();
 
-            bio_rows = Encoding.Default.GetString(lodFile.GetRawData(TXT_BIOGRAPHIES_FNAME)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            spec_rows = Encoding.Default.GetString(lodFile.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            hero_rows = Encoding.Default.GetString(lodFile.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            bio_rows = Encoding.Default.GetString(lod1.GetRawData(TXT_BIOGRAPHIES_FNAME)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            spec_rows = Encoding.Default.GetString(lod2.GetRawData(H_SPECS)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            hero_rows = Encoding.Default.GetString(lod3.GetRawData(H_HEROES)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             AllHeroes = new List<HeroStats>(HeroesOrder.Length);
             for (int i = 0; i < HeroesOrder.Length; i++)
@@ -86,7 +91,7 @@ namespace h3magic
             return spec_rows[2 + index];
         }
 
-        public static Bitmap GetBackground(LodFile h3bitmap, LodFile h3sprite)
+        public static Bitmap GetBackground(Heroes3Master master)
         {
             if (BitmapCache.HeroesBackground != null)
                 return BitmapCache.HeroesBackground;
@@ -95,7 +100,8 @@ namespace h3magic
             using (var g = Graphics.FromImage(bmp))
             {
 
-                var f = h3bitmap.GetRecord("HeroScr4.pcx").GetBitmap(h3bitmap.stream);
+                var h3bitmap = master.Resolve(H_BACKGROUND);
+                var f = h3bitmap.GetRecord(H_BACKGROUND).GetBitmap(h3bitmap.stream);
                 if (f != null)
                     g.DrawImage(f, new Point(-14, -15));
 
@@ -105,7 +111,8 @@ namespace h3magic
                 g.DrawImage(f, 192, 261, new RectangleF(196, 19, 93, 65), GraphicsUnit.Pixel);
                 g.DrawImage(f, 0, 327, new RectangleF(14, 85, 288, 4), GraphicsUnit.Pixel);
 
-                var ps = h3sprite.GetRecord("PSKIL42.def").GetDefFile(h3sprite.stream);
+                var h3sprite = master.Resolve(H_PRIMARYSKILLS);
+                var ps = h3sprite.GetRecord(H_PRIMARYSKILLS).GetDefFile(h3sprite.stream);
                 if (ps != null)
                 {
                     g.DrawImage(ps.GetSprite(0), new Point(18, 97));
@@ -121,8 +128,12 @@ namespace h3magic
             return BitmapCache.HeroesBackground;
         }
 
-        public static void Save(LodFile lodfile)
+        public static void SaveLocalChanges(Heroes3Master master)
         {
+            var lod1 = master.Resolve(TXT_BIOGRAPHIES_FNAME);
+            var lod2 = master.Resolve(H_SPECS);
+            var lod3 = master.Resolve(H_HEROES);
+
             StringBuilder bios, spec, traits;
             bios = new StringBuilder();
             spec = new StringBuilder();
@@ -155,11 +166,13 @@ namespace h3magic
                 traits.AppendLine("cr3");
                 if (AllHeroes[i].Large != null)
                 {
-                    lodfile[HeroesOrder[AllHeroes[i].ImageIndex]].ApplyChanges(PcxFile.FromBitmap(AllHeroes[i].Large).GetBytes);
+                    var rec = master.ResolveWith(HeroesOrder[AllHeroes[i].ImageIndex]);
+                    rec.ApplyChanges(PcxFile.FromBitmap(AllHeroes[i].Large).GetBytes);
                 }
                 if (AllHeroes[i].Small != null)
                 {
-                    lodfile[HeroesOrder[AllHeroes[i].ImageIndex].Replace("HPL", "HPS")].ApplyChanges(PcxFile.FromBitmap(AllHeroes[i].Small).GetBytes);
+                    var rec = master.ResolveWith(HeroesOrder[AllHeroes[i].ImageIndex].Replace("HPL", "HPS"));
+                    rec.ApplyChanges(PcxFile.FromBitmap(AllHeroes[i].Small).GetBytes);
                 }
             }
             for (int i = HeroesOrder.Length; i < bio_rows.Length; i++)
@@ -170,9 +183,10 @@ namespace h3magic
                 if (i + 2 < hero_rows.Length)
                     traits.AppendLine(hero_rows[2 + i]);
             }
-            lodfile[TXT_BIOGRAPHIES_FNAME].ApplyChanges(Encoding.Default.GetBytes(bios.ToString()));
-            lodfile[H_SPECS].ApplyChanges(Encoding.Default.GetBytes(spec.ToString()));
-            lodfile[H_HEROES].ApplyChanges(Encoding.Default.GetBytes(traits.ToString()));
+
+            lod1[TXT_BIOGRAPHIES_FNAME].ApplyChanges(Encoding.Default.GetBytes(bios.ToString()));
+            lod2[H_SPECS].ApplyChanges(Encoding.Default.GetBytes(spec.ToString()));
+            lod3[H_HEROES].ApplyChanges(Encoding.Default.GetBytes(traits.ToString()));
         }
 
         public static void Unload()
