@@ -53,9 +53,8 @@ namespace h3magic
         }
 
         public static Bitmap GetImage(Heroes3Master master, int index)
-        {
-            var lodFile = master.Resolve(IMG_FNAME);            
-            return lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile).GetByAbsoluteNumber(index);
+        {            
+            return master.ResolveWith(IMG_FNAME).GetDefFile().GetByAbsoluteNumber(index);
         }
 
         public static Speciality GetByIndex(int index)

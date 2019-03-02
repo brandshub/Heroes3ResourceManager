@@ -21,7 +21,7 @@ namespace h3magic
             var h3sprite = master.Resolve(IMG_FNAME);
 
             if (defFile == null)
-                defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
+                defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile();
 
             var bmp = new Bitmap((82 + 1) * 7, 93, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             var imageData = bmp.LockBits24();
@@ -42,7 +42,7 @@ namespace h3magic
         {
             var lodFile = master.Resolve(IMG_FNAME);
             if (defFile == null)
-                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
+                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile();
 
             return defFile.GetByAbsoluteNumber(index);
         }

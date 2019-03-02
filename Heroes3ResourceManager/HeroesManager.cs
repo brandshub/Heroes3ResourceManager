@@ -98,10 +98,8 @@ namespace h3magic
 
             var bmp = new Bitmap(288, 331);
             using (var g = Graphics.FromImage(bmp))
-            {
-
-                var h3bitmap = master.Resolve(H_BACKGROUND);
-                var f = h3bitmap.GetRecord(H_BACKGROUND).GetBitmap(h3bitmap.stream);
+            {                
+                var f = master.ResolveWith(H_BACKGROUND).GetBitmap();
                 if (f != null)
                     g.DrawImage(f, new Point(-14, -15));
 
@@ -111,8 +109,7 @@ namespace h3magic
                 g.DrawImage(f, 192, 261, new RectangleF(196, 19, 93, 65), GraphicsUnit.Pixel);
                 g.DrawImage(f, 0, 327, new RectangleF(14, 85, 288, 4), GraphicsUnit.Pixel);
 
-                var h3sprite = master.Resolve(H_PRIMARYSKILLS);
-                var ps = h3sprite.GetRecord(H_PRIMARYSKILLS).GetDefFile(h3sprite.stream);
+                var ps = master.ResolveWith(H_PRIMARYSKILLS).GetDefFile();                
                 if (ps != null)
                 {
                     g.DrawImage(ps.GetSprite(0), new Point(18, 97));

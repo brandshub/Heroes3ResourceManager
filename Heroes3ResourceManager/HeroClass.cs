@@ -41,12 +41,11 @@ namespace h3magic
         }
 
         public static void LoadInfo(Heroes3Master master)
-        {
-            var lodFile = master.Resolve(TXT_FNAME);
+        {            
             AnyChanges = false;
 
-            var rec = lodFile[TXT_FNAME];
-            string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
+            var rec = master.ResolveWith(TXT_FNAME);
+            string text = Encoding.Default.GetString(rec.GetRawData());
             rows = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             AllHeroClasses = new List<HeroClass>(rows.Length);

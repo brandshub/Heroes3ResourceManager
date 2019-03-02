@@ -24,12 +24,14 @@ namespace h3magic
         private byte[] fname;
         private byte[] newVal;
 
+        public LodFile Parent { get; set; }
 
-        public FatRecord(byte[] record)
+        public FatRecord(LodFile parent, byte[] record)
         {
             if (record.Length != 32)
                 throw new ArgumentException("not a record");
 
+            Parent = parent;
             FileName = Encoding.ASCII.GetString(record, 0, Array.IndexOf<byte>(record, 0));
 
             fname = new byte[12];
@@ -45,6 +47,13 @@ namespace h3magic
         public override string ToString()
         {
             return FileName + " off: " + Offset + " zSize: " + Size + " realSize: " + RealSize;
+        }
+
+        public Bitmap GetBitmap()
+        {
+            if (Parent != null)
+               return GetBitmap(Parent.stream);
+            return null;
         }
 
         public Bitmap GetBitmap(Stream stream)
@@ -145,6 +154,14 @@ namespace h3magic
         }
 
 
+        public byte[] GetRawData()
+        {
+            if (Parent != null)
+                return GetRawData(Parent.stream);
+            return null;
+        }
+
+
         public DefFile GetDefFile(Stream stream)
         {
             if (newVal == null)
@@ -165,10 +182,11 @@ namespace h3magic
             return new DefFile(this, newVal);
         }
 
-
-        public DefFile GetDefFile(LodFile lodFile)
+        public DefFile GetDefFile()
         {
-            return GetDefFile(lodFile.stream);
+            if (Parent != null)
+                return GetDefFile(Parent.stream);
+            return null;
         }
 
         public static string ToggleCase(string val)
@@ -181,7 +199,7 @@ namespace h3magic
 
             if (Extension == "PCX")
             {
-                Bitmap bmp = GetBitmap(stream);
+                var bmp = GetBitmap();
                 if (bmp != null)
                 {
                     if (fileName != FileName)
@@ -193,7 +211,7 @@ namespace h3magic
             }
             else
             {
-                File.WriteAllBytes(fileName, GetRawData(stream));
+                File.WriteAllBytes(fileName, GetRawData());
             }
         }
 
@@ -202,7 +220,7 @@ namespace h3magic
 
             if (Extension == "PCX")
             {
-                Bitmap bmp = GetBitmap(stream);
+                var bmp = GetBitmap();
                 if (bmp != null)
                 {
                     bmp.Save(Path.Combine(Path.GetDirectoryName((stream as FileStream).Name), FileName.Substring(0, FileName.Length - 4) + ".bmp"), System.Drawing.Imaging.ImageFormat.Bmp);
@@ -211,7 +229,7 @@ namespace h3magic
             }
             else
             {
-                File.WriteAllBytes(Path.Combine(Path.GetDirectoryName((stream as FileStream).Name), FileName), GetRawData(stream));
+                File.WriteAllBytes(Path.Combine(Path.GetDirectoryName((stream as FileStream).Name), FileName), GetRawData());
                 //File.WriteAllBytes(FileName, GetRawData(stream));
             }
         }

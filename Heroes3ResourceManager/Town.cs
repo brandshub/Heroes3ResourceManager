@@ -22,14 +22,11 @@ namespace h3magic
         public int Index { get; set; }
         public static void LoadInfo(Heroes3Master master)
         {
-            Unload();
-            var lodFile = master.Resolve(IMG_FNAME);
-            var txtLodFile = master.Resolve(TXT_FNAME);
-
-           string[] names = Encoding.Default.GetString(txtLodFile.GetRawData(TXT_FNAME)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            Unload();            
+           string[] names = Encoding.Default.GetString(master.ResolveWith(TXT_FNAME).GetRawData()).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             AllTownsWithNeutral = new Town[10];
-            var rec = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile.stream);
+            var rec = master.ResolveWith(IMG_FNAME).GetDefFile();
 
             for (int i = 0; i < AllTownsWithNeutral.Length - 1; i++)
             {

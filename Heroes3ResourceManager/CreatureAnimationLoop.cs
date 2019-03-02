@@ -24,7 +24,7 @@ namespace h3magic
         private DefFile creatureAnimation;
         public event EventHandler TimerTick;
         private Timer timer;
-        
+
         public bool Enabled
         {
             get { return timer.Enabled; }
@@ -73,8 +73,7 @@ namespace h3magic
 
                 if (backgrounds[castleIndex] == null)
                 {
-                    var lodFile = master.Resolve(backgroundNames[castleIndex]);
-                    backgrounds[castleIndex] = lodFile.GetRecord(backgroundNames[castleIndex]).GetBitmap(lodFile.stream);
+                    backgrounds[castleIndex] = master.ResolveWith(backgroundNames[castleIndex]).GetBitmap();
                 }
 
                 Point pt;

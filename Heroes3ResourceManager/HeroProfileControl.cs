@@ -52,9 +52,8 @@ namespace h3magic
 
                 var g = Graphics.FromImage(canvas);
                 g.DrawImage(bckgImage, Point.Empty);
-
-                var h3bitmap = master.Resolve(HeroesManager.HeroesOrder[hs.ImageIndex]);
-                var portrait = h3bitmap[HeroesManager.HeroesOrder[hs.ImageIndex]].GetBitmap(h3bitmap.stream);
+                
+                var portrait = master.ResolveWith(HeroesManager.HeroesOrder[hs.ImageIndex]).GetBitmap();
                 g.DrawImage(portrait, new Point(4, 3));
 
                 var heroData = HeroExeData.Data[heroIndex];

@@ -70,6 +70,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CreatureAnimationLoop.cs" />
+    <Compile Include="CreatureDataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CreatureDataControl.Designer.cs">
+      <DependentUpon>CreatureDataControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Creature.cs" />
@@ -108,6 +114,9 @@
     <Compile Include="PcxFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CreatureDataControl.resx">
+      <DependentUpon>CreatureDataControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HeroProfileControl.resx">
       <DependentUpon>HeroProfileControl.cs</DependentUpon>
     </EmbeddedResource>

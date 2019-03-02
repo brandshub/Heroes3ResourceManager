@@ -30,12 +30,10 @@ namespace h3magic
 
         public static void LoadInfo(Heroes3Master master)
         {
-            Unload();
+            Unload();           
 
-            var lodFile = master.Resolve(TXT_FNAME);
-
-            var rec = lodFile[TXT_FNAME];
-            string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
+            var rec =  master.ResolveWith(TXT_FNAME);
+            string text = Encoding.Default.GetString(rec.GetRawData());
             var rows = text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             AllSkills = new List<SecondarySkill>(rows.Length - 2);
 
@@ -55,7 +53,7 @@ namespace h3magic
         {
             var lodFile = master.Resolve(IMG_FNAME);
             if (_defFile == null)
-                _defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
+                _defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile();
             return _defFile.GetByAbsoluteNumber(Index * 3 + level + 2);
         }
 
@@ -67,14 +65,12 @@ namespace h3magic
 
 
         public static Bitmap GetSkillTreeForHeroClass(Heroes3Master master)
-        {
-            var h3sprite = master.Resolve(IMG_FNAME);
-
+        {           
             if (_skillTree != null)
                 return _skillTree;
 
             if (_defFile == null)
-               _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);           
+               _defFile = master.ResolveWith(IMG_FNAME).GetDefFile();           
 
             var bmp = new Bitmap(44 * 7, (44 + 24) * 4);
             using (var g = Graphics.FromImage(bmp))
@@ -92,11 +88,9 @@ namespace h3magic
             if (_skillTree2 != null)
                 return _skillTree2;
 
-            if (_defFile == null)
-            {
-                var h3sprite = master.Resolve(IMG_FNAME);
-                _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);
-            }
+            if (_defFile == null)            
+                _defFile = master.ResolveWith(IMG_FNAME).GetDefFile(); 
+            
                 
 
             int rowCount = 3 * AllSkills.Count / ALL_COLNUMBER;
@@ -125,12 +119,10 @@ namespace h3magic
         {
 
             if (_specImage != null)
-                return _specImage;
-
-            var h3sprite = master.Resolve(IMG_FNAME);
+                return _specImage;            
 
             if (_defFile == null)
-                _defFile = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite.stream);           
+                _defFile = master.ResolveWith(IMG_FNAME).GetDefFile();           
             
             int rowNum = IndexesOfAllSpecSkills.Length / SPEC_COLNUMBER + (IndexesOfAllSpecSkills.Length % SPEC_COLNUMBER == 0 ? 0 : 1);
 

@@ -44,7 +44,7 @@ namespace h3magic
             Master = master;
         }
 
-        public virtual void LoadData(int count)
+        public virtual void LoadData(LodFile parent, int count)
         {
             stream.Position = FAT_OFFSET;
 
@@ -52,7 +52,7 @@ namespace h3magic
             for (int i = 0; i < count; i++)
             {
                 stream.Read(record, 0, 32);
-                FilesTable.Add(new FatRecord(record));
+                FilesTable.Add(new FatRecord(parent,record));
             }
         }
 
@@ -75,7 +75,7 @@ namespace h3magic
 
         public void LoadFAT()
         {
-            LoadData(FileCount);
+            LoadData(this,FileCount);
         }
 
         public string[] GetNames()
@@ -111,13 +111,13 @@ namespace h3magic
         {
             if (fileName.ToUpper().Substring(fileName.Length - 3) != "PCX") return null;
             int index = IndexOf(fileName);
-            return index >= 0 ? FilesTable[index].GetBitmap(stream) : null;
+            return index >= 0 ? FilesTable[index].GetBitmap() : null;
         }
 
         public byte[] GetRawData(string fileName)
         {
             int index = IndexOf(fileName);
-            return index >= 0 ? FilesTable[index].GetRawData(stream) : null;
+            return index >= 0 ? FilesTable[index].GetRawData() : null;
         }
 
 

@@ -164,8 +164,8 @@ namespace h3magic
                     var un32 = Heroes3Master.Master.Resolve(Speciality.IMG_FNAME_SMALL);
                     var un44 = Heroes3Master.Master.Resolve(Speciality.IMG_FNAME);
 
-                    var un32Def = un32.GetRecord(Speciality.IMG_FNAME_SMALL).GetDefFile(un32);
-                    var un44Def = un44.GetRecord(Speciality.IMG_FNAME).GetDefFile(un44);
+                    var un32Def = un32.GetRecord(Speciality.IMG_FNAME_SMALL).GetDefFile();
+                    var un44Def = un44.GetRecord(Speciality.IMG_FNAME).GetDefFile();
 
                     int originalSpecIndex = SpecialityDefBuilder.TryUpdateSpecImage(hero, un32Def, un44Def);
                     string originalSpec = HeroesManager.GetSpecDescription(originalSpecIndex);
@@ -218,15 +218,15 @@ namespace h3magic
             selectedLodFile = master.GetByName("h3bitmap.lod");
 
             lbHeroes.Items.AddRange(HeroesManager.AllHeroes.Select(st => st.Name).ToArray());
-
             lbHeroClasses.Items.AddRange(HeroClass.AllHeroClasses.Select(st => st.Stats[0]).Where(s => s != "").ToArray());
+
             var bmp = SecondarySkill.GetSkillTreeForHeroClass(Heroes3Master.Master);
             pbSkillTree.Width = bmp.Width * 4 / 5;
             pbSkillTree.Height = bmp.Height * 4 / 5;
             pbSkillTree.Image = bmp;
 
-            cbCastles.Items.AddRange(Town.TownNamesWithNeutral);
 
+            creatureDataControl.LoadCastles();
             spellDataControl.LoadSpells();
 
             var lodFileNames = master.ResourceFiles.Select(s => s.Name).ToArray();
@@ -259,15 +259,15 @@ namespace h3magic
             {
                 FatRecord rec = selectedLodFile[lbFiles.SelectedItem.ToString()];
                 if (rec.Extension == "TXT")
-                    rtbMain.Text = Encoding.Default.GetString(rec.GetRawData(selectedLodFile.stream));
+                    rtbMain.Text = Encoding.Default.GetString(rec.GetRawData());
                 else if (rec.Extension == "PCX")
                 {
-                    bmp = rec.GetBitmap(selectedLodFile.stream);
+                    bmp = rec.GetBitmap();
                     Invalidate();
                 }
                 else if (rec.Extension == "DEF")
                 {
-                    def = rec.GetDefFile(selectedLodFile);
+                    def = rec.GetDefFile();
                     bmp = def.GetSprite(0, 0);
                     lbDecomposed.Items.Clear();
                     for (int i = 0; i < def.BlockCount; i++)
@@ -331,7 +331,7 @@ namespace h3magic
                     if (rec.Extension == "PCX")
                     {
                         trbDefSprites.Maximum = 1;
-                        bmp = rec.GetBitmap(selectedLodFile.stream);
+                        bmp = rec.GetBitmap();
                         if (bmp != null)
                         {
                             //form.Show(bmp);
@@ -347,7 +347,7 @@ namespace h3magic
                     else if (rec.Extension == "TXT")
                     {
                         trbDefSprites.Maximum = 1;
-                        byte[] bts = rec.GetRawData(selectedLodFile.stream);
+                        byte[] bts = rec.GetRawData();
                         if (bts != null)
                         {
                             pbResourceView.Visible = false;
@@ -361,7 +361,7 @@ namespace h3magic
                     {
                         lbDecomposed.Visible = true;
 
-                        var def = rec.GetDefFile(selectedLodFile.stream);
+                        var def = rec.GetDefFile();
 
                         trbDefSprites.Maximum = def.headers.Sum(s => s.SpritesCount) - 1;
                         trbDefSprites.Value = 0;
@@ -381,7 +381,7 @@ namespace h3magic
                     var rec = selectedLodFile[lbFiles.Items[index].ToString()];
                     if (rec.Extension == "DEF")
                     {
-                        var def = rec.GetDefFile(selectedLodFile.stream);
+                        var def = rec.GetDefFile();
 
                         bmp = def.GetSprite(trbDefSprites.Value);//def.GetSprite(0, trbDefSprites.Value);
                         if (bmp.Width > pbResourceView.Width || bmp.Height > pbResourceView.Height)
@@ -466,7 +466,7 @@ namespace h3magic
             tabsMain.TabPages.Clear();
             lbHeroes.Items.Clear();
             lbHeroClasses.Items.Clear();
-            cbCastles.Items.Clear();
+            creatureDataControl.Reset();
             spellDataControl.Reset();
             cbLodFiles.Items.Clear();
 
@@ -605,90 +605,6 @@ namespace h3magic
             }
         }
 
-        int selectedCastle = 0;
-        private void cbCastles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (CreatureManager.Loaded)
-            {
-                cbCreatures.Items.Clear();
-                selectedCastle = cbCastles.SelectedIndex;
-                var creatures = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == cbCastles.SelectedIndex && c.CreatureIndex != 149).Select(cs => cs.Name).ToArray();
-                if (creatures.Length > 0)
-                {
-                    cbCreatures.Items.AddRange(creatures);
-                    cbCreatures.SelectedIndex = 0;
-                }
-
-                //Debug.WriteLine("cbCastles_SelectedIndexChanged");
-            }
-        }
-
-        private CreatureAnimationLoop creatureAnimation;
-        private void cbCreatures_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (Heroes3Master.Master != null && CreatureManager.Loaded)
-            {
-                var creature = CreatureManager.Get(cbCastles.SelectedIndex, cbCreatures.SelectedIndex);
-                LoadCreatureInfo(creature);
-
-                string allCreatures = Properties.Resources.creatures;
-                string defName = allCreatures.Split(new[] { "\r\n" }, StringSplitOptions.None)[creature.CreatureIndex].Split(';')[2] + ".def";
-                var lodFile = Heroes3Master.Master.Resolve(defName);
-
-
-                if (creatureAnimation != null)
-                {
-                    pbCreature.Image = null;
-                    creatureAnimation.Dispose();
-                }
-
-
-                var def = lodFile[defName].GetDefFile(lodFile);
-                if (def != null)
-                {
-                    creatureAnimation = new CreatureAnimationLoop(creature.CreatureIndex, def);
-                    creatureAnimation.TimerTick += creatureAnimation_TimerTick;
-                    creatureAnimation.Enabled = true;
-                }
-            }
-        }
-
-        private void creatureAnimation_TimerTick(object sender, EventArgs e)
-        {
-            if (creatureAnimation != null)
-            {
-                pbCreature.Image = creatureAnimation.GetFrame2(Heroes3Master.Master);
-                //pbCreature.Image = creatureAnimation.GetFrame(Heroes3Master.Master);
-                //  pbCreature.Invalidate();
-            }
-        }
-
-        private void LoadCreatureInfo(Creature creatureStats)
-        {
-            textBox1.Text = creatureStats.Name;
-            textBox3.Text = creatureStats.Attack.ToString();
-            textBox4.Text = creatureStats.Defence.ToString();
-            textBox5.Text = creatureStats.Arrows.ToString();
-            textBox6.Text = creatureStats.HP.ToString();
-            textBox7.Text = creatureStats.Speed.ToString();
-            textBox8.Text = creatureStats.LoDamage.ToString();
-            textBox9.Text = creatureStats.HiDamage.ToString();
-            textBox10.Text = creatureStats.PriceLumber.ToString();
-            textBox11.Text = creatureStats.PriceMercury.ToString();
-            textBox12.Text = creatureStats.PriceOre.ToString();
-            textBox13.Text = creatureStats.PriceCrystals.ToString();
-            textBox14.Text = creatureStats.PriceGems.ToString();
-            textBox15.Text = creatureStats.PriceSulphur.ToString();
-            textBox16.Text = creatureStats.PriceGold.ToString();
-            textBox17.Text = creatureStats.Plural1;
-            textBox18.Text = creatureStats.Plural2;
-            textBox19.Text = creatureStats.Growth.ToString();
-            textBox20.Text = creatureStats.FightValue.ToString();
-            textBox21.Text = creatureStats.AIValue.ToString();
-            textBox22.Text = creatureStats.Spells.ToString();
-            textBox23.Text = creatureStats.Description;
-        }
-
         private void tabsMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (Heroes3Master.Master != null)
@@ -697,8 +613,7 @@ namespace h3magic
 
                 if (tabsMain.SelectedTab == tabCreatures)
                 {
-                    if (cbCastles.SelectedIndex == -1 && cbCastles.Items.Count > 0)
-                        cbCastles.SelectedIndex = 0;
+                    creatureDataControl.SelectedCastle = 0;
                     Width = 600;
                 }
                 else if (tabsMain.SelectedTab == tabHeroClass)
@@ -725,37 +640,6 @@ namespace h3magic
                 }
             }
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            var cs = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == cbCastles.SelectedIndex && c.CreatureCastleRelativeIndex == cbCreatures.SelectedIndex).FirstOrDefault();
-            cs.Name = textBox1.Text;
-            cs.Attack = int.Parse(textBox3.Text);
-            cs.Defence = int.Parse(textBox4.Text);
-            cs.Arrows = int.Parse(textBox5.Text);
-            cs.HP = int.Parse(textBox6.Text);
-            cs.Speed = int.Parse(textBox7.Text);
-            cs.LoDamage = int.Parse(textBox8.Text);
-            cs.HiDamage = int.Parse(textBox9.Text);
-            cs.PriceLumber = int.Parse(textBox10.Text);
-            cs.PriceMercury = int.Parse(textBox11.Text);
-            cs.PriceOre = int.Parse(textBox12.Text);
-            cs.PriceCrystals = int.Parse(textBox13.Text);
-            cs.PriceGems = int.Parse(textBox14.Text);
-            cs.PriceSulphur = int.Parse(textBox15.Text);
-            cs.PriceGold = int.Parse(textBox16.Text);
-            cs.Plural1 = textBox17.Text;
-            cs.Plural2 = textBox18.Text;
-            cs.Growth = int.Parse(textBox19.Text);
-            cs.FightValue = int.Parse(textBox20.Text);
-            cs.AIValue = int.Parse(textBox21.Text);
-            cs.Spells = int.Parse(textBox22.Text);
-            cs.Description = textBox23.Text;
-            CreatureManager.AnyChanges = true;
-
-        }
-
-
         private void lbHeroes_SelectedIndexChanged(object sender, EventArgs e)
         {
             var hs = HeroesManager.AllHeroes[lbHeroes.SelectedIndex];
@@ -992,69 +876,6 @@ namespace h3magic
             }
         }
 
-        private void cbCastles_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (Heroes3Master.Master != null && e.Index >= 0)
-            {
-                int castleIndex = e.Index;
-                var town = Town.AllTownsWithNeutral[castleIndex];
-                var clr = Town.AllColors[castleIndex];
-
-                e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
-                e.Graphics.DrawImage(town.LargeImage, e.Bounds.X, e.Bounds.Y);
-                e.Graphics.DrawString(cbCastles.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds.X + 56, e.Bounds.Y + 9);
-            }
-        }
-
-        private bool cacheOther = false;
-        private Creature[] otherCreatures = null;
-
-        private void cbCreatures_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (Heroes3Master.Master != null && e.Index >= 0)
-            {
-                int castleIndex = selectedCastle;
-                var clr = Town.AllColors[castleIndex];
-
-                if (!cacheOther)
-                {
-                    e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
-                    var creature = CreatureManager.Get(castleIndex, e.Index);
-                    e.Graphics.DrawImage(CreatureManager.GetSmallImage(Heroes3Master.Master, creature.CreatureIndex), e.Bounds.X, e.Bounds.Y);
-                    e.Graphics.DrawString(cbCreatures.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds.X + 46, e.Bounds.Y + 9);
-                }
-                else
-                {
-                    if (BitmapCache.DrawItemCreaturesOtherComboBox == null)
-                    {
-                        otherCreatures = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == 9 && c.CreatureIndex != 149).ToArray();
-                        BitmapCache.DrawItemCreaturesOtherComboBox = new Bitmap[otherCreatures.Length];
-                    }
-
-                    Bitmap cached;
-                    if (BitmapCache.DrawItemCreaturesOtherComboBox[e.Index] == null)
-                    {
-                        cached = new Bitmap(e.Bounds.Width, e.Bounds.Height);
-                        using (var g = Graphics.FromImage(cached))
-                        {
-                            g.FillRectangle(new SolidBrush(clr), new Rectangle(Point.Empty, e.Bounds.Size));
-                            var creature = CreatureManager.Get(castleIndex, e.Index);
-                            g.DrawImage(CreatureManager.GetSmallImage(Heroes3Master.Master, creature.CreatureIndex), Point.Empty);
-                            g.DrawString(creature.Name.ToString(), e.Font, Brushes.Black, 46, 9);
-                        }
-                        BitmapCache.DrawItemCreaturesOtherComboBox[e.Index] = cached;
-                    }
-                    else
-                    {
-                        cached = BitmapCache.DrawItemCreaturesOtherComboBox[e.Index];
-                    }
-                    e.Graphics.DrawImage(cached, e.Bounds.Location);
-
-                }
-            }
-        }
-
-
         private bool cacheHeroes = true;
 
         private void lbHeroes_DrawItem(object sender, DrawItemEventArgs e)
@@ -1074,9 +895,8 @@ namespace h3magic
                 {
                     e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
                     e.Graphics.DrawString(HeroesManager.AllHeroes[e.Index].Name, e.Font, Brushes.Black, e.Bounds.X + 42, e.Bounds.Y + 4);
-
-                    var lodFile = Heroes3Master.Master.Resolve(HeroesManager.HeroesOrder[e.Index].Replace("HPL", "HPS"));
-                    var img = new Bitmap(lodFile[HeroesManager.HeroesOrder[e.Index].Replace("HPL", "HPS")].GetBitmap(lodFile.stream), 36, 24);
+                    
+                    var img = new Bitmap(Heroes3Master.Master.ResolveWith(HeroesManager.HeroesOrder[e.Index].Replace("HPL", "HPS")).GetBitmap(), 36, 24);
                     e.Graphics.DrawImage(img, e.Bounds.X, e.Bounds.Y);
 
                 }
@@ -1095,9 +915,7 @@ namespace h3magic
                         {
                             g.FillRectangle(new SolidBrush(clr), new Rectangle(Point.Empty, e.Bounds.Size));
                             g.DrawString(HeroesManager.AllHeroes[e.Index].Name, e.Font, Brushes.Black, 42, 4);
-
-                            var lodFile = Heroes3Master.Master.Resolve(HeroesManager.HeroesOrder[e.Index].Replace("HPL", "HPS"));
-                            var img = new Bitmap(lodFile[HeroesManager.HeroesOrder[e.Index].Replace("HPL", "HPS")].GetBitmap(lodFile.stream), 36, 24);
+                            var img = new Bitmap(Heroes3Master.Master.ResolveWith(HeroesManager.HeroesOrder[e.Index].Replace("HPL", "HPS")).GetBitmap(), 36, 24);
                             g.DrawImage(img, Point.Empty);
                         }
                         BitmapCache.DrawItemHeroesListBox[e.Index] = cached;
@@ -1159,30 +977,7 @@ namespace h3magic
             }
             else if (tabsMain.SelectedTab == tabCreatures)
             {
-                var cs = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == cbCastles.SelectedIndex && c.CreatureCastleRelativeIndex == cbCreatures.SelectedIndex).FirstOrDefault();
-                cs.Name = textBox1.Text;
-                cs.Attack = int.Parse(textBox3.Text);
-                cs.Defence = int.Parse(textBox4.Text);
-                cs.Arrows = int.Parse(textBox5.Text);
-                cs.HP = int.Parse(textBox6.Text);
-                cs.Speed = int.Parse(textBox7.Text);
-                cs.LoDamage = int.Parse(textBox8.Text);
-                cs.HiDamage = int.Parse(textBox9.Text);
-                cs.PriceLumber = int.Parse(textBox10.Text);
-                cs.PriceMercury = int.Parse(textBox11.Text);
-                cs.PriceOre = int.Parse(textBox12.Text);
-                cs.PriceCrystals = int.Parse(textBox13.Text);
-                cs.PriceGems = int.Parse(textBox14.Text);
-                cs.PriceSulphur = int.Parse(textBox15.Text);
-                cs.PriceGold = int.Parse(textBox16.Text);
-                cs.Plural1 = textBox17.Text;
-                cs.Plural2 = textBox18.Text;
-                cs.Growth = int.Parse(textBox19.Text);
-                cs.FightValue = int.Parse(textBox20.Text);
-                cs.AIValue = int.Parse(textBox21.Text);
-                cs.Spells = int.Parse(textBox22.Text);
-                cs.Description = textBox23.Text;
-                CreatureManager.AnyChanges = true;
+                creatureDataControl.SaveData();
             }
             else if (tabsMain.SelectedTab == tabSpells)
             {
@@ -1193,8 +988,5 @@ namespace h3magic
                 //do nothing
             }
         }
-
-
-
     }
 }

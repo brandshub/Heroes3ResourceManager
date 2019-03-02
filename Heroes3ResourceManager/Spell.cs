@@ -34,8 +34,8 @@ namespace h3magic
         }
 
         private string[] cells;
-        public bool HasChanges  { get; set; }
-     
+        public bool HasChanges { get; set; }
+
         public int Index { get; private set; }
         public string Name { get { return cells[0]; } set { cells[0] = value; } }
         public int Level { get { return getIntCell(2); } set { setIntCell(2, value); } }
@@ -110,7 +110,7 @@ namespace h3magic
         public static void LoadInfo(Heroes3Master master)
         {
             Unload();
-            
+
             var lodFile = master.Resolve(TXT_FNAME);
             var rec = lodFile[TXT_FNAME];
 
@@ -140,10 +140,8 @@ namespace h3magic
 
         public Bitmap GetImage(Heroes3Master master)
         {
-            var lodFile = master.Resolve(IMG_FNAME);
-
             if (defFile == null)
-                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile.stream);
+                defFile = master.ResolveWith(IMG_FNAME).GetDefFile();
 
             return defFile.GetByAbsoluteNumber(Index);
         }
@@ -155,10 +153,7 @@ namespace h3magic
                 return BitmapCache.SpellsAll;
 
             if (defFile == null)
-            {
-                var lodFile = master.Resolve(IMG_FNAME);
-                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile.stream);
-            }
+                defFile = master.ResolveWith(IMG_FNAME).GetDefFile();
 
             int total = defFile.headers[0].SpritesCount;
 
@@ -196,10 +191,7 @@ namespace h3magic
                 return BitmapCache.SpellsForSpeciality;
 
             if (defFile == null)
-            {
-                var lodFile = master.Resolve(IMG_FNAME);
-                defFile = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile.stream);
-            }
+                defFile = master.ResolveWith(IMG_FNAME).GetDefFile();
 
             var bmp = new Bitmap((58 + 1) * 6, (64 + 1) * 5);
             var imageData = bmp.LockBits24();
@@ -267,10 +259,10 @@ namespace h3magic
 
                 for (; i < allRows.Length; i++)
                     sb.AppendLine(allRows[i]);
-                
-                rec.ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));                
+
+                rec.ApplyChanges(Encoding.Default.GetBytes(sb.ToString()));
             }
-            
+
         }
 
         public static void Unload()

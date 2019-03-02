@@ -37,7 +37,7 @@ namespace h3magic
             var rec = lodFile.GetRecord(FAT_NAME);
             if (rec != null)
             {
-                string text = Encoding.Default.GetString(rec.GetRawData(lodFile.stream));
+                string text = Encoding.Default.GetString(rec.GetRawData());
 
                 rows = text.Split(new string[] { "\r\n" }, StringSplitOptions.None);
                 AllCreatures2 = new Creature[rows.Length];
@@ -156,7 +156,7 @@ namespace h3magic
         {
             var lodFile = master.Resolve(IMG_FNAME);
             if (creatureDef == null)
-                creatureDef = lodFile.GetRecord(IMG_FNAME).GetDefFile(lodFile);
+                creatureDef = lodFile.GetRecord(IMG_FNAME).GetDefFile();
 
             var bmp = creatureDef.GetByAbsoluteNumber(index + 2);
             return bmp;
@@ -169,7 +169,7 @@ namespace h3magic
 
 
             if (smallCreatureDef == null)
-                smallCreatureDef = h3sprite.GetRecord(IMG_SMALL_FNAME).GetDefFile(h3sprite);
+                smallCreatureDef = h3sprite.GetRecord(IMG_SMALL_FNAME).GetDefFile();
 
 
             Bitmap bmp;
@@ -229,7 +229,7 @@ namespace h3magic
             var h3sprite = master.Resolve(IMG_FNAME);
 
             if (creatureDef == null)
-                creatureDef = h3sprite.GetRecord(IMG_FNAME).GetDefFile(h3sprite);
+                creatureDef = h3sprite.GetRecord(IMG_FNAME).GetDefFile();
 
             int totalrows = OnlyActiveCreatures.Count / 14 + (OnlyActiveCreatures.Count % 14 == 0 ? 0 : 1);
             var bmp = new Bitmap((58 + 1) * 14, (64 + 1) * totalrows);
