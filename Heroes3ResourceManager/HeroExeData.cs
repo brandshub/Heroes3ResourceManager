@@ -38,7 +38,7 @@ namespace h3magic
         public Creature Creature2 { get { return CreatureManager.GetByIndex(Unit2Index); } }
         public Creature Creature3 { get { return CreatureManager.GetByIndex(Unit3Index); } }
 
-        public SecondarySkill Skill1 { get { return SecondarySkill.AllSkills[FirstSkillIndex]; } }
+        public SecondarySkill Skill1 { get { if (FirstSkillIndex != -1) return SecondarySkill.AllSkills[FirstSkillIndex]; return null; } }
         public SecondarySkill Skill2 { get { if (SecondSkillIndex != -1) return SecondarySkill.AllSkills[SecondSkillIndex]; return null; } }
 
         public Spell Spell { get { return Spell.GetSpellByIndex(SpellIndex); } }

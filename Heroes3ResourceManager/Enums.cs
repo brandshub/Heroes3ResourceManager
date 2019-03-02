@@ -11,7 +11,8 @@ namespace h3magic
     {
         Creature, SecondarySkill, Spell, Other,
         // indirect properties
-        SpecSecondarySkill, SpecCreature, SpecResource, SpecSpell, SpecCreatureStatic, SpecSpeed, SpecCreatureUpgrade // last two omitted        
+        SpecSecondarySkill, SpecCreature, SpecResource, SpecSpell, SpecCreatureStatic, SpecSpeed, SpecCreatureUpgrade // last two omitted   
+        ,HeroClass
     }
 
     public enum SpecialityType

@@ -13,6 +13,8 @@ namespace h3magic
         private static string[] rows;
         public static List<HeroClass> AllHeroClasses;
 
+        public int Index { get; set; }
+        public string Name { get { return Stats[0]; } }
         public static bool AnyChanges { get; set; }
         public int Attack { get { return GetStat(2); } }
         public int Defense { get { return GetStat(3); } }
@@ -23,8 +25,9 @@ namespace h3magic
 
         public string[] Stats;
 
-        public HeroClass(string row)
+        public HeroClass(int index, string row)
         {
+            Index = index;
             Stats = row.Split('\t');
         }
 
@@ -50,7 +53,7 @@ namespace h3magic
 
             AllHeroClasses = new List<HeroClass>(rows.Length);
             for (int i = 0; i < rows.Length - 2; i++)
-                AllHeroClasses.Add(new HeroClass(rows[i + 2]));
+                AllHeroClasses.Add(new HeroClass(i,rows[i + 2]));
         }
 
 

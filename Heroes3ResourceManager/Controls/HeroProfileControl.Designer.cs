@@ -34,13 +34,11 @@
             // 
             // PictureBox
             // 
-            this.PictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureBox.BackColor = System.Drawing.SystemColors.Control;
+            this.PictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PictureBox.Location = new System.Drawing.Point(0, 0);
             this.PictureBox.Name = "PictureBox";
-            this.PictureBox.Size = new System.Drawing.Size(398, 398);
+            this.PictureBox.Size = new System.Drawing.Size(419, 482);
             this.PictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureBox.TabIndex = 0;
             this.PictureBox.TabStop = false;
@@ -56,7 +54,7 @@
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.PictureBox);
             this.Name = "HeroProfileControl";
-            this.Size = new System.Drawing.Size(398, 398);
+            this.Size = new System.Drawing.Size(449, 514);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).EndInit();
             this.ResumeLayout(false);
 

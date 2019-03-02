@@ -19,7 +19,7 @@ namespace h3magic
         private PictureBox[] pbSorted;
         private bool[] schoolsSelected = new bool[4];
         private Spell[] filteredSpells;
-        
+
         private int prbHorizontalOffset = 17, prbVerticalOffset = 21;
 
         public int ItemCount
@@ -73,12 +73,17 @@ namespace h3magic
             lbSpells.Items.Clear();
         }
 
+        public void ResetSchools()
+        {
+            cbSpellFilter.Items.Clear();
+        }
+
         private void UpdateInformation()
         {
             if (selectedSpell != null)
             {
                 int index = selectedSpell.Index;
-                int filteredIndex = Array.IndexOf(filteredSpells, index);
+                int filteredIndex = Array.IndexOf(filteredSpells.Select(s => s.Index).ToArray(), index);
 
                 if (lbSpells.SelectedIndex == -1 || lbSpells.SelectedIndex != filteredIndex)
                     lbSpells.SelectedIndex = filteredIndex;
@@ -236,7 +241,7 @@ namespace h3magic
             if (Heroes3Master.Master != null && e.Index >= 0)
             {
 
-                dl(e.Index+" "+e.State.ToString());
+                dl(e.Index + " " + e.State.ToString());
                 if (e.State == (DrawItemState.Selected | DrawItemState.Focus | DrawItemState.NoAccelerator | DrawItemState.NoFocusRect))
                     return;
 
@@ -302,7 +307,7 @@ namespace h3magic
                     e.Graphics.DrawImage(cached, e.Bounds.Location);
                 }
 
-                if (e.State == ( DrawItemState.Focus | DrawItemState.NoAccelerator | DrawItemState.NoFocusRect ))
+                if (e.State == (DrawItemState.Focus | DrawItemState.NoAccelerator | DrawItemState.NoFocusRect))
                 {
                     e.Graphics.DrawRectangle(new Pen(Color.Black, 1) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dot }, e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height - 1);
                 }
@@ -311,7 +316,7 @@ namespace h3magic
 
 
 
-        public void SaveData()
+        public void SaveLocalChanges()
         {
             if (selectedSpell != null)
             {
@@ -351,6 +356,16 @@ namespace h3magic
                 selectedSpell.SetChanceToGainForCastle(8, (int)nmProb8.Value);
 
                 selectedSpell.HasChanges = true;
+
+
+                
+               
+                BitmapCache.DrawItemSpellsListBox[filteredSpells[lbSpells.SelectedIndex].Index] = null;                
+               /* if(lbSpells.SelectedIndex >= lbSpells.TopIndex && lbSpells.SelectedIndex < lbSpells.TopIndex+(lbSpells.Height/lbSpells.ItemHeight))                
+                    lbSpells.Invalidate(new Rectangle(0, (lbSpells.SelectedIndex - lbSpells.TopIndex) * lbSpells.ItemHeight, lbSpells.Width, lbSpells.ItemHeight));              
+
+                */
+                lbSpells.InvalidateSelected();
             }
         }
 

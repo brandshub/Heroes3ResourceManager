@@ -11,7 +11,7 @@ namespace h3magic
         public string Description { get; set; }
 
         public int Attack { get; set; }
-        public int Defence { get; set; }
+        public int Defense { get; set; }
         public int HP { get; set; }
         public int LoDamage { get; set; }
         public int HiDamage { get; set; }
@@ -68,7 +68,7 @@ namespace h3magic
             HP = int.Parse(stats[14 + off]);
             Speed = int.Parse(stats[15 + off]);
             Attack = int.Parse(stats[16 + off]);
-            Defence = int.Parse(stats[17 + off]);
+            Defense = int.Parse(stats[17 + off]);
             LoDamage = int.Parse(stats[18 + off]);
             HiDamage = int.Parse(stats[19 + off]);
             Arrows = int.Parse(stats[20 + off]);
@@ -99,7 +99,7 @@ namespace h3magic
             sb.Append(HP.ToString()); sb.Append('\t');
             sb.Append(Speed.ToString()); sb.Append('\t');
             sb.Append(Attack.ToString()); sb.Append('\t');
-            sb.Append(Defence.ToString()); sb.Append('\t');
+            sb.Append(Defense.ToString()); sb.Append('\t');
             sb.Append(LoDamage.ToString()); sb.Append('\t');
             sb.Append(HiDamage.ToString()); sb.Append('\t');
             sb.Append(Arrows.ToString()); sb.Append('\t');

@@ -34,6 +34,7 @@ namespace h3magic
                     cbCastles.SelectedIndex = selectedCastle;
             }
         }
+
         public void Reset()
         {
             if (cbCastles.Items != null)
@@ -59,7 +60,7 @@ namespace h3magic
                 {
                     cbCreatures.Items.AddRange(creatures);
                     cbCreatures.SelectedIndex = 0;
-                }                
+                }
             }
         }
 
@@ -102,30 +103,34 @@ namespace h3magic
             }
         }
 
-        private void LoadCreatureInfo(Creature creatureStats)
+        private void LoadCreatureInfo(Creature cr)
         {
-            textBox1.Text = creatureStats.Name;
-            textBox3.Text = creatureStats.Attack.ToString();
-            textBox4.Text = creatureStats.Defence.ToString();
-            textBox5.Text = creatureStats.Arrows.ToString();
-            textBox6.Text = creatureStats.HP.ToString();
-            textBox7.Text = creatureStats.Speed.ToString();
-            textBox8.Text = creatureStats.LoDamage.ToString();
-            textBox9.Text = creatureStats.HiDamage.ToString();
-            textBox10.Text = creatureStats.PriceLumber.ToString();
-            textBox11.Text = creatureStats.PriceMercury.ToString();
-            textBox12.Text = creatureStats.PriceOre.ToString();
-            textBox13.Text = creatureStats.PriceCrystals.ToString();
-            textBox14.Text = creatureStats.PriceGems.ToString();
-            textBox15.Text = creatureStats.PriceSulphur.ToString();
-            textBox16.Text = creatureStats.PriceGold.ToString();
-            textBox17.Text = creatureStats.Plural1;
-            textBox18.Text = creatureStats.Plural2;
-            textBox19.Text = creatureStats.Growth.ToString();
-            textBox20.Text = creatureStats.FightValue.ToString();
-            textBox21.Text = creatureStats.AIValue.ToString();
-            textBox22.Text = creatureStats.Spells.ToString();
-            textBox23.Text = creatureStats.Description;
+            tbName.Text = cr.Name;
+
+            nmAttack.Value = cr.Attack;
+            nmDefense.Value = cr.Defense;
+            nmDmgLow.Value = cr.LoDamage;
+            nmDmgHigh.Value = cr.HiDamage;
+            nmHp.Value = cr.HP;
+            nmSpeed.Value = cr.Speed;
+            nmArrows.Value = cr.Arrows;
+
+            nmLumber.Value = cr.PriceLumber;
+            nmOre.Value = cr.PriceOre;
+            nmMercury.Value = cr.PriceMercury;
+            nmSulphur.Value = cr.PriceSulphur;
+            nmCrystals.Value = cr.PriceCrystals;
+            nmGems.Value = cr.PriceGems;
+            nmGold.Value = cr.PriceGold;
+
+            nmAiValue.Value = cr.AIValue;
+            nmHordeGrowth.Value = cr.Growth;
+            nmFightValue.Value = cr.FightValue;
+            nmSpells.Value = cr.Spells;
+
+            tbPlural1.Text = cr.Plural1;
+            tbPlural2.Text = cr.Plural2;
+            tbDescription.Text = cr.Description;
         }
 
         private void cbCreatures_DrawItem(object sender, DrawItemEventArgs e)
@@ -140,7 +145,7 @@ namespace h3magic
                     e.Graphics.FillRectangle(new SolidBrush(clr), e.Bounds);
                     var creature = CreatureManager.Get(castleIndex, e.Index);
                     e.Graphics.DrawImage(CreatureManager.GetSmallImage(Heroes3Master.Master, creature.CreatureIndex), e.Bounds.X, e.Bounds.Y);
-                    e.Graphics.DrawString(cbCreatures.Items[e.Index].ToString(), e.Font, Brushes.Black, e.Bounds.X + 46, e.Bounds.Y + 9);
+                    e.Graphics.DrawString(creature.Name, e.Font, Brushes.Black, e.Bounds.X + 46, e.Bounds.Y + 9);
                 }
                 else
                 {
@@ -188,31 +193,38 @@ namespace h3magic
             }
         }
 
-        public void SaveData()
+        public void SaveLocalChanges()
         {
-            var cs = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == cbCastles.SelectedIndex && c.CreatureCastleRelativeIndex == cbCreatures.SelectedIndex).FirstOrDefault();
-            cs.Name = textBox1.Text;
-            cs.Attack = int.Parse(textBox3.Text);
-            cs.Defence = int.Parse(textBox4.Text);
-            cs.Arrows = int.Parse(textBox5.Text);
-            cs.HP = int.Parse(textBox6.Text);
-            cs.Speed = int.Parse(textBox7.Text);
-            cs.LoDamage = int.Parse(textBox8.Text);
-            cs.HiDamage = int.Parse(textBox9.Text);
-            cs.PriceLumber = int.Parse(textBox10.Text);
-            cs.PriceMercury = int.Parse(textBox11.Text);
-            cs.PriceOre = int.Parse(textBox12.Text);
-            cs.PriceCrystals = int.Parse(textBox13.Text);
-            cs.PriceGems = int.Parse(textBox14.Text);
-            cs.PriceSulphur = int.Parse(textBox15.Text);
-            cs.PriceGold = int.Parse(textBox16.Text);
-            cs.Plural1 = textBox17.Text;
-            cs.Plural2 = textBox18.Text;
-            cs.Growth = int.Parse(textBox19.Text);
-            cs.FightValue = int.Parse(textBox20.Text);
-            cs.AIValue = int.Parse(textBox21.Text);
-            cs.Spells = int.Parse(textBox22.Text);
-            cs.Description = textBox23.Text;
+            var cr = CreatureManager.OnlyActiveCreatures.Where(c => c.TownIndex == cbCastles.SelectedIndex && c.CreatureCastleRelativeIndex == cbCreatures.SelectedIndex).FirstOrDefault();
+
+            cr.Name = tbName.Text;
+
+            cr.Attack = (int)nmAttack.Value;
+            cr.Defense = (int)nmDefense.Value;
+            cr.LoDamage = (int)nmDmgLow.Value;
+            cr.HiDamage = (int)nmDmgHigh.Value;
+            cr.HP = (int)nmHp.Value;
+            cr.Speed = (int)nmSpeed.Value;
+            cr.Arrows = (int)nmArrows.Value;
+
+            cr.PriceLumber = (int)nmLumber.Value;
+            cr.PriceOre = (int)nmOre.Value;
+            cr.PriceMercury = (int)nmMercury.Value;
+            cr.PriceSulphur = (int)nmSulphur.Value;
+            cr.PriceCrystals = (int)nmCrystals.Value;
+            cr.PriceGems = (int)nmGems.Value;
+            cr.PriceGold = (int)nmGold.Value;
+
+            cr.Growth = (int)nmHordeGrowth.Value;
+            cr.FightValue = (int)nmFightValue.Value;
+            cr.Spells = (int)nmSpells.Value;
+            cr.AIValue = (int)nmAiValue.Value;
+
+            cr.Plural1 = tbPlural1.Text;
+            cr.Plural2 = tbPlural2.Text;
+            cr.Description = tbDescription.Text;
+
+            cbCreatures.Invalidate();
             CreatureManager.AnyChanges = true;
         }
 

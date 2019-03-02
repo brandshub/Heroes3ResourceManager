@@ -66,14 +66,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitmapCache.cs" />
-    <Compile Include="ComboBoxWithImages.cs">
+    <Compile Include="Controls\ComboBoxWithImages.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CreatureAnimationLoop.cs" />
-    <Compile Include="CreatureDataControl.cs">
+    <Compile Include="Controls\CreatureDataControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CreatureDataControl.Designer.cs">
+    <Compile Include="Controls\CreatureDataControl.Designer.cs">
       <DependentUpon>CreatureDataControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Enums.cs" />
@@ -84,15 +84,27 @@
     <Compile Include="ExeFile.cs" />
     <Compile Include="FatRecord.cs" />
     <Compile Include="HeroClass.cs" />
+    <Compile Include="Controls\HeroClassDataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HeroClassDataControl.Designer.cs">
+      <DependentUpon>HeroClassDataControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Heroes3Master.cs" />
     <Compile Include="HeroesManager.cs" />
     <Compile Include="HeroesSection.cs" />
     <Compile Include="HeroExeData.cs" />
-    <Compile Include="HeroProfileControl.cs">
+    <Compile Include="Controls\HeroProfileControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="HeroProfileControl.Designer.cs">
+    <Compile Include="Controls\HeroProfileControl.Designer.cs">
       <DependentUpon>HeroProfileControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\HeroMainDataControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HeroMainDataControl.Designer.cs">
+      <DependentUpon>HeroMainDataControl.cs</DependentUpon>
     </Compile>
     <Compile Include="HeroPropertyForm.cs">
       <SubType>Form</SubType>
@@ -101,7 +113,7 @@
       <DependentUpon>HeroPropertyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="HeroStats.cs" />
-    <Compile Include="ListBoxWithImages.cs">
+    <Compile Include="Controls\ListBoxWithImages.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -114,11 +126,17 @@
     <Compile Include="PcxFile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CreatureDataControl.resx">
+    <EmbeddedResource Include="Controls\CreatureDataControl.resx">
       <DependentUpon>CreatureDataControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HeroProfileControl.resx">
+    <EmbeddedResource Include="Controls\HeroProfileControl.resx">
       <DependentUpon>HeroProfileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HeroClassDataControl.resx">
+      <DependentUpon>HeroClassDataControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\HeroMainDataControl.resx">
+      <DependentUpon>HeroMainDataControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HeroPropertyForm.resx">
       <DependentUpon>HeroPropertyForm.cs</DependentUpon>
@@ -132,10 +150,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="ImageGridControl.resx">
+    <EmbeddedResource Include="Controls\ImageGridControl.resx">
       <DependentUpon>ImageGridControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SpellDataControl.resx">
+    <EmbeddedResource Include="Controls\SpellDataControl.resx">
       <DependentUpon>SpellDataControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
@@ -157,18 +175,18 @@
     <Compile Include="Routing.cs" />
     <Compile Include="SecondarySkill.cs" />
     <Compile Include="Speciality.cs" />
-    <Compile Include="ImageGridControl.cs">
+    <Compile Include="Controls\ImageGridControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ImageGridControl.Designer.cs">
+    <Compile Include="Controls\ImageGridControl.Designer.cs">
       <DependentUpon>ImageGridControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SpecialityDefBuilder.cs" />
     <Compile Include="Spell.cs" />
-    <Compile Include="SpellDataControl.cs">
+    <Compile Include="Controls\SpellDataControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SpellDataControl.Designer.cs">
+    <Compile Include="Controls\SpellDataControl.Designer.cs">
       <DependentUpon>SpellDataControl.cs</DependentUpon>
     </Compile>
     <Compile Include="SpriteBlockHeader.cs" />

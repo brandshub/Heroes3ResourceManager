@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 
 namespace h3magic
 {
@@ -51,13 +52,18 @@ namespace h3magic
                 var canvas = new Bitmap(bckgImage);
 
                 var g = Graphics.FromImage(canvas);
+                /*    g.InterpolationMode = InterpolationMode.High;
+                    g.SmoothingMode = SmoothingMode.HighQuality;
+                    g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+                    g.CompositingQuality = CompositingQuality.HighQuality;*/
+
                 g.DrawImage(bckgImage, Point.Empty);
-                
+
                 var portrait = master.ResolveWith(HeroesManager.HeroesOrder[hs.ImageIndex]).GetBitmap();
                 g.DrawImage(portrait, new Point(4, 3));
 
                 var heroData = HeroExeData.Data[heroIndex];
-          
+
                 var z = Speciality.GetImage(master, heroData.Index);
                 g.DrawImage(z, new Point(4, 166));
 
@@ -147,12 +153,50 @@ namespace h3magic
             DrawShadowedString(cl.Defense.ToString(), g, Color.White, font1, 88 + 22 - 6, 143);
             DrawShadowedString(cl.MagicPower.ToString(), g, Color.White, font1, 158 + 22 - 6, 143);
             DrawShadowedString(cl.Knowledge.ToString(), g, Color.White, font1, 228 + 22 - 6, 143);
+            DrawStacks(g, Color.White, hs, new Font(font1.FontFamily, 10, FontStyle.Bold));
+
+            //string stack1Str = hs.LowStack1 + "-" + hs.HighStack1;
+
+            //DrawShadowedString2(stack1Str, g, Color.White, new Font(font1.FontFamily, 10, FontStyle.Bold), 34, 303);
+            //DrawOutline(stack1Str, g, new Font(font1.FontFamily, 10), new Point(34, 313));
+            // g.DrawString(stack1Str, new Font(font1.FontFamily, 18), new SolidBrush(Color.Yellow), 34, 213);
+        }
+
+        private void DrawOutline(string text, Graphics g, Font font, Point location)
+        {
+            GraphicsPath p = new GraphicsPath();
+            p.AddString(
+                text,             // text to draw
+                font.FontFamily,  // or any other font family
+                (int)FontStyle.Regular,      // font style (bold, italic, etc.)
+                g.DpiY * font.Size / 72,       // em size
+                location,              // location where to draw text
+                new StringFormat());
+            g.FillPath(Brushes.White, p);
+            g.DrawPath(Pens.Black, p);// set options here (e.g. center alignment)           
+        }
+
+        private void DrawStacks(Graphics g, Color c, HeroStats hs, Font font)
+        {
+
+            PointF baseCorner = new PointF(64, 310);
+
+            string stack1Str = hs.LowStack1 == hs.HighStack1 ? hs.LowStack1.ToString() : (hs.LowStack1 + "-" + hs.HighStack1);
+            string stack2Str = hs.LowStack2 == hs.HighStack2 ? hs.LowStack2.ToString() : (hs.LowStack2 + "-" + hs.HighStack2);
+            string stack3Str = hs.LowStack3 == hs.HighStack3 ? hs.LowStack3.ToString() : (hs.LowStack3 + "-" + hs.HighStack3);
+
+            var sizeF = g.MeasureString(stack1Str, font);
+            DrawShadowedString2(stack1Str, g, c, font, baseCorner.X - sizeF.Width, baseCorner.Y);
+            sizeF = g.MeasureString(stack2Str, font);
+            DrawShadowedString2(stack2Str, g, c, font, baseCorner.X - sizeF.Width + 63, baseCorner.Y);
+            sizeF = g.MeasureString(stack3Str, font);
+            DrawShadowedString2(stack3Str, g, c, font, baseCorner.X - sizeF.Width + 124, baseCorner.Y);
         }
 
         private void DrawSkill(HeroExeData hero, int skillIndex, Graphics g, Color color, Font font, float x, float top, float heightLimit, float widthLimit)
         {
             string skillStr = null;
-            if (skillIndex == 1)
+            if (skillIndex == 1 && hero.FirstSkillIndex != -1)
             {
                 skillStr = hero.Skill1.Name + " (" + hero.FirstSkillLevel + ")";
             }
@@ -184,6 +228,16 @@ namespace h3magic
             g.DrawString(text, font, new SolidBrush(color), x, y);
         }
 
+        private void DrawShadowedString2(string text, Graphics g, Color color, Font font, float x, float y)
+        {
+            g.DrawString(text, font, Brushes.Black, x - 1, y - 1);
+            g.DrawString(text, font, Brushes.Black, x + 1, y - 1);
+
+            g.DrawString(text, font, Brushes.Black, x - 1, y + 1);
+            g.DrawString(text, font, Brushes.Black, x + 1, y + 1);
+            g.DrawString(text, font, new SolidBrush(color), x, y);
+        }
+
         private void CalculateRatio()
         {
             float kx = PictureBox.Width / 288f;
@@ -203,15 +257,19 @@ namespace h3magic
             }
         }
 
-        private int GetBoundingRectangleIndex(int x, int y, float ratio, float dx, float dy)
+        private int GetBoundingRectangleIndex(int x, int y, float ratio, float dx, float dy, out RectangleF area)
         {
+            area = RectangleF.Empty;
 
             for (int i = 0; i < areas.Length; i++)
             {
                 var r = Multiply(areas[i], ratio);
                 r.Offset(dx, dy);
                 if (x >= r.X && x <= r.X + r.Width && y >= r.Y && y <= r.Y + r.Height)
+                {
+                    area = r;
                     return i;
+                }
             }
             return -1;
         }
@@ -223,22 +281,22 @@ namespace h3magic
 
         static HeroProfileControl()
         {
-            areas = new RectangleF[9];
+            areas = new RectangleF[10];
             areas[0] = new RectangleF(4, 3, 58, 64);
             areas[1] = new RectangleF(65, 3, 219, 64);
 
-            areas[2] = new RectangleF(4, 166, 44, 44);
+            areas[2] = new RectangleF(4, 165, 137, 44);
 
-            areas[3] = new RectangleF(5, 213, 44, 44);
-            areas[4] = new RectangleF(148, 213, 44, 44);
+            areas[3] = new RectangleF(5, 213, 137, 43);
+            areas[4] = new RectangleF(148, 213, 136, 43);
 
-            areas[5] = new RectangleF(5, 262, 58, 64);
-            areas[6] = new RectangleF(68, 262, 58, 64);
-            areas[7] = new RectangleF(129, 262, 58, 64);
+            areas[5] = new RectangleF(5, 261, 58, 64);
+            areas[6] = new RectangleF(68, 261, 58, 64);
+            areas[7] = new RectangleF(129, 261, 58, 64);
 
-            areas[8] = new RectangleF(192, 262, 58, 64);
+            areas[8] = new RectangleF(192, 261, 58, 64);
 
-
+            areas[9] = new RectangleF(3, 74, 280, 85);
         }
 
         private void PictureBox_Paint(object sender, PaintEventArgs e)
@@ -250,7 +308,6 @@ namespace h3magic
                     var rectF = Multiply(areas[lastRectIndex], ratio);
                     rectF.Offset(dx, dy);
                     var pen = new Pen(Color.LightSkyBlue, 2);
-                    //pen.Alignment = PenAlignment.Inset; //<-- this
 
                     e.Graphics.DrawRectangle(pen, Rectangle.Round(rectF));
                 }
@@ -261,15 +318,28 @@ namespace h3magic
         {
             if (Hero != null)
             {
-                int index = GetBoundingRectangleIndex(e.X, e.Y, ratio, dx, dy);
+                RectangleF rect;
+                int index = GetBoundingRectangleIndex(e.X, e.Y, ratio, dx, dy, out rect);
+
                 if (index != lastRectIndex)
                 {
+                    if (lastRectIndex >= 0)
+                    {
+                        var rectF = Multiply(areas[lastRectIndex], ratio);
+                        rectF.Offset(dx, dy);
+                        PictureBox.Invalidate(Pad(Rectangle.Round(rectF),1));
+                    }
+
                     lastRectIndex = index;
-                    PictureBox.Invalidate();
+                    PictureBox.Invalidate(Pad(Rectangle.Round(rect),1));
                 }
             }
         }
 
+        public Rectangle Pad(Rectangle input, int padding)
+        {
+            return new Rectangle(input.X - padding, input.Y - padding, input.Width + padding+1, input.Height + padding+1);
+        }
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (lastRectIndex >= 0 && PropertyClicked != null)
@@ -312,6 +382,10 @@ namespace h3magic
                         type = ProfilePropertyType.Spell;
                         currentValue = Hero.SpellIndex;
                     }
+                    else if (lastRectIndex == 9)
+                    {
+                        type = ProfilePropertyType.HeroClass;
+                    }
 
                     PropertyClicked(Hero.Index, type, index, currentValue);
                 }
@@ -337,7 +411,7 @@ namespace h3magic
                             {
                                 Hero.FirstSkillIndex = Hero.SecondSkillIndex;
                                 Hero.FirstSkillLevel = Hero.SecondSkillLevel;
-                                Hero.SecondSkillLevel = -1;
+                                Hero.SecondSkillIndex = -1;
                             }
                             else
                             {

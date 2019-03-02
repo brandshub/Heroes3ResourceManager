@@ -69,7 +69,7 @@
             this.nmAiValue1 = new System.Windows.Forms.NumericUpDown();
             this.nmAiValue0 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
-            this.lbSpells = new System.Windows.Forms.ListBox();
+            this.lbSpells = new ListBoxWithImages();
             this.cbSpellFilter = new h3magic.ComboBoxWithImages();
             ((System.ComponentModel.ISupportInitialize)(this.nmEffectPerMp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBaseLvl3)).BeginInit();
@@ -713,7 +713,7 @@
         private System.Windows.Forms.NumericUpDown nmAiValue1;
         private System.Windows.Forms.NumericUpDown nmAiValue0;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListBox lbSpells;
+        private ListBoxWithImages lbSpells;
         private ComboBoxWithImages cbSpellFilter;
     }
 }

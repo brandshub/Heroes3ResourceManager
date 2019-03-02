@@ -125,6 +125,23 @@ namespace h3magic
             return BitmapCache.HeroesBackground;
         }
 
+        public static Bitmap GetPrimarySkillsPanel(Heroes3Master master)
+        {
+            var bmp = new Bitmap(4*42, 42);
+            using (var g = Graphics.FromImage(bmp))
+            {
+                var ps = master.ResolveWith(H_PRIMARYSKILLS).GetDefFile();
+                if (ps != null)
+                {
+                    g.DrawImage(ps.GetSprite(0), new Point(0, 0));
+                    g.DrawImage(ps.GetSprite(1), new Point(42, 0));
+                    g.DrawImage(ps.GetSprite(2), new Point(84, 0));
+                    g.DrawImage(ps.GetSprite(5), new Point(126, 0));
+                }
+            }
+            return bmp;
+        }
+
         public static void SaveLocalChanges(Heroes3Master master)
         {
             var lod1 = master.Resolve(TXT_BIOGRAPHIES_FNAME);
