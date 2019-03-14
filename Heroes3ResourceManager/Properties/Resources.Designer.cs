@@ -130,40 +130,10 @@ namespace h3magic.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ttt {
-            get {
-                object obj = ResourceManager.GetObject("ttt", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap TXT {
             get {
                 object obj = ResourceManager.GetObject("TXT", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] UN32 {
-            get {
-                object obj = ResourceManager.GetObject("UN32", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] UN44 {
-            get {
-                object obj = ResourceManager.GetObject("UN44", resourceCulture);
-                return ((byte[])(obj));
             }
         }
     }

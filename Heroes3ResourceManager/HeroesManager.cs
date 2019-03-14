@@ -35,7 +35,7 @@ namespace h3magic
             var lod2 = master.Resolve(H_SPECS);
             var lod3 = master.Resolve(H_HEROES);
 
-            var imageLodFile = master.Resolve("HPL000EL.pcx");
+            var imageLodFile = master.GetByName("h3bitmap.lod");// master.Resolve("HPL000EL.pcx");
             //int index = lodFile.IndexOf("HPL000EL.pcx");
             int index = imageLodFile.IndexOf("HPL000EL.pcx");
 
@@ -55,6 +55,7 @@ namespace h3magic
             List<string> stringList = new List<string>(types.Length * 16);
             for (int i = 0; i < types.Length; i++)
                 stringList.AddRange(heroes[types[i]]);
+
             HeroesOrder = stringList.ToArray();
 
             bio_rows = Encoding.Default.GetString(lod1.GetRawData(TXT_BIOGRAPHIES_FNAME)).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
@@ -86,10 +87,7 @@ namespace h3magic
 
 
         }
-        public static string GetSpecDescription(int index)
-        {
-            return spec_rows[2 + index];
-        }
+
 
         public static Bitmap GetBackground(Heroes3Master master)
         {
@@ -98,7 +96,7 @@ namespace h3magic
 
             var bmp = new Bitmap(288, 331);
             using (var g = Graphics.FromImage(bmp))
-            {                
+            {
                 var f = master.ResolveWith(H_BACKGROUND).GetBitmap();
                 if (f != null)
                     g.DrawImage(f, new Point(-14, -15));
@@ -109,7 +107,7 @@ namespace h3magic
                 g.DrawImage(f, 192, 261, new RectangleF(196, 19, 93, 65), GraphicsUnit.Pixel);
                 g.DrawImage(f, 0, 327, new RectangleF(14, 85, 288, 4), GraphicsUnit.Pixel);
 
-                var ps = master.ResolveWith(H_PRIMARYSKILLS).GetDefFile();                
+                var ps = master.ResolveWith(H_PRIMARYSKILLS).GetDefFile();
                 if (ps != null)
                 {
                     g.DrawImage(ps.GetSprite(0), new Point(18, 97));
@@ -127,7 +125,7 @@ namespace h3magic
 
         public static Bitmap GetPrimarySkillsPanel(Heroes3Master master)
         {
-            var bmp = new Bitmap(4*42, 42);
+            var bmp = new Bitmap(4 * 42, 42);
             using (var g = Graphics.FromImage(bmp))
             {
                 var ps = master.ResolveWith(H_PRIMARYSKILLS).GetDefFile();

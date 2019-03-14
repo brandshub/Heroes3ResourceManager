@@ -19,6 +19,8 @@ namespace h3magic
         public int Unknown1 { get; private set; }
         public int SpriteType { get; private set; }
 
+        public bool Created { get; set; }
+
         public bool HasChanged { get; set; }
 
         private byte[] fname;
@@ -131,7 +133,7 @@ namespace h3magic
 
         public byte[] GetRawData(Stream stream)
         {
-            if (HasChanged)
+            if (HasChanged && !Created)
             {
                 return newVal;
             }
@@ -238,7 +240,6 @@ namespace h3magic
         public unsafe byte[] GetHeader()
         {
             byte[] buffer = new byte[32];
-
             Buffer.BlockCopy(Encoding.ASCII.GetBytes(FileName), 0, buffer, 0, Encoding.ASCII.GetByteCount(FileName));
             fixed (byte* bts = buffer)
             {
@@ -254,8 +255,8 @@ namespace h3magic
 
         public void SaveToStream(Stream input, Stream output)
         {
-            if (!HasChanged)
-            {
+            if (!HasChanged || Created)
+            {              
                 int len = Size == 0 ? RealSize : Size;
                 byte[] bytes = new byte[len];
                 input.Position = Offset;
@@ -281,9 +282,6 @@ namespace h3magic
             stream.Write(comp, 0, Size);
         }
 
-
-
-
         public void ApplyChanges(byte[] newValue)
         {
             HasChanged = true;
@@ -292,5 +290,15 @@ namespace h3magic
             //Size = newVal.Length;
             RealSize = newValue.Length;
         }
+
+        public FatRecord Clone(string newName)
+        {
+            var clone = (FatRecord)MemberwiseClone();
+            clone.FileName = newName;
+            clone.newVal = null;
+            clone.Created = true;
+            return clone;
+        }
+        
     }
 }

@@ -30,15 +30,10 @@ namespace h3magic
             Name = System.IO.Path.GetFileName(Path).ToLower();
 
             byte[] temp = new byte[4];
-            fs.Read(temp, 0, 4);
-            /*if (BitConverter.ToUInt32(temp, 0) != HEADER)
-            {
-                fs.Close();
-                throw new ArgumentException("not a .LOD file");
-            }*/
             fs.Position = 8;
             fs.Read(temp, 0, 4);
             stream = fs;
+
             FileCount = BitConverter.ToInt32(temp, 0);
             FilesTable = new List<FatRecord>(FileCount);
             Master = master;
@@ -52,10 +47,32 @@ namespace h3magic
             for (int i = 0; i < count; i++)
             {
                 stream.Read(record, 0, 32);
-                FilesTable.Add(new FatRecord(parent,record));
+                FilesTable.Add(new FatRecord(parent, record));
             }
         }
 
+        private int bs(string f)
+        {
+            var fnames = GetNames();
+            return Array.BinarySearch<string>(fnames, f);
+        }
+        public void AddNewRecord(FatRecord record)
+        {
+            int index = IndexOf(record.FileName);
+            if (index >= 0)
+                return;
+
+            if (string.Compare(record.FileName, FilesTable.Last().FileName) == 1)
+            {
+                FilesTable.Add(record);
+            }
+            else
+            {
+                FilesTable.Insert(~index, record);
+            }
+            FileCount++;
+
+        }
         public FatRecord this[string name]
         {
             get
@@ -75,7 +92,7 @@ namespace h3magic
 
         public void LoadFAT()
         {
-            LoadData(this,FileCount);
+            LoadData(this, FileCount);
         }
 
         public string[] GetNames()
@@ -86,19 +103,19 @@ namespace h3magic
         public int IndexOf(string fileName)
         {
             string local = fileName;
-            int prev = 0, next = FilesTable.Count - 1, now = -1;
-            while (prev <= next)
+            int low = 0, hi = FilesTable.Count - 1, now = -1;
+            while (low <= hi)
             {
-                now = (next + prev) >> 1;
+                now = low + ((hi - low) >> 1);
                 int res = string.Compare(local, FilesTable[now].FileName, true);
-                if (res > 0)
-                    prev = now + 1;
-                else if (res < 0)
-                    next = now - 1;
+                if (res < 0)
+                    hi = now - 1;
+                else if (res > 0)
+                    low = now + 1;
                 else
                     return now;
             }
-            return ~now;
+            return ~low;
         }
 
         public FatRecord GetRecord(string fileName)
@@ -158,6 +175,10 @@ namespace h3magic
                     for (int i = 0; i < FileCount; i++)
                         destination.Write(FilesTable[i].GetHeader(), 0, 32);
 
+                    destination.Position = 8;
+                    destination.Write(BitConverter.GetBytes(FileCount), 0, 4);
+
+
                     destination.Flush();
                 }
                 return true;
@@ -165,7 +186,7 @@ namespace h3magic
             return false;
         }
 
-        public bool SaveToDiskBackupAndSwaps(string prefix)
+        public bool SaveToDiskBackupAndSwap(string prefix)
         {
             string newFileName = Path + prefix;
 

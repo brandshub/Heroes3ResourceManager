@@ -12,15 +12,18 @@ namespace h3magic
     {
         private Routing routing;
 
+
         public static Heroes3Master Master { get; set; }
 
-        public List<LodFile> ResourceFiles { get; private set; }        
+        public List<LodFile> ResourceFiles { get; private set; }
 
         public ExeFile Executable { get; private set; }
 
         public Dictionary<string, List<string>> NameToFileMap { get; private set; }
 
         private Dictionary<string, LodFile> routingCache = new Dictionary<string, LodFile>();
+
+        public BackupManager BackupManager { get; set; }
 
         public Routing Routing
         {
@@ -73,6 +76,7 @@ namespace h3magic
         public void RefreshData()
         {
             routingCache = new Dictionary<string, LodFile>();
+            BackupManager = new BackupManager();
 
             Resource.Unload();
             CreatureAnimationLoop.Unload();
@@ -88,6 +92,8 @@ namespace h3magic
             Speciality.LoadInfo(Executable.Data);
             Town.LoadInfo(this);
             HeroExeData.LoadInfo(Executable.Data);
+
+            BackupManager.LoadData(this);
         }
 
 
@@ -122,7 +128,7 @@ namespace h3magic
             var sw = Stopwatch.StartNew();
 
             int size = ResourceFiles.Sum(r => r.FileCount);
-            NameToFileMap = new Dictionary<string, List<string>>(size);
+            NameToFileMap = new Dictionary<string, List<string>>(size + BackupManager.FileEntriesToBackups.Length);
 
             List<string> temp;
             foreach (var resourceFile in ResourceFiles)
@@ -183,7 +189,6 @@ namespace h3magic
             if (CreatureManager.AnyChanges)
                 CreatureManager.SaveLocalChanges(this);
 
-
             if (HeroesManager.AnyChanges)
                 HeroesManager.SaveLocalChanges(this);
 
@@ -195,10 +200,8 @@ namespace h3magic
 
 
             foreach (var lodFile in ResourceFiles)
-                lodFile.SaveToDiskBackupAndSwaps("new");
+                lodFile.SaveToDiskBackupAndSwap("new");
         }
-
-
 
         public void Dispose()
         {

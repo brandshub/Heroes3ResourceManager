@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupManager.cs" />
     <Compile Include="BitmapCache.cs" />
     <Compile Include="Controls\ComboBoxWithImages.cs">
       <SubType>Component</SubType>
@@ -181,7 +182,7 @@
     <Compile Include="Controls\ImageGridControl.Designer.cs">
       <DependentUpon>ImageGridControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="SpecialityDefBuilder.cs" />
+    <Compile Include="SpecialityBuilder.cs" />
     <Compile Include="Spell.cs" />
     <Compile Include="Controls\SpellDataControl.cs">
       <SubType>UserControl</SubType>
@@ -195,11 +196,6 @@
     <Compile Include="Town.cs" />
     <Compile Include="ZlibWrapper.cs" />
     <None Include="Resources\allspecs.bin" />
-    <None Include="Resources\UN32.gz" />
-    <None Include="Resources\UN44.gz" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\1TResBar.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\bmp0.bmp" />
@@ -215,9 +211,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\canvas.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\ttt.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ANY.bmp" />

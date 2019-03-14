@@ -77,7 +77,7 @@ namespace h3magic
         {
             Default = new Routing { Name = "Default", DefaultResourcePriorities = { "h3bitmap.lod", "h3sprite.lod" } };
 
-            //Hota = new Routing { Name = "Hota", DefaultResourcePriorities = { "HotA_lng.lod", "HotA.lod" }, Fallback = Default };
+           // Hota = new Routing { Name = "Hota", DefaultResourcePriorities = { "HotA_lng.lod", "HotA.lod" }, Fallback = Default };
             // problem with canonical un32 un44 is different from hota one, temporarily saving to h3sprite
             Hota = new Routing
             {

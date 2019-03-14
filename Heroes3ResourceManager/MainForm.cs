@@ -74,8 +74,8 @@ namespace h3magic
 
         private void LoadOrginalSpecs()
         {
-            SpecialityDefBuilder.LoadOriginalSpecs(Properties.Resources.allspecs);
-            SpecialityDefBuilder.LoadDefs(Properties.Resources.UN32, Properties.Resources.UN44);
+          //  SpecialityDefBuilder.LoadOriginalSpecs(Properties.Resources.allspecs);
+           // SpecialityDefBuilder.LoadDefs(Properties.Resources.UN32, Properties.Resources.UN44);
         }
 
         private void Measure()
@@ -177,11 +177,11 @@ namespace h3magic
                     var un32Def = un32.GetRecord(Speciality.IMG_FNAME_SMALL).GetDefFile();
                     var un44Def = un44.GetRecord(Speciality.IMG_FNAME).GetDefFile();
 
-                    int originalSpecIndex = SpecialityDefBuilder.TryUpdateSpecImage(hero, un32Def, un44Def);
-                    string originalSpec = HeroesManager.GetSpecDescription(originalSpecIndex);
+                    int originalSpecIndex = SpecialityBuilder.TryUpdateSpecImage(hero, un32Def, un44Def);
+                    string originalSpec = SpecialityBuilder.OriginalSpecText(originalSpecIndex);
+
                     var hs = HeroesManager.AllHeroes[hero.Index];
-                    hs.Speciality = originalSpec;
-             //       tbHeroSpecDesc.Text = originalSpec;
+                    hs.Speciality = originalSpec;       
 
                     HeroesManager.AnyChanges = true;
                     hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
@@ -217,6 +217,7 @@ namespace h3magic
             var master = Heroes3Master.LoadInfo(executablPath);
             selectedLodFile = master.GetByName("h3bitmap.lod");
 
+            SpecialityBuilder.LoadFromMaster(master);
             heroMainDataControl.LoadCastles();            
             heroMainDataControl.LoadHeroes();
             heroClassDataControl.LoadHeroClasses();
@@ -252,7 +253,7 @@ namespace h3magic
             if (lbFiles.SelectedIndex != -1)
             {
                 FatRecord rec = selectedLodFile[lbFiles.SelectedItem.ToString()];
-                if (rec.Extension == "TXT")
+                if (rec.Extension == "TXT" || rec.Extension=="ZBK")
                     rtbMain.Text = Encoding.Default.GetString(rec.GetRawData());
                 else if (rec.Extension == "PCX")
                 {
@@ -338,7 +339,7 @@ namespace h3magic
                             pbResourceView.Image = bmp;
                         }
                     }
-                    else if (rec.Extension == "TXT")
+                    else if (rec.Extension == "TXT" || rec.Extension == "ZBK")
                     {
                         trbDefSprites.Maximum = 1;
                         byte[] bts = rec.GetRawData();

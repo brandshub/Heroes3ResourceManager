@@ -16,6 +16,7 @@ namespace h3magic
         int palletteOffset;
         byte[] bts;
 
+        bool brokenFormat = false;
         public byte[] GetBytes
         {
             get { return bts; }
@@ -24,61 +25,90 @@ namespace h3magic
         public PcxFile(byte[] bytes)
         {
             bts = bytes;
-            palletteOffset = BitConverter.ToInt32(bytes, 0) + 12;
-            width = BitConverter.ToInt32(bytes, 4);
-            heigth = BitConverter.ToInt32(bytes, 8);
+            palletteOffset = BitConverter.ToInt32(bytes, 0);
+            if (palletteOffset != 0x46323350)
+                palletteOffset += 12;
+            else
+                brokenFormat = true;
+            if (!brokenFormat)
+            {
+                width = BitConverter.ToInt32(bytes, 4);
+                heigth = BitConverter.ToInt32(bytes, 8); //24
+            }
+            else
+            {
+                width = BitConverter.ToInt32(bytes, 24);
+                heigth = BitConverter.ToInt32(bytes, 28);
+            }
         }
 
         public unsafe Bitmap GetBitmap()
         {
-            var bmp = new Bitmap(width, heigth, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-            if (palletteOffset == width * heigth)
-                palletteOffset += 12;
-
-            var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-
-            bool bpp8 = bts.Length == width * heigth + 780;
-
-            byte* ip = (byte*)imageData.Scan0.ToPointer();
-            int byteN = 12;
-            int padding = (4 - ((width * 3) % 4)) % 4;
-
-            if (bpp8)
+            Bitmap bmp;
+            if (!brokenFormat)
             {
-                for (int i = 0; i < heigth; i++)
+                bmp = new Bitmap(width, heigth, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                if (palletteOffset == width * heigth)
+                    palletteOffset += 12;
+
+                var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+
+                bool bpp8 = bts.Length == width * heigth + 780;
+
+                byte* ip = (byte*)imageData.Scan0.ToPointer();
+                int byteN = 12;
+                int padding = (4 - ((width * 3) % 4)) % 4;
+
+                if (bpp8)
                 {
-                    for (int j = 0; j < width; j++)
-                    {
-                        int off = palletteOffset + 3 * bts[byteN];
-                        *ip = bts[off + 2];
-                        ip++;
-                        *ip = bts[off + 1];
-                        ip++;
-                        *ip = bts[off];
-                        ip++;
-                        byteN++;
-                    }
-                    ip += padding;
-                }
-            }
-            else
-            {
-                if (palletteOffset == bts.Length)
-                {
-                    int nstride = width * 3;
                     for (int i = 0; i < heigth; i++)
                     {
-                        Marshal.Copy(bts, 12 + i * nstride, IntPtr.Add(new IntPtr(ip), i * imageData.Stride), nstride);
+                        for (int j = 0; j < width; j++)
+                        {
+                            int off = palletteOffset + 3 * bts[byteN];
+                            *ip = bts[off + 2];
+                            ip++;
+                            *ip = bts[off + 1];
+                            ip++;
+                            *ip = bts[off];
+                            ip++;
+                            byteN++;
+                        }
+                        ip += padding;
                     }
                 }
                 else
                 {
-                    Marshal.Copy(bts, 12, new IntPtr(ip), bts.Length - 12);
+                    if (palletteOffset == bts.Length)
+                    {
+                        int nstride = width * 3;
+                        for (int i = 0; i < heigth; i++)
+                        {
+                            Marshal.Copy(bts, 12 + i * nstride, IntPtr.Add(new IntPtr(ip), i * imageData.Stride), nstride);
+                        }
+                    }
+                    else
+                    {
+                        Marshal.Copy(bts, 12, new IntPtr(ip), bts.Length - 12);
+                    }
                 }
+
+
+                bmp.UnlockBits(imageData);
+
+            }
+            else
+            {
+                bmp = new Bitmap(width, heigth, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                var imageData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+                for (int i = 0; i < heigth;i++ )
+                {
+                    Marshal.Copy(bts, bts.Length - (i+1) * imageData.Stride, imageData.Scan0 + i * imageData.Stride, imageData.Stride);
+                }
+                   
+                bmp.UnlockBits(imageData);
             }
 
-
-            bmp.UnlockBits(imageData);
             return bmp;
         }
 
