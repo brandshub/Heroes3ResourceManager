@@ -181,10 +181,12 @@ namespace h3magic
                     string originalSpec = SpecialityBuilder.OriginalSpecText(originalSpecIndex);
 
                     var hs = HeroesManager.AllHeroes[hero.Index];
-                    hs.Speciality = originalSpec;       
+                    hs.Speciality = originalSpec;
+                    heroMainDataControl.Speciality = originalSpec;
 
                     HeroesManager.AnyChanges = true;
                     hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
+                    
                 }
                 //hpcHeroProfile
             }

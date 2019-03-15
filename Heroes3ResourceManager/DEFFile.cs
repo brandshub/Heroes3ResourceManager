@@ -655,10 +655,17 @@ namespace h3magic
                 offset += headers[i].HeaderLength;
 
             offset += 16;
-            offset += 13 * headers[blockIndex].SpritesCount;
+
+
+            string name = original.headers[blockIndex].Names[newSpriteIndex];
+            var nameBytes = Encoding.Default.GetBytes(name);
+            offset += 13 * oldSpriteIndex;
+            Buffer.BlockCopy(nameBytes, 0, bytes, offset, nameBytes.Length);
+            headers[blockIndex].Names[oldSpriteIndex] = name;
+            offset += (headers[blockIndex].SpritesCount - oldSpriteIndex) * 13;            
+            
             offset += 4 * oldSpriteIndex;
-
-
+            
             int newOffset = original.headers[blockIndex].Offsets[newSpriteIndex];
             var newBytes = BitConverter.GetBytes(newOffset);
 

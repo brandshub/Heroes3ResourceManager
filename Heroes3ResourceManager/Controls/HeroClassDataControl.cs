@@ -184,13 +184,6 @@ namespace h3magic
                     }
                 }
 
-                /*  int index = int.Parse(textBox33.Name.Substring(textBox33.Name.Length - 2));
-
-                  heroClass.Stats[0] = tabHeroClass.Controls["textBox" + index].Text;
-                  for (int i = 2; i < heroClass.Stats.Length - 9; i++)
-                      heroClass.Stats[i] = tabHeroClass.Controls["textBox" + (index + i)].Text;
-                 */
-
                 lbHeroClasses.InvalidateSelected();
                 HeroClass.AnyChanges = true;
             }

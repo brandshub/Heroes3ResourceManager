@@ -84,16 +84,17 @@ namespace h3magic
 
             // problem with canonical un32 un44 is different from hota one, temporarily saving to h3sprite
             // fixed
-            /* Hota = new Routing
-             {
-                 Name = "Hota",
-                 DefaultResourcePriorities = { "HotA_lng.lod", "HotA.lod" },
-                 ExplicitRules = { 
+            /*Hota = new Routing
+            {
+                Name = "Hota",
+                DefaultResourcePriorities = { "HotA_lng.lod", "HotA.lod" },
+                ExplicitRules = { 
                      new RoutingRule { FileName="un32.def", ResourseFilePriorities= new[] { "h3sprite.lod"}},
-                     new RoutingRule { FileName="un44.def", ResourseFilePriorities= new[]{ "h3sprite.lod"}}},
-
-                 Fallback = Default
-             };*/
+                     new RoutingRule { FileName="un44.def", ResourseFilePriorities= new[]{ "h3sprite.lod"}},
+                     new RoutingRule { FileName="z_un32.def", ResourseFilePriorities= new[] { "h3sprite.lod"}},
+                     new RoutingRule { FileName="z_un44.def", ResourseFilePriorities= new[]{ "h3sprite.lod"}}},
+                Fallback = Default
+            };*/
         }
 
 

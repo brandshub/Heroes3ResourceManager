@@ -31,6 +31,13 @@ namespace h3magic
             }
         }
 
+        public static string NotLongerThan(this string str, int length)
+        {
+            if (string.IsNullOrEmpty(str) || str.Length <= length)
+                return str;
+            return str.Substring(0, length);
+        }
+
        
     }
 }

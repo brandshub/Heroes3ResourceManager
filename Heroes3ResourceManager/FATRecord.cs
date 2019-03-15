@@ -48,13 +48,13 @@ namespace h3magic
 
         public override string ToString()
         {
-            return FileName + " off: " + Offset + " zSize: " + Size + " realSize: " + RealSize;
+            return FileName + " parent: " + Parent + " off: " + Offset + " zSize: " + Size + " realSize: " + RealSize;
         }
 
         public Bitmap GetBitmap()
         {
             if (Parent != null)
-               return GetBitmap(Parent.stream);
+                return GetBitmap(Parent.stream);
             return null;
         }
 
@@ -256,7 +256,7 @@ namespace h3magic
         public void SaveToStream(Stream input, Stream output)
         {
             if (!HasChanged || Created)
-            {              
+            {
                 int len = Size == 0 ? RealSize : Size;
                 byte[] bytes = new byte[len];
                 input.Position = Offset;
@@ -299,6 +299,6 @@ namespace h3magic
             clone.Created = true;
             return clone;
         }
-        
+
     }
 }

@@ -34,7 +34,7 @@ namespace h3magic
 
             var lod2 = master.Resolve(H_SPECS);
             var lod3 = master.Resolve(H_HEROES);
-
+            // TO DO: fix this
             var imageLodFile = master.GetByName("h3bitmap.lod");// master.Resolve("HPL000EL.pcx");
             //int index = lodFile.IndexOf("HPL000EL.pcx");
             int index = imageLodFile.IndexOf("HPL000EL.pcx");
@@ -81,11 +81,7 @@ namespace h3magic
                     HighStack3 = int.Parse(traits[8])
 
                 });
-
-
             }
-
-
         }
 
 

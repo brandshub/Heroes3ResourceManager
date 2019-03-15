@@ -48,8 +48,9 @@ namespace h3magic
             {
                 selectedHeroIndex = value;
             }
-            }
+        }
 
+        public string Speciality { set { tbHeroSpecDesc.Text = value; } }
         public int RealHeroIndex
         {
             get
@@ -199,7 +200,7 @@ namespace h3magic
                     cached = new Bitmap(lbHeroes.Width, e.Bounds.Height);
                     using (var g = Graphics.FromImage(cached))
                     {
-                        g.FillRectangle(new SolidBrush(clr), new Rectangle(Point.Empty, new Size(lbHeroes.Width,e.Bounds.Height )));
+                        g.FillRectangle(new SolidBrush(clr), new Rectangle(Point.Empty, new Size(lbHeroes.Width, e.Bounds.Height)));
 
                         g.DrawString(HeroesManager.AllHeroes[realIndex].Name, e.Font, Brushes.Black, 42, 4);
                         var img = new Bitmap(Heroes3Master.Master.ResolveWith(HeroesManager.HeroesOrder[realIndex].Replace("HPL", "HPS")).GetBitmap(), 36, 24);
@@ -226,20 +227,27 @@ namespace h3magic
         {
             if (selectedHeroIndex >= 0)
             {
-                var hs = new HeroStats();
+                var original = HeroesManager.AllHeroes[selectedHeroIndex];
 
-                hs.Name = tbHeroName.Text;
-                hs.Biography = tbHeroBio.Text;
-                hs.Speciality = tbHeroSpecDesc.Text;
-                hs.LowStack1 = int.Parse(tbHeroLS1.Text);
-                hs.HighStack1 = int.Parse(tbHeroHS1.Text);
-                hs.LowStack2 = int.Parse(tbHeroLS2.Text);
-                hs.HighStack2 = int.Parse(tbHeroHS2.Text);
-                hs.LowStack3 = int.Parse(tbHeroLS3.Text);
-                hs.HighStack3 = int.Parse(tbHeroHS3.Text);
+                var hs = new HeroStats
+                {
+                    Name = tbHeroName.Text.NotLongerThan(12),
+                    Biography = tbHeroBio.Text,
+                    Speciality = tbHeroSpecDesc.Text,
+                    LowStack1 = int.Parse(tbHeroLS1.Text),
+                    HighStack1 = int.Parse(tbHeroHS1.Text),
+                    LowStack2 = int.Parse(tbHeroLS2.Text),
+                    HighStack2 = int.Parse(tbHeroHS2.Text),
+                    LowStack3 = int.Parse(tbHeroLS3.Text),
+                    HighStack3 = int.Parse(tbHeroHS3.Text),
+                    CastleIndex = original.CastleIndex,
+                    ImageIndex = original.ImageIndex
+                };
 
                 HeroesManager.AllHeroes[selectedHeroIndex] = hs;
-
+                BitmapCache.DrawItemHeroesListBox[selectedHeroIndex] = null;
+                lbHeroes.InvalidateSelected();
+                
                 HeroesManager.AnyChanges = true;
             }
         }

@@ -156,6 +156,7 @@
             // 
             this.tbHeroName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tbHeroName.Location = new System.Drawing.Point(617, 0);
+            this.tbHeroName.MaxLength = 12;
             this.tbHeroName.Name = "tbHeroName";
             this.tbHeroName.Size = new System.Drawing.Size(271, 22);
             this.tbHeroName.TabIndex = 25;
