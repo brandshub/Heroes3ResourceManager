@@ -131,7 +131,7 @@ namespace h3magic
             {
                 var heroClass = HeroClass.AllHeroClasses[lbHeroClasses.SelectedIndex];
                 tbName.Text = heroClass.Name;
-                cbAggression.SelectedIndex = Array.IndexOf(Aggression, heroClass.Stats[1]);
+             //   cbAggression.SelectedIndex = Array.IndexOf(Aggression, heroClass.Stats[1]);
 
                 for (int i = 2; i < heroClass.Stats.Length - 9; i++)
                 {

@@ -14,39 +14,16 @@ namespace h3magic
         private static DefFile def32, def44;
         private static FatRecord h_specs;
         private static string[] spec_rows;
-        
+
         public static void LoadFromMaster(Heroes3Master master)
         {
             FatRecord un32, un44;
 
-            try
-            {
-                un32 = master.ResolveWith(BackupManager.GetBackupFileName(Speciality.IMG_FNAME_SMALL));
-            }
-            catch
-            {
-                un32 = master.ResolveWith(Speciality.IMG_FNAME_SMALL);
-            }
 
-            try
-            {
-                un44 = master.ResolveWith(BackupManager.GetBackupFileName(Speciality.IMG_FNAME));
-            }
-            catch
-            {
-                un44 = master.ResolveWith(Speciality.IMG_FNAME);
-            }
+            un32 = master.ResolveWith(BackupManager.GetBackupFileName(Speciality.IMG_FNAME_SMALL)) ?? master.ResolveWith(Speciality.IMG_FNAME_SMALL);
+            un44 = master.ResolveWith(BackupManager.GetBackupFileName(Speciality.IMG_FNAME)) ?? master.ResolveWith(Speciality.IMG_FNAME);
+            h_specs = master.ResolveWith(BackupManager.GetBackupFileName(HeroesManager.H_SPECS)) ?? master.ResolveWith(HeroesManager.H_SPECS);
 
-            try
-            {
-                h_specs = master.ResolveWith(BackupManager.GetBackupFileName(HeroesManager.H_SPECS));
-            }
-            catch
-            {
-                h_specs = master.ResolveWith(HeroesManager.H_SPECS);
-            }
-
-            //LoadOriginalSpecs(master.Executable.Data);
             spec_rows = Encoding.Default.GetString(h_specs.GetRawData()).Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             LoadOriginalSpecs(Properties.Resources.allspecs, 0);
@@ -63,7 +40,7 @@ namespace h3magic
         {
             def32 = new DefFile(null, un32);
             def44 = new DefFile(null, un44);
-        }        
+        }
 
         public static int FindOriginalSpecIndexFromSpeciality(Speciality newSpec)
         {
@@ -81,8 +58,8 @@ namespace h3magic
         }
 
         public static string OriginalSpecText(int index)
-        {            
-            return spec_rows[index+2];
+        {
+            return spec_rows[index + 2];
         }
 
         public static int TryUpdateSpecImage(HeroExeData hero, DefFile un32, DefFile un44)

@@ -41,6 +41,7 @@ namespace h3magic
                 cbCastles.Items.Clear();
             if (cbCreatures.Items != null)
                 cbCreatures.Items.Clear();
+            SelectedCastle = -1;
         }
 
         public void LoadCastles()

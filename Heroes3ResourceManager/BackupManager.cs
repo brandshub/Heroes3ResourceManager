@@ -20,18 +20,24 @@ namespace h3magic
             foreach (var name in FileEntriesToBackups)
             {
                 string backupName = GetBackupFileName(name);
-                FatRecord temp;
-                try
-                {
-                    temp = master.ResolveWith(backupName);
-                }
-                catch
-                {
-                    temp = master.ResolveWith(name).Clone(backupName);
-                    temp.Parent.AddNewRecord(temp);
 
-                    master.NameToFileMap[backupName.ToLower()] = new List<string> { temp.Parent.Name.ToLower() };
-                }
+                FatRecord temp = master.ResolveWith(backupName, false);
+                FatRecord original = master.ResolveWith(name);
+
+                if (temp == null || temp.Parent != original.Parent)
+                {
+                    List<string> list;
+                    if (!master.NameToFileMap.TryGetValue(backupName.ToLower(), out list))
+                    {
+                        list = new List<string>();
+                        master.NameToFileMap[backupName.ToLower()] = list;
+                    }
+
+                    list.Add(original.Parent.Name.ToLower());
+                    temp = original.Clone(backupName);
+                    temp.Parent.AddNewRecord(temp);
+                } 
+
                 OriginalData.Add(temp);
             }
         }

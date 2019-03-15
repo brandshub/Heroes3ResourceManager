@@ -46,12 +46,13 @@ namespace h3magic
         public Speciality Spec { get { return Speciality.GetByIndex(Index); } }
 
 
-        public static void LoadInfo(byte[] executableBinary)
+        public static void LoadInfo(Heroes3Master master)
         {
             Unload();
+            byte[] executableBinary = master.Executable.Data;
 
             Data = new List<HeroExeData>();
-            int startOffset = (int)HeroesSection.FindHeroOffset1(executableBinary);
+            int startOffset = (int)master.Executable.HeroesSection.FindHeroGeneralDataOffset(executableBinary);
             int currentOffset = startOffset;
             int bound = HeroesManager.AllHeroes.Count;
             for (int i = 0; i < bound; i++)
@@ -78,9 +79,9 @@ namespace h3magic
 
         }
 
-        public unsafe static bool UpdateDataInMemory()
+        public unsafe static bool UpdateDataInMemory(Heroes3Master master)
         {
-            long offset = HeroesSection.HeroOffset1;
+            long offset = master.Executable.HeroesSection.HeroGeneralDataOffset;
 
             var exe = Heroes3Master.Master.Executable;
             string file = exe.Path;
@@ -110,7 +111,7 @@ namespace h3magic
 
 
                             //if (current.SpecIndex != current.Index)
-                            Speciality.Update(ptr, current.Index);
+                            Speciality.Update(master, ptr, current.Index);
                         }
                     }
                 }

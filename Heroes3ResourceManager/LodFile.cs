@@ -58,6 +58,8 @@ namespace h3magic
         }
         public void AddNewRecord(FatRecord record)
         {
+            record.Parent = this;
+
             int index = IndexOf(record.FileName);
             if (index >= 0)
                 return;

@@ -44,16 +44,16 @@ namespace h3magic
             return list;
         }
 
-        public static void LoadInfo(byte[] executableBinary)
+        public static void LoadInfo(Heroes3Master master)
         {
             Unload();
-            int startOffset = (int)HeroesSection.FindHeroOffset2(executableBinary);
+            int startOffset = (int)master.Executable.HeroesSection.FindHeroSpecDataOffset(master.Executable.Data);
             if (startOffset >= 0)
-                AllSpecialities = LoadInfo(executableBinary, startOffset);
+                AllSpecialities = LoadInfo(master.Executable.Data, startOffset);
         }
 
         public static Bitmap GetImage(Heroes3Master master, int index)
-        {            
+        {
             return master.ResolveWith(IMG_FNAME).GetDefFile().GetByAbsoluteNumber(index);
         }
 
@@ -192,11 +192,11 @@ namespace h3magic
             return false;
         }
 
-        public static unsafe void Update(byte* ptr, int index)
+        public static unsafe void Update(Heroes3Master master, byte* ptr, int index)
         {
             var spec = AllSpecialities[index];
 
-            long offset = HeroesSection.HeroOffset2 + index * BLOCK_SIZE;
+            long offset = master.Executable.HeroesSection.HeroSpecDataOffset + index * BLOCK_SIZE;
             int* iptr = (int*)(ptr + offset);
 
             *iptr++ = spec.TypeId;

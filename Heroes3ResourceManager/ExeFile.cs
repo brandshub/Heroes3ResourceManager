@@ -11,12 +11,15 @@ namespace h3magic
         public string Name { get; set; }
         public string Path { get; set; }
         public byte[] Data { get; private set; }
+        public HeroesSection HeroesSection { get; set; }
+
 
         public ExeFile(string executablePath)
         {
             Name = System.IO.Path.GetFileName(executablePath);
             Path = executablePath;
             Data = File.ReadAllBytes(executablePath);
+            HeroesSection = new HeroesSection();
         }
 
         public void Dispose()

@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace h3magic
 {
-    static class HeroesManager
+    public static class HeroesManager
     {
         public const string TXT_BIOGRAPHIES_FNAME = "HeroBios.txt";
         public const string H_SPECS = "HeroSpec.txt";

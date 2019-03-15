@@ -89,9 +89,9 @@ namespace h3magic
             SecondarySkill.LoadInfo(this);
             StringsData.LoadInfo(this);
 
-            Speciality.LoadInfo(Executable.Data);
+            Speciality.LoadInfo(this);
             Town.LoadInfo(this);
-            HeroExeData.LoadInfo(Executable.Data);
+            HeroExeData.LoadInfo(this);
 
             BackupManager.LoadData(this);
         }
@@ -105,23 +105,39 @@ namespace h3magic
 
 
             lodFile = Routing.Resolve(this, fileName);
+            if (lodFile == null)
+                return null;
+
             routingCache[fileName.ToLower()] = lodFile;
             return lodFile;
         }
 
         public FatRecord ResolveWith(string fileName)
         {
+            return ResolveWith(fileName, true);
+        }
+
+
+        public FatRecord ResolveWith(string fileName, bool cachingEnabled)
+        {
             LodFile lodFile;
-            if (routingCache.TryGetValue(fileName.ToLower(), out lodFile))
-                return lodFile[fileName];
+
+            if (cachingEnabled)
+            {
+                if (routingCache.TryGetValue(fileName.ToLower(), out lodFile))
+                    return lodFile[fileName];
+            }
 
 
             lodFile = Routing.Resolve(this, fileName);
-            routingCache[fileName.ToLower()] = lodFile;
+            if (lodFile == null)
+                return null;
+
+            if (cachingEnabled)
+                routingCache[fileName.ToLower()] = lodFile;
 
             return lodFile[fileName];
         }
-
 
         private void BuildMap()
         {
@@ -177,7 +193,7 @@ namespace h3magic
             if (HeroExeData.Data != null && HeroExeData.Data.Any(f => f.HasChanged))
                 File.WriteAllBytes(Executable.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_HHmmss"), Executable.Data);
 
-            if (HeroExeData.UpdateDataInMemory())
+            if (HeroExeData.UpdateDataInMemory(this))
                 File.WriteAllBytes(Executable.Path, Executable.Data);
 
         }

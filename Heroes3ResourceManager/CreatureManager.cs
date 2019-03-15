@@ -17,7 +17,7 @@ namespace h3magic
         public static List<Creature> OnlyActiveCreatures = new List<Creature>();
         public static Bitmap[] SmallImages = null;
         public static Creature[] AllCreatures2 = null;
-        public static int[] IndexesOfFirstLevelCreatures;
+        public static int[] IndexesOfFirstLevelCreatures;        
 
         private static DefFile creatureDef;
         private static DefFile smallCreatureDef;

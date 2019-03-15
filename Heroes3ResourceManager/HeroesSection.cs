@@ -15,22 +15,30 @@ namespace h3magic
         private static readonly byte[] heroSpecs = { 0x47, 0x7a, 0x49, 0x6e, 0x66, 0x6c, 0x61, 0x74, 0x65, 0x42, 0x75, 0x66, 0x40, 0x40, 0x00, 0x00 };
 
 
-        public static long HeroOffset1 { get; private set; }
-        public static long HeroOffset2 { get; private set; }
-
-        public static long FindHeroOffset1(byte[] data)
+        public HeroesSection()
         {
-            HeroOffset1 = FindPosition(data, firstHero) + 16;
-            return HeroOffset1;
+            HeroGeneralDataOffset = -1;
+            HeroSpecDataOffset = -1;
         }
 
-        public static long FindHeroOffset2(byte[] data)
+        public long HeroGeneralDataOffset { get; private set; }
+        public long HeroSpecDataOffset { get; private set; }
+
+        public long FindHeroGeneralDataOffset(byte[] data)
         {
-            HeroOffset2 = FindPosition(data, heroSpecs) + 16;
-            return HeroOffset2;
+            if (HeroGeneralDataOffset == -1)
+                HeroGeneralDataOffset = FindPosition(data, firstHero) + 16;
+            return HeroGeneralDataOffset;
         }
 
-        public static unsafe long FindPosition(byte[] bytes, byte[] search)
+        public long FindHeroSpecDataOffset(byte[] data)
+        {
+            if (HeroSpecDataOffset == -1)
+                HeroSpecDataOffset = FindPosition(data, heroSpecs) + 16;
+            return HeroSpecDataOffset;
+        }
+
+        public unsafe long FindPosition(byte[] bytes, byte[] search)
         {
             if (search.Length > bytes.Length)
                 return -1;

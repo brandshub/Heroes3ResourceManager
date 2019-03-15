@@ -7,6 +7,8 @@ namespace h3magic
 {
     public class Creature
     {
+        public static bool HasSecondPlural { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -51,6 +53,7 @@ namespace h3magic
             Name = stats[0];
             Plural1 = stats[1];
             int off = stats.Length == 25 ? -1 : 0;
+            Creature.HasSecondPlural = off == 0;                 
             Plural2 = stats[2 + off];
             PriceLumber = int.Parse(stats[3 + off]);
             PriceMercury = int.Parse(stats[4 + off]);
@@ -84,7 +87,10 @@ namespace h3magic
             var sb = new StringBuilder();
             sb.Append(Name); sb.Append('\t');
             sb.Append(Plural1); sb.Append('\t');
-            sb.Append(Plural2); sb.Append('\t');
+            if (Creature.HasSecondPlural)
+            {
+                sb.Append(Plural2); sb.Append('\t');
+            }
             sb.Append(PriceLumber.ToString()); sb.Append('\t');
             sb.Append(PriceMercury.ToString()); sb.Append('\t');
             sb.Append(PriceOre.ToString()); sb.Append('\t');
@@ -113,7 +119,7 @@ namespace h3magic
 
         public override string ToString()
         {
-            return Name + " -> "+CreatureIndex;
+            return Name + " -> " + CreatureIndex;
         }
 
     }

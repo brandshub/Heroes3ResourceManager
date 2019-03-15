@@ -22,7 +22,9 @@ namespace h3magic
 
         public LodFile Resolve(Heroes3Master master, string fileName)
         {
-            var masterResoucesForFile = master.NameToFileMap[fileName.ToLower()];
+            List<string> masterResoucesForFile;
+            if (!master.NameToFileMap.TryGetValue(fileName.ToLower(), out masterResoucesForFile))
+                return null;
             // if no, exception is thrown
 
             if (masterResoucesForFile.Count == 1)
@@ -56,7 +58,8 @@ namespace h3magic
             if (Fallback != null)
                 return Fallback.Resolve(master, fileName);
 
-            throw new Exception("File: " + fileName + " was not found for routing " + Name);
+            //throw new Exception("File: " + fileName + " was not found for routing " + Name);
+            return null;
         }
 
         public override string ToString()
@@ -77,18 +80,20 @@ namespace h3magic
         {
             Default = new Routing { Name = "Default", DefaultResourcePriorities = { "h3bitmap.lod", "h3sprite.lod" } };
 
-           // Hota = new Routing { Name = "Hota", DefaultResourcePriorities = { "HotA_lng.lod", "HotA.lod" }, Fallback = Default };
-            // problem with canonical un32 un44 is different from hota one, temporarily saving to h3sprite
-            Hota = new Routing
-            {
-                Name = "Hota",
-                DefaultResourcePriorities = { "HotA_lng.lod", "HotA.lod" },
-                ExplicitRules = { 
-                    new RoutingRule { FileName="un32.def", ResourseFilePriorities= new[] { "h3sprite.lod"}},
-                    new RoutingRule { FileName="un44.def", ResourseFilePriorities= new[]{ "h3sprite.lod"}}},
+            Hota = new Routing { Name = "Hota", DefaultResourcePriorities = { "HotA_lng.lod", "HotA.lod" }, Fallback = Default };
 
-                Fallback = Default
-            };
+            // problem with canonical un32 un44 is different from hota one, temporarily saving to h3sprite
+            // fixed
+            /* Hota = new Routing
+             {
+                 Name = "Hota",
+                 DefaultResourcePriorities = { "HotA_lng.lod", "HotA.lod" },
+                 ExplicitRules = { 
+                     new RoutingRule { FileName="un32.def", ResourseFilePriorities= new[] { "h3sprite.lod"}},
+                     new RoutingRule { FileName="un44.def", ResourseFilePriorities= new[]{ "h3sprite.lod"}}},
+
+                 Fallback = Default
+             };*/
         }
 
 

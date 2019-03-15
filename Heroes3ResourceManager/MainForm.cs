@@ -186,10 +186,8 @@ namespace h3magic
                     HeroesManager.AnyChanges = true;
                     hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
                 }
-
                 //hpcHeroProfile
             }
-
         }
 
         private void HpcHeroProfile_PropertyClicked(int heroIndex, ProfilePropertyType type, int relativeIndex, int currentValue)
@@ -611,6 +609,10 @@ namespace h3magic
                 {
                     Width = 955;
                 }
+            }
+            else
+            {
+                Width = 955;
             }
         }
 
