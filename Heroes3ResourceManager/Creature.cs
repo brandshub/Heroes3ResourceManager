@@ -46,6 +46,17 @@ namespace h3magic
         public int CreatureIndex { get; set; }
         public int CreatureCastleRelativeIndex { get; set; }
 
+        public int CreatureTownLevel
+        {
+            get
+            {
+                if (TownIndex <= 8)
+                    return 1 + CreatureCastleRelativeIndex / 2;
+                // TO DO: neutral creatures level
+                return 4;
+            }
+        }
+
         public Creature(string row)
         {
             //		Attack	Defense	Low	High	Shots	Spells	Low	High	Ability Text	Attributes (Reference only, do not change these values)

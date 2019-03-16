@@ -261,6 +261,27 @@ namespace h3magic
             return Data.SequenceEqual(other.Data);
         }
 
+        private int TryGetCreatureId()
+        {
+            if (Type == SpecialityType.CreatureLevelBonus || Type == SpecialityType.CreatureStaticBonus)
+                return ObjectId;
+            if (Type == SpecialityType.CreaturesUpgrade)
+                return BitConverter.ToInt32(Data, 16);
+            return -1;
+        }
+
+        public bool SameIcon(Speciality other)
+        {
+            if (Equals(other))
+                return true;
+
+            int creatureId = TryGetCreatureId();
+            int otherCreaturedId = other.TryGetCreatureId();
+
+            return creatureId != -1 && creatureId == otherCreaturedId;
+        }
+
+
         public static void Unload()
         {
             AllSpecialities = null;

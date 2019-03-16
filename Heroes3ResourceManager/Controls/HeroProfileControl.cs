@@ -301,7 +301,7 @@ namespace h3magic
 
         private void PictureBox_Paint(object sender, PaintEventArgs e)
         {
-            if (Hero != null)
+            if (Hero != null && HeroIndex>=0)
             {
                 if (lastRectIndex >= 0)
                 {
@@ -316,7 +316,7 @@ namespace h3magic
 
         private void PictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (Hero != null)
+            if (Hero != null && HeroIndex >= 0)
             {
                 RectangleF rect;
                 int index = GetBoundingRectangleIndex(e.X, e.Y, ratio, dx, dy, out rect);
@@ -327,22 +327,22 @@ namespace h3magic
                     {
                         var rectF = Multiply(areas[lastRectIndex], ratio);
                         rectF.Offset(dx, dy);
-                        PictureBox.Invalidate(Pad(Rectangle.Round(rectF),1));
+                        PictureBox.Invalidate(Pad(Rectangle.Round(rectF), 1));
                     }
 
                     lastRectIndex = index;
-                    PictureBox.Invalidate(Pad(Rectangle.Round(rect),1));
+                    PictureBox.Invalidate(Pad(Rectangle.Round(rect), 1));
                 }
             }
         }
 
         public Rectangle Pad(Rectangle input, int padding)
         {
-            return new Rectangle(input.X - padding, input.Y - padding, input.Width + padding+1, input.Height + padding+1);
+            return new Rectangle(input.X - padding, input.Y - padding, input.Width + padding + 1, input.Height + padding + 1);
         }
         private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            if (lastRectIndex >= 0 && PropertyClicked != null)
+            if (Hero != null && HeroIndex >= 0 && lastRectIndex >= 0 && PropertyClicked != null)
             {
                 if (e.Button == MouseButtons.Left)
                 {

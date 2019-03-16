@@ -171,18 +171,9 @@ namespace h3magic
                     Speciality.UpdateSpecialityData(specType, hero.Index, selIndex, arg1, arg2, arg3);
                     hero.HasChanged = true;
 
-                    var un32 = Heroes3Master.Master.Resolve(Speciality.IMG_FNAME_SMALL);
-                    var un44 = Heroes3Master.Master.Resolve(Speciality.IMG_FNAME);
-
-                    var un32Def = un32.GetRecord(Speciality.IMG_FNAME_SMALL).GetDefFile();
-                    var un44Def = un44.GetRecord(Speciality.IMG_FNAME).GetDefFile();
-
-                    int originalSpecIndex = SpecialityBuilder.TryUpdateSpecImage(hero, un32Def, un44Def);
-                    string originalSpec = SpecialityBuilder.OriginalSpecText(originalSpecIndex);
-
                     var hs = HeroesManager.AllHeroes[hero.Index];
-                    hs.Speciality = originalSpec;
-                    heroMainDataControl.Speciality = originalSpec;
+                    SpecialityBuilder.TryUpdateSpecialityImageAndText(Heroes3Master.Master, hero);
+                    heroMainDataControl.Speciality = hs.Speciality;
 
                     HeroesManager.AnyChanges = true;
                     hpcHeroProfile.LoadHero(hpcHeroProfile.HeroIndex, Heroes3Master.Master);
@@ -196,6 +187,7 @@ namespace h3magic
         {
             if (type == ProfilePropertyType.HeroClass)
             {
+                heroClassDataControl.HeroClass = HeroClass.AllHeroClasses[heroMainDataControl.SelectedHeroIndex / 8];
                 tabsMain.SelectedTab = tabHeroClass;
                 heroClassDataControl.GoToPrimarySkills();
             }
@@ -208,7 +200,6 @@ namespace h3magic
 
                 heroPropertyForm.ShowDialog(this);
             }
-
         }
 
 
@@ -430,7 +421,10 @@ namespace h3magic
 
             lbFiles.Items.Clear();
             tabsMain.TabPages.Clear();
-            
+
+            heroMainDataControl.HeroProfileControl.HeroIndex = -1;
+            heroMainDataControl.HeroProfileControl.Image = null;
+
             heroMainDataControl.ResetCastles();
             heroClassDataControl.Reset();
             creatureDataControl.Reset();

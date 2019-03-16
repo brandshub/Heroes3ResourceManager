@@ -66,9 +66,11 @@ namespace h3magic
         }
 
         public void Reset()
-        {
+        {            
             lbHeroes.Items.Clear();
-            selectedHeroIndex = 0;
+            selectedHeroIndex = -1;
+            Hero = null;
+            hpcHeroProfile.HeroIndex = -1;
         }
 
 
@@ -77,6 +79,15 @@ namespace h3magic
         {
             cbCastles.Items.Clear();
             Reset();
+            tbHeroName.Text = string.Empty;
+            tbHeroBio.Text = string.Empty;
+            tbHeroSpecDesc.Text = string.Empty;
+            tbHeroLS1.Text = string.Empty;
+            tbHeroHS1.Text = string.Empty;
+            tbHeroLS2.Text = string.Empty;
+            tbHeroHS2.Text = string.Empty;
+            tbHeroLS3.Text = string.Empty;
+            tbHeroHS3.Text = string.Empty;
         }
 
         public void LoadCastles()
@@ -156,7 +167,6 @@ namespace h3magic
                 tbHeroLS3.Text = hs.LowStack3.ToString();
                 tbHeroHS3.Text = hs.HighStack3.ToString();
             }
-
         }
         private void cbCastles_DrawItem(object sender, DrawItemEventArgs e)
         {

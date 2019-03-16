@@ -15,7 +15,7 @@ namespace h3magic
         {
             return stopwatch.ElapsedTicks * 1000.0f / Stopwatch.Frequency;
         }
-        
+
         public static BitmapData LockBits24(this Bitmap bmp)
         {
             return bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
@@ -38,6 +38,16 @@ namespace h3magic
             return str.Substring(0, length);
         }
 
-       
+        public static string ChangeFirstCharCase(this string input, bool capitalize = true)
+        {
+            switch (input)
+            {
+                case null: throw new ArgumentNullException();
+                case "": throw new ArgumentException();
+                default: return (capitalize ? input.First().ToString().ToUpper() : input.First().ToString().ToLower()) + input.Substring(1);
+            }
+        }
+
+
     }
 }

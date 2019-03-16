@@ -10,10 +10,9 @@ namespace h3magic
 {
     public class Heroes3Master : IDisposable
     {
-        private Routing routing;
-
-
         public static Heroes3Master Master { get; set; }
+
+        private Routing routing;
 
         public List<LodFile> ResourceFiles { get; private set; }
 
@@ -24,6 +23,8 @@ namespace h3magic
         private Dictionary<string, LodFile> routingCache = new Dictionary<string, LodFile>();
 
         public BackupManager BackupManager { get; set; }
+
+        public string OriginalDataFolder { get; set; }
 
         public Routing Routing
         {
@@ -58,10 +59,10 @@ namespace h3magic
             master.Executable = new ExeFile(executablePath);
             master.ResourceFiles = new List<LodFile>();
 
-            string dataDirectory = Path.Combine(Path.GetDirectoryName(executablePath), "Data");
+            master.OriginalDataFolder = Path.Combine(Path.GetDirectoryName(executablePath), "Data");
 
-            master.LoadAllWithExtension(dataDirectory, ".lod");
-            master.LoadAllWithExtension(dataDirectory, ".pac");
+            master.LoadAllWithExtension(master.OriginalDataFolder, ".lod");
+            master.LoadAllWithExtension(master.OriginalDataFolder, ".pac");
 
             master.BuildMap();
             if (master.GetByName("HotA.lod") != null)
@@ -188,10 +189,12 @@ namespace h3magic
         }
 
 
-        public void SaveHeroExeData()
+        public void SaveHeroExeData(string backupFolder)
         {
+
             if (HeroExeData.Data != null && HeroExeData.Data.Any(f => f.HasChanged))
-                File.WriteAllBytes(Executable.Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_HHmmss"), Executable.Data);
+                File.WriteAllBytes(Path.Combine(backupFolder, Executable.Name), Executable.Data);
+
 
             if (HeroExeData.UpdateDataInMemory(this))
                 File.WriteAllBytes(Executable.Path, Executable.Data);
@@ -200,7 +203,11 @@ namespace h3magic
 
         public void SaveToDisk()
         {
-            SaveHeroExeData();
+            DateTime stamp = DateTime.Now;
+            string backupFolder = Path.Combine(Directory.GetParent(Executable.Path).ToString(), "HeroesResourceManagerBackups", stamp.ToString("yyyy-MM-dd-HHmmss"));
+            Directory.CreateDirectory(backupFolder);
+
+            SaveHeroExeData(backupFolder);
 
             if (CreatureManager.AnyChanges)
                 CreatureManager.SaveLocalChanges(this);
@@ -216,7 +223,9 @@ namespace h3magic
 
 
             foreach (var lodFile in ResourceFiles)
-                lodFile.SaveToDiskBackupAndSwap("new");
+                lodFile.SaveToDiskBackupAndSwap(backupFolder);
+
+
         }
 
         public void Dispose()

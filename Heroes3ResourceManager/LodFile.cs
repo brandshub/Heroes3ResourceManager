@@ -188,15 +188,17 @@ namespace h3magic
             return false;
         }
 
-        public bool SaveToDiskBackupAndSwap(string prefix)
+        public bool SaveToDiskBackupAndSwap(string backupFolder)
         {
-            string newFileName = Path + prefix;
+            string newFileName = System.IO.Path.Combine(backupFolder, Name);
 
             if (SaveToDisk(newFileName))
             {
                 stream.Close();
-                File.Move(Path, Path + ".bak." + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
-                File.Move(newFileName, Path);
+                File.Move(newFileName, Path + ".tmp");
+                File.Move(Path, newFileName);
+                File.Move(Path + ".tmp", Path);
+
                 stream = new FileStream(Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 return true;
             }

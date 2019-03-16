@@ -120,6 +120,7 @@
             this.cbAggression.Name = "cbAggression";
             this.cbAggression.Size = new System.Drawing.Size(50, 21);
             this.cbAggression.TabIndex = 70;
+            this.cbAggression.Visible = false;
             // 
             // label1
             // 
@@ -129,6 +130,7 @@
             this.label1.Size = new System.Drawing.Size(53, 13);
             this.label1.TabIndex = 71;
             this.label1.Text = "Agression";
+            this.label1.Visible = false;
             // 
             // lbHeroClasses
             // 

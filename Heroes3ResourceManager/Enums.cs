@@ -40,7 +40,7 @@ namespace h3magic
     {        
         Lumber = 0,
         Mercury = 1,
-        Stone = 2,
+        Ore = 2,
         Sulphur = 3,
         Crystals = 4,
         Gems = 5,

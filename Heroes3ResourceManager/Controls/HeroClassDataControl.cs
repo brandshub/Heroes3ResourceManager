@@ -174,7 +174,7 @@ namespace h3magic
                     tbName.Text = tbName.Text.Substring(0, 20);
 
                 heroClass.Stats[0] = tbName.Text;
-                heroClass.Stats[1] = cbAggression.Text;
+               // heroClass.Stats[1] = cbAggression.Text;
                 for (int i = 2; i < heroClass.Stats.Length - 9; i++)
                 {
                     var nm = Controls.Find("nmStat" + i, false).FirstOrDefault() as NumericUpDown;

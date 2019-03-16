@@ -49,7 +49,7 @@
             // tbHeroLS3
             // 
             this.tbHeroLS3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbHeroLS3.Location = new System.Drawing.Point(802, 290);
+            this.tbHeroLS3.Location = new System.Drawing.Point(802, 319);
             this.tbHeroLS3.Name = "tbHeroLS3";
             this.tbHeroLS3.Size = new System.Drawing.Size(40, 20);
             this.tbHeroLS3.TabIndex = 37;
@@ -58,7 +58,7 @@
             // tbHeroHS3
             // 
             this.tbHeroHS3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbHeroHS3.Location = new System.Drawing.Point(848, 290);
+            this.tbHeroHS3.Location = new System.Drawing.Point(848, 319);
             this.tbHeroHS3.Name = "tbHeroHS3";
             this.tbHeroHS3.Size = new System.Drawing.Size(40, 20);
             this.tbHeroHS3.TabIndex = 36;
@@ -83,7 +83,7 @@
             // tbHeroHS2
             // 
             this.tbHeroHS2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbHeroHS2.Location = new System.Drawing.Point(848, 316);
+            this.tbHeroHS2.Location = new System.Drawing.Point(848, 293);
             this.tbHeroHS2.Name = "tbHeroHS2";
             this.tbHeroHS2.Size = new System.Drawing.Size(40, 20);
             this.tbHeroHS2.TabIndex = 33;
@@ -92,7 +92,7 @@
             // tbHeroLS2
             // 
             this.tbHeroLS2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.tbHeroLS2.Location = new System.Drawing.Point(802, 316);
+            this.tbHeroLS2.Location = new System.Drawing.Point(802, 293);
             this.tbHeroLS2.Name = "tbHeroLS2";
             this.tbHeroLS2.Size = new System.Drawing.Size(40, 20);
             this.tbHeroLS2.TabIndex = 32;
@@ -119,7 +119,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(614, 319);
+            this.label17.Location = new System.Drawing.Point(614, 322);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(66, 13);
             this.label17.TabIndex = 29;
@@ -137,7 +137,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(614, 293);
+            this.label15.Location = new System.Drawing.Point(614, 296);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(66, 13);
             this.label15.TabIndex = 27;
