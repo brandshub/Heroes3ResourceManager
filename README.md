@@ -1,6 +1,8 @@
 # Heroes3ResourceManager
 Heroes Of Might And Magic III Resource Viewer/Editor
 
+[Download v0.9.13](https://github.com/brandshub/Heroes3ResourceManager/releases/download/v0.9.13/h3magic_v_0_9_13.zip)
+
 ## Supported versions
 
 It should work on all Heroes III version, however success depends on the extent of changes applied.
