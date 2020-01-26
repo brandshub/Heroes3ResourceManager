@@ -194,10 +194,14 @@ namespace h3magic
 
             if (SaveToDisk(newFileName))
             {
+                string tempPath = Path+".tmp";
                 stream.Close();
-                File.Move(newFileName, Path + ".tmp");
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
+
+                File.Move(newFileName, tempPath);
                 File.Move(Path, newFileName);
-                File.Move(Path + ".tmp", Path);
+                File.Move(tempPath, Path);
 
                 stream = new FileStream(Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 return true;
