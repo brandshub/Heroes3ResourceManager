@@ -13,8 +13,8 @@ namespace h3magic
 {
     public class DefFile
     {
-        private const int PALETTE_OFFSET = 0x10;
-        private const int BLOCK_HEADER_OFFSET = 0x310;
+        protected const int PALETTE_OFFSET = 0x10;
+        protected const int BLOCK_HEADER_OFFSET = 0x310;
 
         public int ID { get; private set; }
         public int Width { get; private set; }
@@ -23,11 +23,11 @@ namespace h3magic
 
         public List<SpriteBlockHeader> headers;
 
-        private byte[,] palette = new byte[256, 3];
-        private int[] palette2 = new int[256];
-        private byte[] bytes;
+        protected byte[,] palette = new byte[256, 3];
+        protected int[] palette2 = new int[256];
+        protected byte[] bytes;
 
-        private bool hasChanged = false;
+        protected bool hasChanged = false;
         public bool HasChanges
         {
             get
@@ -52,15 +52,37 @@ namespace h3magic
             Parent = parent;
 
             ID = BitConverter.ToInt32(block, 0);
-            Width = BitConverter.ToInt32(block, 4);
-            Height = BitConverter.ToInt32(block, 8);
-            BlockCount = BitConverter.ToInt32(block, 12);
+
+            bool alterVersion = false;
+
+            if (BitConverter.ToInt64(block, 4) == ((0x1) | (24L << 32)))
+                alterVersion = true;
+
+            int baseOffset = BLOCK_HEADER_OFFSET;
+
+            if (!alterVersion)
+            {
+                Width = BitConverter.ToInt32(block, 4);
+                Height = BitConverter.ToInt32(block, 8);
+                BlockCount = BitConverter.ToInt32(block, 12);
+                baseOffset = BLOCK_HEADER_OFFSET;
+            }
+            else
+            {
+                Width = BitConverter.ToInt32(block, 12);
+                Height = BitConverter.ToInt32(block, 16);
+                BlockCount = BitConverter.ToInt32(block, 20);
+                baseOffset = 36;
+            }
+
+
+
             bytes = block;
             headers = new List<SpriteBlockHeader>(BlockCount);
             int off = 0;
             for (int i = 0; i < BlockCount; i++)
             {
-                headers.Add(new SpriteBlockHeader(block, BLOCK_HEADER_OFFSET + off));
+                headers.Add(new SpriteBlockHeader(block, baseOffset + off));
                 off += headers.Last().HeaderLength;
             }
             LoadPalette();
@@ -139,6 +161,7 @@ namespace h3magic
 
             var bmp = new Bitmap(sh.FullWidth, sh.FullHeight, PixelFormat.Format24bppRgb);
             var color = Color.FromArgb(palette[0, 0], palette[0, 1], palette[0, 2]);
+            //var color = Color.Lime;
             using (var g = Graphics.FromImage(bmp))
                 g.FillRectangle(new SolidBrush(color), 0, 0, sh.FullWidth, sh.FullHeight);
 
@@ -164,6 +187,12 @@ namespace h3magic
             {
                 LoadSpriteType3(sh, imageData, offset);
             }
+            else if (sh.Type == 32)
+            {
+
+                LoadSpriteType32to24(sh, imageData, offset);
+                //Marshal.Copy(bytes, offset, imageData.Scan0, sh.ContentSize);
+            }
             bmp.UnlockBits(imageData);
             return bmp;
         }
@@ -180,11 +209,14 @@ namespace h3magic
             if (sh.Type == 1)
                 return LoadSpriteType12(sh, bytes, offset);
 
+            if (sh.Type == 32)
+                return LoadSpriteType32(sh, offset);
+
             throw new Exception("wrong type");
         }
 
 
-        private unsafe void LoadSpriteType0(SpriteHeader sh, BitmapData data, int offset)
+        protected unsafe void LoadSpriteType0(SpriteHeader sh, BitmapData data, int offset)
         {
             var watch = Stopwatch.StartNew();
 
@@ -210,7 +242,7 @@ namespace h3magic
             //Debug.WriteLine("t0: " + result);
         }
 
-        private byte[,] LoadSpriteType0(SpriteHeader sh, byte[] data, int offset)
+        protected byte[,] LoadSpriteType0(SpriteHeader sh, byte[] data, int offset)
         {
             var sw = Stopwatch.StartNew();
             var imageBytes = new byte[sh.FullHeight, sh.FullWidth * 3];
@@ -240,7 +272,7 @@ namespace h3magic
             return imageBytes;
         }
 
-        private unsafe void LoadSpriteType1(SpriteHeader sh, BitmapData data, int offset)
+        protected unsafe void LoadSpriteType1(SpriteHeader sh, BitmapData data, int offset)
         {
             var watch = Stopwatch.StartNew();
             int len = sh.SpriteHeight;
@@ -311,7 +343,7 @@ namespace h3magic
         }
 
 
-        private unsafe byte[] LoadSpriteType12(SpriteHeader sh, byte[] data, int offset)
+        protected unsafe byte[] LoadSpriteType12(SpriteHeader sh, byte[] data, int offset)
         {
             int len = sh.SpriteHeight;
             int tm = sh.TopMargin;
@@ -463,7 +495,7 @@ namespace h3magic
 
 
 
-        private unsafe void LoadSpriteType2(SpriteHeader sh, BitmapData data, int offset)
+        protected unsafe void LoadSpriteType2(SpriteHeader sh, BitmapData data, int offset)
         {
             var watch = Stopwatch.StartNew();
             int len = sh.SpriteHeight;
@@ -556,7 +588,7 @@ namespace h3magic
             //Debug.WriteLine("t2: " + result);
         }
 
-        private unsafe void LoadSpriteType3(SpriteHeader sh, BitmapData data, int offset)
+        protected unsafe void LoadSpriteType3(SpriteHeader sh, BitmapData data, int offset)
         {
             var watch = Stopwatch.StartNew();
             int len = sh.SpriteHeight;
@@ -639,6 +671,69 @@ namespace h3magic
             //Debug.WriteLine("t3: " + result);
         }
 
+        protected unsafe void LoadSpriteType32to24(SpriteHeader sh, BitmapData data, int offset)
+        {
+            // var watch = Stopwatch.StartNew();            
+
+
+            byte* sc0 = (byte*)data.Scan0.ToPointer();
+            for (int i = sh.SpriteHeight - 1; i >= 0; i--)
+            {
+
+
+                int tempOff = i * sh.SpriteWidth * 4 + offset + 8;
+                sc0 = (byte*)data.Scan0.ToPointer() + (sh.SpriteHeight - 1 - i) * data.Stride;
+
+                for (int j = 0; j < sh.SpriteWidth; j++)
+                {
+                    *sc0 = bytes[tempOff + j * 4];
+                    *(sc0 + 1) = bytes[tempOff + j * 4 + 1];
+                    *(sc0 + 2) = bytes[tempOff + j * 4 + 2];
+
+                    sc0 += 3;
+                }
+            }
+
+
+            //double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
+            //Debug.WriteLine("t32: " + result);
+        }
+
+
+        protected unsafe byte[] LoadSpriteType32(SpriteHeader sh, int offset)
+        {
+            // var watch = Stopwatch.StartNew();            
+
+            int bWidth = sh.FullWidth * 3;
+            if (bWidth % 4 != 0)
+                bWidth += 4 - bWidth % 4;
+
+            int bw4 = bWidth / 4;
+            var imageBytes = new byte[sh.FullHeight * bWidth];
+
+            fixed (byte* ptr = imageBytes)
+            {
+                for (int i = sh.SpriteHeight - 1; i >= 0; i--)
+                {
+
+                    int tempOff = i * sh.SpriteWidth * 4 + offset + 8;
+                    int currentOffset = (sh.SpriteHeight - 1 - i) * bWidth;
+                    
+                    for (int j = 0; j < sh.SpriteWidth; j++)
+                    {
+                        *(ptr + currentOffset) = bytes[tempOff + j * 4];
+                        *(ptr + currentOffset + 1) = bytes[tempOff + j * 4 + 1];
+                        *(ptr + currentOffset + 2) = bytes[tempOff + j * 4 + 2];
+
+                        currentOffset += 3;
+                    }
+                }
+            }
+
+            return imageBytes;
+            //double result = watch.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency;
+            //Debug.WriteLine("t32: " + result);
+        }
 
         public void RetargetSprite(int blockIndex, int oldSpriteIndex, int newSpriteIndex)
         {
@@ -662,10 +757,10 @@ namespace h3magic
             offset += 13 * oldSpriteIndex;
             Buffer.BlockCopy(nameBytes, 0, bytes, offset, nameBytes.Length);
             headers[blockIndex].Names[oldSpriteIndex] = name;
-            offset += (headers[blockIndex].SpritesCount - oldSpriteIndex) * 13;            
-            
+            offset += (headers[blockIndex].SpritesCount - oldSpriteIndex) * 13;
+
             offset += 4 * oldSpriteIndex;
-            
+
             int newOffset = original.headers[blockIndex].Offsets[newSpriteIndex];
             var newBytes = BitConverter.GetBytes(newOffset);
 

@@ -29,14 +29,25 @@ namespace h3magic
         public SpriteHeader(byte[] block, int offset)
         {
             this.offset = offset;
+
             ContentSize = BitConverter.ToInt32(block, offset);
-            Type = BitConverter.ToInt32(block, offset + 4);
+            if (ContentSize == 32)
+            {
+                Type = 32;
+                ContentSize = BitConverter.ToInt32(block, offset + 4);
+            }
+            else
+            {
+                Type = BitConverter.ToInt32(block, offset + 4);
+            }
+
             FullWidth = BitConverter.ToInt32(block, offset + 8);
             FullHeight = BitConverter.ToInt32(block, offset + 12);
             SpriteWidth = BitConverter.ToInt32(block, offset + 16);
             SpriteHeight = BitConverter.ToInt32(block, offset + 20);
             LeftMargin = BitConverter.ToInt32(block, offset + 24);
             TopMargin = BitConverter.ToInt32(block, offset + 28);
+
         }
     }
 }

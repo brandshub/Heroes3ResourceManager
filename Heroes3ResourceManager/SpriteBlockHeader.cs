@@ -25,7 +25,8 @@ namespace h3magic
             Unknown2 = BitConverter.ToInt32(bytes, offset + 8);
             Unknown3 = BitConverter.ToInt32(bytes, offset + 12);
 
-            int off = offset + 16;
+            int off = offset + (offset == 36 ? 12 : 16);
+
             Names = new string[SpritesCount];
             Offsets = new int[SpritesCount];
             for (int i = 0; i < SpritesCount; i++)

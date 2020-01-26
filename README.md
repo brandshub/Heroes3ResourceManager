@@ -1,10 +1,12 @@
 # Heroes Of Might And Magic III Resource Manager
 
-[Download v0.9.13](https://github.com/brandshub/Heroes3ResourceManager/releases/download/v0.9.13/h3magic_v_0_9_13.zip)
+[Download v0.9.13 (HotA <1.60, stable)](https://github.com/brandshub/Heroes3ResourceManager/releases/download/v0.9.13/h3magic_v_0_9_13.zip)
+[Download v0.9.160 (HotA 1.60+, non-stable)](https://github.com/brandshub/Heroes3ResourceManager/releases/download/v0.9.160/h3magic_v_0_9_160.zip)
 
 ## Supported versions
 
-It should work on most Heroes III versions (SoD, HotA, WoG), however success depends on the character and extent of the changes applied.
+It should work on most Heroes III versions (SoD, WoG, HotA versions < 1.6), however success depends on the character and extent of the changes applied.
+HotA specific data is not available for modifications.
 Since there are numerious ways to corrupt data, app gives no warranty that your setting will work. 
 Backups are created before each save and can be found in **Game**\ HeroesResourceManagerBackups subfolder.
 
