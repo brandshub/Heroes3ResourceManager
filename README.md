@@ -1,6 +1,6 @@
 # Heroes Of Might And Magic III Resource Manager
 
-[Download v0.9.13 (HotA <1.60, stable)](https://github.com/brandshub/Heroes3ResourceManager/releases/download/v0.9.13/h3magic_v_0_9_13.zip)
+[Download v0.9.13 (HotA <1.60, stable)](https://github.com/brandshub/Heroes3ResourceManager/releases/download/v0.9.13/h3magic_v_0_9_13.zip)  
 [Download v0.9.160 (HotA 1.60+, non-stable)](https://github.com/brandshub/Heroes3ResourceManager/releases/download/v0.9.160/h3magic_v_0_9_160.zip)
 
 ## Supported versions
