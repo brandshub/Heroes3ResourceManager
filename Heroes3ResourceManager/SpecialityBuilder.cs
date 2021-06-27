@@ -130,7 +130,7 @@ namespace h3magic
                 shortDescription = "Creature Bonus: " + creature.Plural1.ChangeFirstCharCase();
                 if (creature.TownIndex <= 8)
                 {
-                    longDescription = string.Format("Increases Speed of any {0} by 1 and their Attack and Defense skills by 5% for every {2} (rounded up)."
+                    longDescription = string.Format("Increases Speed of any {0} by 1 and their Attack and Defense skills by 5% for every {1} (rounded up)."
                         , GetCreatureSiblingsText(creature),
                         creature.CreatureTownLevel == 1 ? "level" : (creature.CreatureTownLevel + " levels"));
                 }
